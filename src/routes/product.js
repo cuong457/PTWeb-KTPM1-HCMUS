@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+  getListProduct,
   updateItemQuantity,
   updateSelectFieldToItem,
   deleteItem,
@@ -16,6 +17,9 @@ router
   .route("/:id")
   .patch([protect, updateItemQuantity])
   .delete([protect, deleteItem]);
-router.patch("/", [protect, updateSelectFieldToItem]);
+router
+  .route("/")
+  .patch([protect, updateSelectFieldToItem])
+  .get([protect, getListProduct]);
 
 module.exports = router;

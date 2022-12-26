@@ -1,6 +1,80 @@
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/AppError");
 const CartModel = require("../models/Cart");
+const ProductModel = require("../models/Product");
+const Paginator = require("paginator");
+
+exports.getListProduct = catchAsync(async (req, res, next) => {
+  const options = {};
+  let page = 1;
+  if (req.query.hasOwnProperty("_search")) {
+    Object.assign(options, {
+      name: { $regex: req.query._search, $options: "i" },
+    });
+  }
+
+  if (req.query.hasOwnProperty("priceRange")) {
+    const [from, to] = req.query.priceRange.split(",");
+    options["price"] = { $gte: +from * 1000, $lte: +to * 1000 };
+  }
+
+  if (req.query.hasOwnProperty("manufacturer")) {
+    const manufacturer = req.query.manufacturer;
+    const manufacurerQuery = manufacturer.replaceAll("_", " ");
+    const manufacturers = manufacurerQuery.split(",");
+    options["manufacturer"] = {
+      $in: manufacturers,
+    };
+  }
+
+  if (req.query.hasOwnProperty("category")) {
+    const category = req.query.category;
+    const categoryQuery = category.replaceAll("_", " ");
+    if (categoryQuery !== "All") {
+      options["category"] = { $regex: categoryQuery, $options: "i" };
+    }
+  }
+
+  if (req.query.hasOwnProperty("page")) {
+    page = +req.query.page;
+
+    if (isNaN(page) || page < 0) {
+      page = 1;
+    }
+  }
+
+  const skipNum = (page - 1) * 3;
+
+  // for pagination
+  const allProducts = await ProductModel.find(options);
+  const productLength = Math.ceil(allProducts.length / 6);
+  const productPage = [];
+  for (let i = 0; i < productLength; ++i) {
+    productPage[i] = {
+      value: i + 1,
+    };
+  }
+  const products = await ProductModel.find(options)
+    .skip(skipNum)
+    .limit(3)
+    .sortable(req);
+
+  // pagination
+  // items per page, pages per section
+  const paginator = new Paginator(3, 3);
+  const all = await ProductModel.find(options);
+  const totalLength = all.length;
+  const pagination_info = paginator.build(totalLength, page);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      foods: products,
+      productPage,
+      pagination_info,
+    },
+  });
+});
 
 exports.updateItemQuantity = catchAsync(async (req, res, next) => {
   // for logged-in user

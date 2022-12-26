@@ -1,5 +1,92 @@
+Handlebars.registerHelper("toPrice", (rawPrice) =>
+  rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+);
+// loadProductPage("?page=1");
+export function createUrl(field, value) {
+  const allowFields = [
+    "_sort",
+    "column",
+    "type",
+    "priceRange",
+    "manufacturer",
+    "category",
+    "page",
+    "_search",
+  ];
+  const params = new URLSearchParams(location.search);
+  if (allowFields.includes(field)) {
+    params.set(field, value);
+  }
+
+  let isFirstQuery = true;
+  const url = allowFields.reduce((accum, field, index) => {
+    if (params.has(field)) {
+      if (!isFirstQuery) {
+        accum += "&";
+      }
+
+      if (isFirstQuery) {
+        isFirstQuery = false;
+      }
+      return (accum += `${field}=${params.get(field)}`);
+    }
+    return accum;
+  }, "?");
+  return url;
+}
+
+export function loadProductPage(query) {
+  fetch(`/api/v1/products${query}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const pagination_info = data.data.pagination_info;
+      const foods = data.data.foods;
+
+      if (foods.length === 0) {
+        $("#food-list")
+          .html(`<div class="py-5 my-5 d-flex flex-column justify-content-center align-items-center">
+        <h4 class="text-danger">Không tìm thấy món ăn</h4>
+        <div class="" style="width: 200px; height: 160px;">
+            <img class="w-100" src="/images/cart/empty.png" alt="empty cart image">
+        </div>
+    </div>`);
+        $("#pagination-list").html("");
+        return;
+      }
+
+      const source = $("#products-template").html();
+      const template = Handlebars.compile(source);
+      const html = template({ foods });
+      $("#food-list").html(html);
+
+      // handle pagination
+      const links = Array.from(
+        Array(pagination_info.last_page - pagination_info.first_page + 1)
+      ).map((_, idx) => ({
+        pageNumber: idx + pagination_info.first_page,
+        selected:
+          idx + pagination_info.first_page === pagination_info.current_page,
+      }));
+
+      $("#pagination-list").html(
+        Handlebars.compile($("#pagination-template").html())(links)
+      );
+      $(".pagination-item .page-item").click(function (event) {
+        event.preventDefault();
+        const newQuery = createUrl("page", $(this).html());
+        loadProductPage(newQuery);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 export const handleSearchAndFilter = function (e) {
   // I) variable identification
+  // 0.search
+  const boxSearch = document.getElementById("search-box");
+
   // 1.price search
   const fromInput = document.querySelector('input[name="price-from"]').value;
   const toInput = document.querySelector('input[name="price-to"]').value;
@@ -17,10 +104,12 @@ export const handleSearchAndFilter = function (e) {
   const categoryInput = document.querySelector("select[name='category']");
 
   // II) assign query string
-  let searchQuery = "";
+  // 0) search
+  let searchQuery =
+    boxSearch.value !== "" ? `?_search=${boxSearch.value}` : "?";
   // 1) price search
   if (fromInput.trim().length === 0 && toInput.trim().length === 0) {
-    searchQuery += `?priceRange=0, 1000000000`;
+    searchQuery += `&priceRange=0,1000000000`;
   } else if (
     fromInput.trim().length === 0 ||
     toInput.trim().length === 0 ||
@@ -29,7 +118,7 @@ export const handleSearchAndFilter = function (e) {
     alert("Khoảng giá không hợp lệ vui lòng nhập lại");
     return;
   } else {
-    searchQuery += `?priceRange=${fromInput},${toInput}`;
+    searchQuery += `&priceRange=${fromInput},${toInput}`;
   }
 
   // 2) sort order
@@ -63,7 +152,9 @@ export const handleSearchAndFilter = function (e) {
 
   // 4) category
   searchQuery += `&category=${categoryInput.value}`;
-  location.assign(searchQuery);
+  // location.assign(searchQuery);
+  window.history.pushState("/", "Final project", `/products${searchQuery}`); // không bị reload
+  loadProductPage(searchQuery);
 };
 
 export const handlePagination = function (e) {
@@ -75,6 +166,7 @@ export const handlePagination = function (e) {
     "manufacturer",
     "category",
     "page",
+    "_search",
   ];
   const query = e.target.dataset.query;
   if (!query) {
@@ -86,22 +178,38 @@ export const handlePagination = function (e) {
   const params = new URLSearchParams(location.search);
   params.set("page", pageValue);
 
+  let isFirstQuery = true;
   const url = allowFields.reduce((accum, field, index) => {
     if (params.has(field)) {
-      if (index !== 0) {
+      if (!isFirstQuery) {
         accum += "&";
       }
 
+      if (isFirstQuery) {
+        isFirstQuery = false;
+      }
       return (accum += `${field}=${params.get(field)}`);
     }
-
     return accum;
   }, "?");
-  location.assign(url);
+
+  // console.log(url);
+  // location.assign(url);
+  window.history.pushState("/", "Final project", `/products${url}`); // không bị reload
+  loadProductPage(url);
 };
 
+// dùng khi không xài ajax
+// dùng để load _search(khi từ / -> /products)
 export const loadFilterFromSearchParams = function () {
   const params = new URLSearchParams(location.search);
+
+  // 0) search
+  if (params.has("_search")) {
+    const boxSearch = document.getElementById("search-box");
+    boxSearch.value = params.get("_search");
+  }
+
   // 1) price range
   if (params.has("priceRange")) {
     const fromInput = document.querySelector('input[name="price-from"]');
@@ -128,7 +236,6 @@ export const loadFilterFromSearchParams = function () {
     }
 
     const sortOptions = document.querySelector(`input[value=${sortValue}]`);
-    console.log(sortOptions);
     sortOptions.checked = true;
   }
 

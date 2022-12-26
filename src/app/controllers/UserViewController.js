@@ -323,9 +323,9 @@ exports.renderItems = async function (req, res, next) {
     .sortable(req);
 
   res.render("products", {
-    foods: multipleMongooseToObject(products),
+    // foods: multipleMongooseToObject(products),
     restaurant_logo,
-    productPage,
+    // productPage,
   });
 };
 

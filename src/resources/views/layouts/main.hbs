@@ -20,6 +20,9 @@
 
     {{!-- Font --}}
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+    {{!-- Handlebars --}}
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </head>
 
 <body>
@@ -27,15 +30,14 @@
         {{> Header}}
 
         {{{body}}}
-
         {{> Footer}}
     </div>
 
     {{!-- icons fontawesome --}}
     <script src="https://kit.fontawesome.com/be735780e2.js" crossorigin="anonymous"></script>
-
     {{!-- address sellect --}}
     {{!-- Lỗi do không có file --}}
+    {{!--
     <script type="application/javascript" src="/js/vietnamlocalselector/vietnamlocalselector.js"></script>
     <script>
         var localpicker = new LocalPicker({
@@ -43,7 +45,7 @@
             district: "ls_district",
             ward: "ls_ward"
         });
-    </script>
+    </script> --}}
 
     {{!-- Boostrap --}}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

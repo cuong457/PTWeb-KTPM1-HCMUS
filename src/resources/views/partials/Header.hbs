@@ -147,10 +147,10 @@
   </div>
 </header>
 
+{{!--
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const buttonSearch = $('.btn.btn-primary');
-    const inputBoxSearch = $('#search-box');
+
 
     function createUrl(field, value) {
       const allowFields = [
@@ -188,7 +188,7 @@
     buttonSearch.click(function () {
       if (inputBoxSearch.val()) {
         const url = createUrl("_search", inputBoxSearch.val());
-        location.href = url;
+        location.href = `/products${url}`;
       }
       else location.href = '/products';
     });
@@ -197,11 +197,11 @@
       if (e.which == 13) {
         if (inputBoxSearch.val()) {
           const url = createUrl("_search", inputBoxSearch.val());
-          location.href = url;
+          location.href = `/products${url}`;
         }
         else location.href = '/products';
       }
     });
 
   });
-</script>
+</script> --}}

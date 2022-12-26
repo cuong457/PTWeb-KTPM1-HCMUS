@@ -115,8 +115,8 @@
                 </form>
             </div>
             <div class="col-12 col-md-8">
-                <div class="row">
-                    {{#each foods}}
+                <div id="food-list" class="row">
+                    {{!-- {{#each foods}}
                     <div class="col-6 col-lg-4 pb-3">
                         <div class="card card-hover">
                             <a href="/products/{{slug}}"><img src="/images/FoodThumnail/{{photo.[0]}}"
@@ -150,7 +150,7 @@
                             </div>
                         </div>
                     </div>
-                    {{/each}}
+                    {{/each}} --}}
                 </div>
 
             </div>
@@ -159,13 +159,13 @@
             <div class="col-4"></div>
             <div class="col-8 d-flex justify-content-center align-items-center bg-white">
                 {{!-- <i class="d-block fa-solid fa-chevron-left p-3 fs-5"></i> --}}
-                <ul class="pagination-list d-flex align-items-center bg-white">
-                    {{#each productPage}}
+                <ul id="pagination-list" class="pagination-list d-flex align-items-center bg-white">
+                    {{!-- {{#each productPage}}
                     <li class="pagination-item">
                         <a class="page-item" href="javascript:;" value={{value}}
                             data-query="page={{value}}">{{value}}</a>
                     </li>
-                    {{/each}}
+                    {{/each}} --}}
                 </ul>
                 {{!-- <i class="d-block fa-solid fa-chevron-right p-3 fs-5"></i> --}}
 
@@ -174,49 +174,49 @@
     </div>
 </div>
 
+<script id="products-template" type="text/x-handlebars-template">
+\{{#each foods}}
+    <div class="col-6 col-lg-4 pb-3">
+        <div class="card card-hover">
+            <a href="/products/\{{slug}}"><img src="/images/FoodThumnail/\{{photo.[0]}}"
+                    class="card-img-top p-3" /></a>
+            <div class="card-body">
+                <a href="/products/\{{slug}}" class="erase-underline">
+                    <p class="me-title text-lightblue">\{{name}}</p>
+                </a>
+                {{!-- <span class="ratings">
+                    \{{#loops fstar}}
+                    <i class="bi bi-star-fill rating-color"></i>
+                    \{{/loops}}
+                    \{{#loops hstar}}
+                    <i class="bi bi-star-half rating-color"></i>
+                    \{{/loops}}
+                    \{{#loops nstar}}
+                    <i class="bi bi-star"></i>
+                    \{{/loops}}
+                </span> --}}
+                {{!-- <p class="review-count">\{{rvcount}}</p> --}}
+                <p class="sm-title">Chỉ từ
+                    <span class="rtab-money">\{{{toPrice price}}} VNĐ</span>
+                </p>
+                <p class="sm-title">
+                    <span class="text-black">Nhà hàng: \{{manufacturer}}</span>
+                </p>
+                <div class="text-center">
+                    <a href="/products/\{{slug}}"><button class="btn btn-outline-dark rtab-detail-button">Xem chi tiết</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+\{{/each}}
+</script>
 
-{{!--
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let _search = null;
-        if (location.search) {
-            let oldSearchParams = new URLSearchParams(location.search);
-            console.log(oldSearchParams);
-            _search = oldSearchParams.get("_search");
-            console.log(oldSearchParams.get("page"));
-        }
-        const sortOptions = $('input[name="flexRadioDefault"]');
-        const params = new Proxy(new URLSearchParams(window.location.search), {
-            get: (searchParams, prop) =>
-                searchParams.get(prop),
-        });
 
-        if (params.column === 'price') {
-            if (params.type === 'asc') $('#lowprice-radio').prop("checked", true);
-            else $('#highprice-radio').prop("checked", true);
-        } else if (params.column === '_createdAt') {
-            $('#created-at-radio').prop("checked", true);
-        } else {
-            $('#highrate-radio').prop("checked", true);
-        }
-
-        sortOptions.change(function () {
-            console.log($('input[name=flexRadioDefault]:checked').val());//
-            let previousSearchLocation = null;
-            previousSearchLocation = _search !== null ? `?_search=${_search}&` : "?";
-            switch ($('input[name=flexRadioDefault]:checked').val()) {
-                case 'low-to-high':
-                    location.href = `${previousSearchLocation}_sort&column=price&type=asc`;
-                    break;
-                case 'high-to-low':
-                    location.href = `${previousSearchLocation}_sort&column=price&type=desc`; break;
-                case 'created-at':
-                    location.href = `${previousSearchLocation}_sort&column=_createdAt&type=asc`; break;
-                case 'default':
-                    location.href = '/products'; break;
-                default: location.href = './products';
-                    break;
-            }
-        });
-    });
-</script> --}}
+<script id="pagination-template" type="text/x-handlebars-template">
+\{{#each .}}
+    <li class="pagination-item">
+        <a class="page-item \{{#if selected}}selected\{{/if}}" href="javascript:;" value=\{{pageNumber}}
+            data-query="page=\{{pageNumber}}">\{{pageNumber}}</a>
+    </li>
+\{{/each}}
+</script>

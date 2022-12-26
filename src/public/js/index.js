@@ -10,7 +10,9 @@ import {
   handleSearchAndFilter,
   loadFilterFromSearchParams,
   handlePagination,
-} from "./payment/product.js";
+  createUrl,
+  loadProductPage,
+} from "./product/filter.js";
 import { clickOrderButton } from "./payment/order.js";
 
 // auth handling
@@ -20,6 +22,9 @@ const signOutBtnUser = document.getElementById("signout-user");
 // filter, sort, pagination handling
 const filterSortBtn = document.querySelector(".btn-filter");
 const paginationItems = document.querySelectorAll(".page-item");
+// search
+const buttonSearch = $(".btn.btn-primary");
+const inputBoxSearch = $("#search-box");
 
 // cart handling
 const addItemBtn = document.querySelector(".btn-addtocart");
@@ -88,5 +93,38 @@ if (filterSortBtn) {
 if (paginationItems.length > 0) {
   paginationItems.forEach((item) => {
     item.addEventListener("click", handlePagination);
+  });
+}
+
+if (location.pathname === "/products") {
+  const url = createUrl("page", 1);
+  loadProductPage(url);
+}
+
+if (inputBoxSearch) {
+  inputBoxSearch.on("keypress", function (e) {
+    if (e.which == 13) {
+      if (inputBoxSearch.val()) {
+        const url = createUrl("_search", inputBoxSearch.val());
+        if (location.pathname !== "/products") {
+          location.href = `/products?_search=${inputBoxSearch.val()}`;
+        } else {
+          loadProductPage(url);
+        }
+      }
+    }
+  });
+}
+
+if (buttonSearch) {
+  buttonSearch.click(function () {
+    if (inputBoxSearch.val()) {
+      const url = createUrl("_search", inputBoxSearch.val());
+      if (location.pathname !== "/products") {
+        location.href = `/products?_search=${inputBoxSearch.val()}`;
+      } else {
+        loadProductPage(url);
+      }
+    }
   });
 }

@@ -473,13 +473,15 @@ var handleDeleteItemFromCart = /*#__PURE__*/function () {
   };
 }();
 exports.handleDeleteItemFromCart = handleDeleteItemFromCart;
-},{}],"payment/product.js":[function(require,module,exports) {
+},{}],"product/filter.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.createUrl = createUrl;
 exports.loadFilterFromSearchParams = exports.handleSearchAndFilter = exports.handlePagination = void 0;
+exports.loadProductPage = loadProductPage;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
@@ -490,8 +492,71 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+Handlebars.registerHelper("toPrice", function (rawPrice) {
+  return rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+});
+// loadProductPage("?page=1");
+function createUrl(field, value) {
+  var allowFields = ["_sort", "column", "type", "priceRange", "manufacturer", "category", "page", "_search"];
+  var params = new URLSearchParams(location.search);
+  if (allowFields.includes(field)) {
+    params.set(field, value);
+  }
+  var isFirstQuery = true;
+  var url = allowFields.reduce(function (accum, field, index) {
+    if (params.has(field)) {
+      if (!isFirstQuery) {
+        accum += "&";
+      }
+      if (isFirstQuery) {
+        isFirstQuery = false;
+      }
+      return accum += "".concat(field, "=").concat(params.get(field));
+    }
+    return accum;
+  }, "?");
+  return url;
+}
+function loadProductPage(query) {
+  fetch("/api/v1/products".concat(query)).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    var pagination_info = data.data.pagination_info;
+    var foods = data.data.foods;
+    if (foods.length === 0) {
+      $("#food-list").html("<div class=\"py-5 my-5 d-flex flex-column justify-content-center align-items-center\">\n        <h4 class=\"text-danger\">Kh\xF4ng t\xECm th\u1EA5y m\xF3n \u0103n</h4>\n        <div class=\"\" style=\"width: 200px; height: 160px;\">\n            <img class=\"w-100\" src=\"/images/cart/empty.png\" alt=\"empty cart image\">\n        </div>\n    </div>");
+      $("#pagination-list").html("");
+      return;
+    }
+    var source = $("#products-template").html();
+    var template = Handlebars.compile(source);
+    var html = template({
+      foods: foods
+    });
+    $("#food-list").html(html);
+
+    // handle pagination
+    var links = Array.from(Array(pagination_info.last_page - pagination_info.first_page + 1)).map(function (_, idx) {
+      return {
+        pageNumber: idx + pagination_info.first_page,
+        selected: idx + pagination_info.first_page === pagination_info.current_page
+      };
+    });
+    $("#pagination-list").html(Handlebars.compile($("#pagination-template").html())(links));
+    $(".pagination-item .page-item").click(function (event) {
+      event.preventDefault();
+      var newQuery = createUrl("page", $(this).html());
+      loadProductPage(newQuery);
+    });
+  }).catch(function (err) {
+    console.log(err);
+  });
+}
 var handleSearchAndFilter = function handleSearchAndFilter(e) {
   // I) variable identification
+  // 0.search
+  var boxSearch = document.getElementById("search-box");
+
   // 1.price search
   var fromInput = document.querySelector('input[name="price-from"]').value;
   var toInput = document.querySelector('input[name="price-to"]').value;
@@ -507,15 +572,16 @@ var handleSearchAndFilter = function handleSearchAndFilter(e) {
   var categoryInput = document.querySelector("select[name='category']");
 
   // II) assign query string
-  var searchQuery = "";
+  // 0) search
+  var searchQuery = boxSearch.value !== "" ? "?_search=".concat(boxSearch.value) : "?";
   // 1) price search
   if (fromInput.trim().length === 0 && toInput.trim().length === 0) {
-    searchQuery += "?priceRange=0, 1000000000";
+    searchQuery += "&priceRange=0,1000000000";
   } else if (fromInput.trim().length === 0 || toInput.trim().length === 0 || +fromInput > +toInput) {
     alert("Khoảng giá không hợp lệ vui lòng nhập lại");
     return;
   } else {
-    searchQuery += "?priceRange=".concat(fromInput, ",").concat(toInput);
+    searchQuery += "&priceRange=".concat(fromInput, ",").concat(toInput);
   }
 
   // 2) sort order
@@ -549,11 +615,13 @@ var handleSearchAndFilter = function handleSearchAndFilter(e) {
 
   // 4) category
   searchQuery += "&category=".concat(categoryInput.value);
-  location.assign(searchQuery);
+  // location.assign(searchQuery);
+  window.history.pushState("/", "Final project", "/products".concat(searchQuery)); // không bị reload
+  loadProductPage(searchQuery);
 };
 exports.handleSearchAndFilter = handleSearchAndFilter;
 var handlePagination = function handlePagination(e) {
-  var allowFields = ["_sort", "column", "type", "priceRange", "manufacturer", "category", "page"];
+  var allowFields = ["_sort", "column", "type", "priceRange", "manufacturer", "category", "page", "_search"];
   var query = e.target.dataset.query;
   if (!query) {
     alert("khong tim thay query");
@@ -562,20 +630,38 @@ var handlePagination = function handlePagination(e) {
   var pageValue = query.split("=")[1];
   var params = new URLSearchParams(location.search);
   params.set("page", pageValue);
+  var isFirstQuery = true;
   var url = allowFields.reduce(function (accum, field, index) {
     if (params.has(field)) {
-      if (index !== 0) {
+      if (!isFirstQuery) {
         accum += "&";
+      }
+      if (isFirstQuery) {
+        isFirstQuery = false;
       }
       return accum += "".concat(field, "=").concat(params.get(field));
     }
     return accum;
   }, "?");
-  location.assign(url);
+
+  // console.log(url);
+  // location.assign(url);
+  window.history.pushState("/", "Final project", "/products".concat(url)); // không bị reload
+  loadProductPage(url);
 };
+
+// dùng khi không xài ajax
+// dùng để load _search(khi từ / -> /products)
 exports.handlePagination = handlePagination;
 var loadFilterFromSearchParams = function loadFilterFromSearchParams() {
   var params = new URLSearchParams(location.search);
+
+  // 0) search
+  if (params.has("_search")) {
+    var boxSearch = document.getElementById("search-box");
+    boxSearch.value = params.get("_search");
+  }
+
   // 1) price range
   if (params.has("priceRange")) {
     var fromInput = document.querySelector('input[name="price-from"]');
@@ -602,7 +688,6 @@ var loadFilterFromSearchParams = function loadFilterFromSearchParams() {
       sortValue = "created-at";
     }
     var sortOptions = document.querySelector("input[value=".concat(sortValue, "]"));
-    console.log(sortOptions);
     sortOptions.checked = true;
   }
 
@@ -722,7 +807,7 @@ exports.clickOrderButton = clickOrderButton;
 
 var _signOut = require("./auth/sign-out.js");
 var _cart = require("./payment/cart.js");
-var _product = require("./payment/product.js");
+var _filter = require("./product/filter.js");
 var _order = require("./payment/order.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -737,6 +822,9 @@ var signOutBtnUser = document.getElementById("signout-user");
 // filter, sort, pagination handling
 var filterSortBtn = document.querySelector(".btn-filter");
 var paginationItems = document.querySelectorAll(".page-item");
+// search
+var buttonSearch = $(".btn.btn-primary");
+var inputBoxSearch = $("#search-box");
 
 // cart handling
 var addItemBtn = document.querySelector(".btn-addtocart");
@@ -786,15 +874,45 @@ if (filterSortBtn) {
       childInput.checked = !childInput.checked;
     });
   });
-  (0, _product.loadFilterFromSearchParams)();
-  filterSortBtn.addEventListener("click", _product.handleSearchAndFilter);
+  (0, _filter.loadFilterFromSearchParams)();
+  filterSortBtn.addEventListener("click", _filter.handleSearchAndFilter);
 }
 if (paginationItems.length > 0) {
   paginationItems.forEach(function (item) {
-    item.addEventListener("click", _product.handlePagination);
+    item.addEventListener("click", _filter.handlePagination);
   });
 }
-},{"./auth/sign-out.js":"auth/sign-out.js","./payment/cart.js":"payment/cart.js","./payment/product.js":"payment/product.js","./payment/order.js":"payment/order.js"}],"../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+if (location.pathname === "/products") {
+  var url = (0, _filter.createUrl)("page", 1);
+  (0, _filter.loadProductPage)(url);
+}
+if (inputBoxSearch) {
+  inputBoxSearch.on("keypress", function (e) {
+    if (e.which == 13) {
+      if (inputBoxSearch.val()) {
+        var _url = (0, _filter.createUrl)("_search", inputBoxSearch.val());
+        if (location.pathname !== "/products") {
+          location.href = "/products?_search=".concat(inputBoxSearch.val());
+        } else {
+          (0, _filter.loadProductPage)(_url);
+        }
+      }
+    }
+  });
+}
+if (buttonSearch) {
+  buttonSearch.click(function () {
+    if (inputBoxSearch.val()) {
+      var _url2 = (0, _filter.createUrl)("_search", inputBoxSearch.val());
+      if (location.pathname !== "/products") {
+        location.href = "/products?_search=".concat(inputBoxSearch.val());
+      } else {
+        (0, _filter.loadProductPage)(_url2);
+      }
+    }
+  });
+}
+},{"./auth/sign-out.js":"auth/sign-out.js","./payment/cart.js":"payment/cart.js","./product/filter.js":"product/filter.js","./payment/order.js":"payment/order.js"}],"../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -819,7 +937,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57110" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64158" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
