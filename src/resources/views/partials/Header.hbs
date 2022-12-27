@@ -1,7 +1,7 @@
 <header class="header" id="header">
   <div class="navbar navbar-expand pt-0 pb-0 header-bar-color">
     <div class="container p-0">
-      <div class="collapse navbar-collapse py-3">
+      <div class="collapse navbar-collapse">
         {{! Left links field }}
         <ul class="navbar-nav me-auto" id="nav-leftlink">
           <li class="nav-item">
@@ -27,7 +27,7 @@
             </a>
           </li>
           <li clas="nav-item">
-            <a href="twitter" class="nav-link active navbar-icon pb-2 m-0">
+            <a href="https://twitter.com/PHAN_DUONG_MINH" class="nav-link active navbar-icon pb-2 m-0">
               <i class="bi bi-twitter"></i>
             </a>
           </li>
@@ -50,58 +50,78 @@
           </ul>
 
           {{! Right links field }}
-          <ul class="navbar-nav ml-0">
-            <li class="nav-item">
-              <a class="nav-link active navbar-font-link pb-2 m-0" href="#">
-                <i class="bi bi-bell" id="navbar-icon-with-text"></i>
-                Thông báo
-              </a>
-            </li>
-
+          <ul class="navbar-nav ml-0 d-flex align-items-center">
             <li class="nav-item dropdown">
-              <a class="nav-link active dropdown-toggle nav-dropdown-font" href="#" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false"> Ngôn ngữ </a>
+              <a 
+                class="nav-link active nav-dropdown-font" 
+                href="#" 
+                role="button"
+                data-bs-toggle="dropdown" 
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-earth-americas"></i> Ngôn ngữ 
+              </a>
               <ul class="dropdown-menu dropdown-menu-dark">
                 <li>
                   <a class="dropdown-item" href="/">Tiếng Việt</a>
                 </li>
-                {{! <li>
-                  <a class="dropdown-item" href="#">Tiếng Anh</a>
-                </li> }}
               </ul>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link active navbar-font-link pb-2 m-0" href="/admin/sign-up">Đăng ký</a>
-            </li>
-
-            <li class="nav-item">
-              <p class="nav-link disabled navbar-font-link pb-2 m-0">|</p>
-            </li>
-
             {{#if user}}
-            <li id="signout-user" class="nav-item cursor-pointer">
-              <a class="nav-link active navbar-font-link pb-2 m-0">Đăng xuất</a>
+              <li class="nav-item user-dropdown">
+                <a class="nav-link avt-btn-wrapper" href="/me">
+                    <span>
+                      <img src='/images/avatar/{{user.photo}}' class='avt me-2' alt="avt"/>
+                      {{user.name}}
+                    </span>
+                    <i class="fa-solid fa-chevron-down fa-2xs"></i>
+                </a>
+                <div class='user-dropdown-content'>
+                  <div class='row p-2 simple-white-btn'>
+                      <a href="/me" class='erase-underline text-black'>
+                          <i class="fa-solid fa-user"></i>
+                          &nbsp; Thông tin cá nhân
+                      </a>
+                  </div>
+                  <div class='row p-2 simple-white-btn'>
+                      <a href="" class='erase-underline text-black'>
+                          <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
+                          &nbsp; Lịch sử mua hàng
+                      </a>
+                  </div>
+                  {{#if_cond user.role "===" "admin"}}
+                    <div class='row p-2 simple-white-btn'>
+                        <a 
+                            class='text-black emptyBtn text-align-left erase-underline' 
+                            href="/admin/dashboard"
+                        >
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            &nbsp; Trang Admin
+                        </a>
+                    </div>
+                  {{/if_cond}}
+                  <div class='row p-2 simple-white-btn'>
+                      <button 
+                          class='text-black emptyBtn text-align-left'
+                          id="signout-user"
+                      >
+                          <i class="fa-solid fa-right-from-bracket"></i>
+                          &nbsp; Đăng xuất
+                      </button>
+                  </div>  
+              </div>
             </li>
             {{else}}
-            <li class="nav-item">
-              <a class="nav-link active navbar-font-link pb-2 m-0" href="/admin/sign-in">Đăng nhập</a>
-            </li>
-            {{/if}}
-
-            {{#if_cond user.role "===" "admin"}}
-            <li class="nav-item">
-              <a class="nav-link active navbar-font-link pb-2 m-0" href="/admin/dashboard">Trang Admin</a>
-            </li>
-            {{/if_cond}}
-
-            {{#if user}}
-            <a class="nav-item d-flex align-items-center text-decoration-none" href="/me">
-              <div class="nav-link active navbar-font-link pb-2 m-0">Hi {{user.name}}</div>
-              <div class="header__avatar">
-                <img class="header__avatar-image" src="/images/avatar/{{user.photo}}" alt="avatar" />
-              </div>
-            </a>
+              <li class="nav-item">
+                <a class="nav-link active navbar-font-link pb-2 m-0" href="/admin/sign-up">Đăng ký</a>
+              </li>
+              <li class="nav-item">
+                <p class="nav-link disabled navbar-font-link pb-2 m-0">|</p>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active navbar-font-link pb-2 m-0" href="/admin/sign-in">Đăng nhập</a>
+              </li>
             {{/if}}
           </ul>
       </div>
