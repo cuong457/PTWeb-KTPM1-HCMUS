@@ -13,6 +13,7 @@ const UserSchema = new Schema(
     photo: { type: String },
     address: { type: String },
     phone: { type: String },
+    total_spent: { type: Number},
     emailVerifyToken: String,
     emailVerifyTokenExpires: Date,
   },

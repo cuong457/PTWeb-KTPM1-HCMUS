@@ -6,6 +6,8 @@ const {
   renderSignIn,
   renderSignUp,
   renderTables,
+  renderUserDetail,
+  getUserData
 } = require("../app/controllers/AdminController");
 
 const { isLoggedIn } = require("../app/controllers/AuthViewController");
@@ -15,12 +17,14 @@ const router = express.Router();
 // check login and permission
 router.use(isLoggedIn);
 
+router.get("/usercenter/get-users-data", getUserData)
+router.use("/usercenter/:slug", renderUserDetail);
 router.use("/dashboard", renderDashBoard);
 router.use("/billing", renderBilling);
 router.use("/profile", renderProfile);
 router.use("/sign-in", renderSignIn);
 router.use("/sign-up", renderSignUp);
-router.use("/tables", renderTables);
+router.get("/usercenter", renderTables);
 router.use("/", renderDashBoard);
 
 module.exports = router;

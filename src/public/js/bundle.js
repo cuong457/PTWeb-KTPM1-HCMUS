@@ -141,46 +141,140 @@ var signOut = /*#__PURE__*/function () {
           case 3:
             response = _context.sent;
             if (response.ok) {
-              _context.next = 11;
+              _context.next = 10;
               break;
             }
             _context.next = 7;
             return response.json();
           case 7:
             errRes = _context.sent;
-            console.log(errRes.message);
             alert(errRes.message);
             return _context.abrupt("return");
-          case 11:
-            _context.next = 13;
+          case 10:
+            _context.next = 12;
             return response.json();
-          case 13:
+          case 12:
             data = _context.sent;
-            console.log("logout successfully");
             setTimeout(function () {
               // window.location.reload(true);
               alert("logout successfully");
               window.location.replace("/admin/sign-in");
             }, 500);
-            _context.next = 22;
+            _context.next = 19;
             break;
-          case 18:
-            _context.prev = 18;
+          case 16:
+            _context.prev = 16;
             _context.t0 = _context["catch"](0);
-            console.log(_context.t0.message);
             alert(_context.t0.message);
-          case 22:
+          case 19:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 18]]);
+    }, _callee, null, [[0, 16]]);
   }));
   return function signOut(_x) {
     return _ref.apply(this, arguments);
   };
 }();
 exports.signOut = signOut;
+},{}],"user/search.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleClearSearchboxUser = handleClearSearchboxUser;
+exports.handleFilter = handleFilter;
+exports.handleSearch = handleSearch;
+exports.renderUC = renderUC;
+// // import $ from 'jquery'
+// Handlebars.registerHelper("stringConcat", (str_1, str_2) => new Handlebars.SafeString(str_1 + str_2));
+
+// function a(e) {
+//     console.log(e.target.dataset.id);
+// } 
+
+// document.querySelectorAll('.admin-ban-btn').forEach(btn => {
+//     btn.addEventListener('click', a)
+// })
+
+function handleClearSearchboxUser(e) {
+  var searchbox = document.getElementById('user-search-box');
+  if (searchbox.value.trim() !== '') {
+    searchbox.value = '';
+  }
+}
+function handleSearch(e) {
+  var searchbox = document.getElementById('user-search-box');
+  var key_search = searchbox.value.trim();
+  if (key_search !== '') {
+    // Handle
+  }
+}
+function handleFilter(e) {
+  var link = window.location.href;
+  var sq = link.substring(link.indexOf("/admin"), link.length);
+  var target = '&sort=';
+  switch (e.target.dataset.id) {
+    case 'user-name-filter':
+      target += 'name';
+      break;
+    case 'user-email-filter':
+      sq += 'email';
+      break;
+    case 'user-registime-filter':
+      sq += 'registime';
+      break;
+    case 'user-spent-filter':
+      sq += 'spent';
+      break;
+    default:
+      break;
+  }
+  window.history.pushState({}, "Final project", sq + target);
+  loadUserPage(target);
+}
+function reGetUserData(e) {
+  var cur_target = e.target;
+  if (cur_target.id) {
+    renderUC(cur_target.id);
+  } else {
+    renderUC(cur_target.parentElement.id);
+  }
+}
+function renderUC() {
+  var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  fetch('http://localhost:3000/admin/usercenter/get-users-data?page=' + page).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    var users = data.data.users;
+    var pageList = data.data.pageList;
+    var pageIndex = data.data.pageIndex;
+    var source = $("#userlist-template").html();
+    var template = Handlebars.compile(source);
+    var html = template({
+      users: users
+    });
+    $(".user-list").html(html);
+    var psource = $("#userpagination-template").html();
+    var ptemplate = Handlebars.compile(psource);
+    var phtml = ptemplate({
+      pageList: pageList,
+      pageIndex: pageIndex
+    });
+    $(".admin-pagination-wrapper").html(phtml);
+    var numpage_btn = document.querySelectorAll(".page-number-btn");
+    if (numpage_btn) {
+      numpage_btn.forEach(function (btn) {
+        btn.addEventListener('click', reGetUserData);
+      });
+    }
+  }).catch(function (err) {
+    console.log(err);
+  });
+}
+;
 },{}],"payment/cart.js":[function(require,module,exports) {
 "use strict";
 
@@ -492,9 +586,9 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-Handlebars.registerHelper("toPrice", function (rawPrice) {
-  return rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-});
+// Handlebars.registerHelper("toPrice", (rawPrice) =>
+//   rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+// );
 // loadProductPage("?page=1");
 function createUrl(field, value) {
   var allowFields = ["_sort", "column", "type", "priceRange", "manufacturer", "category", "page", "_search"];
@@ -806,15 +900,66 @@ exports.clickOrderButton = clickOrderButton;
 "use strict";
 
 var _signOut = require("./auth/sign-out.js");
+var _search = require("./user/search.js");
 var _cart = require("./payment/cart.js");
 var _filter = require("./product/filter.js");
 var _order = require("./payment/order.js");
+var _this = void 0;
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+// Admin handling
+Handlebars.registerHelper("toPrice", function (rawPrice) {
+  return rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+});
+Handlebars.registerHelper("if_cond", function (v1, op, v2, options) {
+  switch (op) {
+    case "==":
+      return v1 == v2 ? options.fn(_this) : options.inverse(_this);
+    case "===":
+      return v1 === v2 ? options.fn(_this) : options.inverse(_this);
+    case "!=":
+      return v1 != v2 ? options.fn(_this) : options.inverse(_this);
+    case "!==":
+      return v1 !== v2 ? options.fn(_this) : options.inverse(_this);
+    case "<":
+      return v1 < v2 ? options.fn(_this) : options.inverse(_this);
+    case "<=":
+      return v1 <= v2 ? options.fn(_this) : options.inverse(_this);
+    case ">":
+      return v1 > v2 ? options.fn(_this) : options.inverse(_this);
+    case ">=":
+      return v1 >= v2 ? options.fn(_this) : options.inverse(_this);
+    case "&&":
+      return v1 && v2 ? options.fn(_this) : options.inverse(_this);
+    case "||":
+      return v1 || v2 ? options.fn(_this) : options.inverse(_this);
+    default:
+      return options.inverse(_this);
+  }
+});
+var clearSearchboxUser = document.getElementById('user-clearsearch-btn');
+if (clearSearchboxUser) {
+  clearSearchboxUser.addEventListener('click', _search.handleClearSearchboxUser);
+}
+var userSearchBtn = document.getElementById('usercenter-search-button');
+if (userSearchBtn) {
+  userSearchBtn.addEventListener('click', _search.handleSearch);
+}
+var userFilterBtn = document.querySelectorAll(".filter-btn");
+if (userFilterBtn) {
+  document.querySelectorAll(".filter-btn").forEach(function (btn) {
+    btn.addEventListener('click', _search.handleFilter);
+  });
+}
+var first_ren_UC = document.querySelector('.user-list');
+if (first_ren_UC) {
+  (0, _search.renderUC)();
+}
+
 // auth handling
 var signOutBtnAdmin = document.getElementById("signout-admin");
 var signOutBtnUser = document.getElementById("signout-user");
@@ -822,6 +967,7 @@ var signOutBtnUser = document.getElementById("signout-user");
 // filter, sort, pagination handling
 var filterSortBtn = document.querySelector(".btn-filter");
 var paginationItems = document.querySelectorAll(".page-item");
+
 // search
 var buttonSearch = $(".btn.btn-primary");
 var inputBoxSearch = $("#search-box");
@@ -912,7 +1058,7 @@ if (buttonSearch) {
     }
   });
 }
-},{"./auth/sign-out.js":"auth/sign-out.js","./payment/cart.js":"payment/cart.js","./product/filter.js":"product/filter.js","./payment/order.js":"payment/order.js"}],"../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./auth/sign-out.js":"auth/sign-out.js","./user/search.js":"user/search.js","./payment/cart.js":"payment/cart.js","./product/filter.js":"product/filter.js","./payment/order.js":"payment/order.js"}],"../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -937,7 +1083,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64158" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56501" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

@@ -45,6 +45,9 @@ app.engine(
         for (var i = 0; i < n; ++i) accum += block.fn(i);
         return accum;
       },
+      console_log: (target) => {
+        console.log(target);
+      },
       if_cond: (v1, op, v2, options) => {
         switch (op) {
           case "==":

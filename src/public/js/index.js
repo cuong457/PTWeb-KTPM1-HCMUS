@@ -1,5 +1,11 @@
 // import "@babel/polyfill";
 import { signOut } from "./auth/sign-out.js";
+import { 
+  handleClearSearchboxUser,
+  handleSearch,
+  handleFilter,
+  renderUC
+} from './user/search.js'
 import {
   handleAddItemToCart,
   handleCartToOrder,
@@ -15,6 +21,56 @@ import {
 } from "./product/filter.js";
 import { clickOrderButton } from "./payment/order.js";
 
+// Admin handling
+Handlebars.registerHelper("toPrice", (rawPrice) =>
+  rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+);
+Handlebars.registerHelper("if_cond", (v1, op, v2, options) => {
+  switch (op) {
+    case "==":
+      return v1 == v2 ? options.fn(this) : options.inverse(this);
+    case "===":
+      return v1 === v2 ? options.fn(this) : options.inverse(this);
+    case "!=":
+      return v1 != v2 ? options.fn(this) : options.inverse(this);
+    case "!==":
+      return v1 !== v2 ? options.fn(this) : options.inverse(this);
+    case "<":
+      return v1 < v2 ? options.fn(this) : options.inverse(this);
+    case "<=":
+      return v1 <= v2 ? options.fn(this) : options.inverse(this);
+    case ">":
+      return v1 > v2 ? options.fn(this) : options.inverse(this);
+    case ">=":
+      return v1 >= v2 ? options.fn(this) : options.inverse(this);
+    case "&&":
+      return v1 && v2 ? options.fn(this) : options.inverse(this);
+    case "||":
+      return v1 || v2 ? options.fn(this) : options.inverse(this);
+    default:
+      return options.inverse(this);
+  }});
+
+const clearSearchboxUser = document.getElementById('user-clearsearch-btn');
+if(clearSearchboxUser) {
+  clearSearchboxUser.addEventListener('click', handleClearSearchboxUser)
+}
+const userSearchBtn = document.getElementById('usercenter-search-button');
+if(userSearchBtn) {
+  userSearchBtn.addEventListener('click', handleSearch)
+}
+const userFilterBtn = document.querySelectorAll(".filter-btn");
+if(userFilterBtn) {
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener('click', handleFilter)
+  })
+}
+const first_ren_UC = document.querySelector('.user-list');
+if(first_ren_UC) {
+  renderUC();
+}
+
+
 // auth handling
 const signOutBtnAdmin = document.getElementById("signout-admin");
 const signOutBtnUser = document.getElementById("signout-user");
@@ -22,6 +78,7 @@ const signOutBtnUser = document.getElementById("signout-user");
 // filter, sort, pagination handling
 const filterSortBtn = document.querySelector(".btn-filter");
 const paginationItems = document.querySelectorAll(".page-item");
+
 // search
 const buttonSearch = $(".btn.btn-primary");
 const inputBoxSearch = $("#search-box");

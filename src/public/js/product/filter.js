@@ -1,6 +1,6 @@
-Handlebars.registerHelper("toPrice", (rawPrice) =>
-  rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-);
+// Handlebars.registerHelper("toPrice", (rawPrice) =>
+//   rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+// );
 // loadProductPage("?page=1");
 export function createUrl(field, value) {
   const allowFields = [

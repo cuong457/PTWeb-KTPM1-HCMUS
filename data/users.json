@@ -1,273 +1,274 @@
-[{
-  "_id": {
-    "$oid": "5c8a1d5b0190b214360dc057"
+
+[
+  {"name": "Phan Dương Minh", 
+      "password": "123456", 
+      "email": "phucdat41013@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/002.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 1890
   },
-  "name": "Jonas Schmedtmann",
-  "password": "123",
-  "email": "admin@natours.io",
-  "role": "admin",
-  "active": true,
-  "photo": "user-1.jpg",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910452644"
-    }
+  {"name": "Eris", 
+      "password": "rudeus", 
+      "email": "eris.rudeus@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/eris.png", 
+      "address": "heaven",
+      "phone": "0337839146",
+      "total_spent": 6789
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910452644"
-    }
+  {"name": "Assi Korean Foods", 
+      "password": "123456", 
+      "email": "AssiKoreanFoods@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/assikoreanfood.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 2134
   },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5c8a1dfa2f8fb814b56fa181"
+  {"name": "Burger Zone", 
+      "password": "123456", 
+      "email": "burgerzone@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/burgerzone.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 342
   },
-  "name": "Lourdes Browning",
-  "password": "123",
-  "email": "loulou@example.com",
-  "role": "user",
-  "active": true,
-  "photo": "user-2.jpg",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910452645"
-    }
+  {"name": "Caravan Serai", 
+      "password": "123456", 
+      "email": "caravanserai@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/caravanserai.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 1524
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910452645"
-    }
+  {"name": "Flavour Of India", 
+      "password": "123456", 
+      "email": "FlavourOfIndia@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/FlavourOfIndia-logo.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 1352
   },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "5c8a1e1a2f8fb814b56fa182"
+  {"name": "Friggitoria", 
+      "password": "123456", 
+      "email": "Friggitoria@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/Friggitoria-logo.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 3623
   },
-  "name": "Sophie Louise Hart",
-  "password": "123",
-  "email": "sophie@example.com",
-  "role": "user",
-  "active": true,
-  "photo": "user-3.jpg",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910452645"
-    }
+  {"name": "Goichi", 
+      "password": "123456", 
+      "email": "goichi@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/goichi.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 123
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910452645"
-    }
+  {"name": "Gyro Shop", 
+      "password": "123456", 
+      "email": "gyroshop@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/gyroshop.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 5234
   },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638d9c5911b5932c2da0fcfe"
+  {"name": "Panzer Hot", 
+      "password": "123456", 
+      "email": "PanzerHot@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/PanzerHot-logo.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 1412
   },
-  "password": "$2a$12$hOZa4OZKIVmx3G2eYduN/.9/EQDrl4Lzjl855Nivpp/m6vMb9j1r.",
-  "email": "lyvandat123@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670224985327"
-    }
+  {"name": "SunriseFoods", 
+      "password": "123456", 
+      "email": "SunriseFoods@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/SunriseFoods-logo.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 9999
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670224985327"
-    }
+  {"name": "Raiden Shogun", 
+      "password": "123456", 
+      "email": "phucdat4101@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/003.jpeg", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 890
   },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638d9d0411b5932c2da0fd01"
+  {"name": "Kamisato Ayaka", 
+      "password": "123456", 
+      "email": "phucdat4102@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/004.jpeg", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 250
   },
-  "password": "$2a$12$qDkB2p0XhQ8.2kphi1YKqejn5.HOOY.c0cIi2MJxlzmeDUhkso4mi",
-  "email": "lyvandat123@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670225156563"
-    }
+  {"name": "Ganyu", 
+      "password": "123456", 
+      "email": "phucdat4103@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/005.jpeg", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 9990
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670225156563"
-    }
+  {"name": "I Dont Know", 
+      "password": "123456", 
+      "email": "phucdat4104@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/006.jpeg", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 560
   },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638d9e1077aa50f303fdca88"
+  {"name": "Lightning Keqing", 
+      "password": "123456", 
+      "email": "phucdat4105@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/007.jpeg", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 1020
   },
-  "password": "$2a$12$bghri9GwqC7xl1N2xERha.ZHarSq/7TNwhcQzymOvNnRRc6NVRJfO",
-  "email": "lyvandat123@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670225424265"
-    }
+  {"name": "Nilou", "rating": 3, 
+      "password": "123456", 
+      "email": "phucdat4106@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/008.jpeg", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 890
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670225424265"
-    }
+  {"name": "Yae Miko", 
+      "password": "123456", 
+      "email": "phucdat4107@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/009.jpeg", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 890
   },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638d9e1977aa50f303fdca8b"
+  {"name": "Lumine", 
+      "password": "123456", 
+      "email": "phucdat4108@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/010.jpeg", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 250
   },
-  "password": "$2a$12$nr4b5k63BMAXlxHHEPcCL.P9oZS2rEAzbjgY.iEcZIWC.OSZkAmI6",
-  "email": "lyvandat123@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670225433068"
-    }
+  {"name": "Hawaii", 
+      "password": "123456", 
+      "email": "phucdat4109@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/hawaii.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 9990
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670225433068"
-    }
+  {
+      "password": "123456",
+      "email": "lyvandat123@gmail.com",
+      "role": "admin",
+      "active": true,
+      "name": "Lý Văn Đạt",
+      "photo": "/images/user/avt/ava-lvd.jpg",
+      "address": "222 Bình Trị Đông",
+      "phone": "0123555669",
+      "total_spent": "10"
   },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638d9e4e89fcae45ce2a90cf"
+  {"name": "Ichi Sando", 
+      "password": "123456", 
+      "email": "phucdat41010@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/ichisando.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 560
   },
-  "password": "$2a$12$NCRmY1GpcNs5VsQaZHC/iuPDRJG65XP3pMPjpQL4ZuAzm8ok2yZZ.",
-  "email": "lyvandat124@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670225486726"
-    }
+  {"name": "Longboard", 
+      "password": "123456", 
+      "email": "phucdat41011@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/longboard.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 1020
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670225486726"
-    }
+  {"name": "Pan Adicto", 
+      "password": "123456", 
+      "email": "phucdat41012@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/panadicto.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 890
   },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638d9e7a4ca7d529e36f815a"
+  {"name": "Quelli Pizza", 
+      "password": "123456", 
+      "email": "phucdat41014@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/quellipizza.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 560
   },
-  "password": "$2a$12$FhjIcqrqGlo.rUtC66.p5.jEB0YNttVJFrtmNYSo8xepAMMRvjtHe",
-  "email": "lyvandat12345@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670225530614"
-    }
+  {"name": "Shokudo", 
+      "password": "123456", 
+      "email": "phucdat41015@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/shokudo.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 1020
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670225530614"
-    }
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638d9e8b8a646c33e3c7ede2"
-  },
-  "password": "$2a$12$4rRMHIXOLB4CaqwHNhw4C.FriVNxGTtvfICUCnzraZLJGQ6KoeIsm",
-  "email": "lyvandat123456@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670225548001"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670225548001"
-    }
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638d9e968a646c33e3c7ede5"
-  },
-  "password": "$2a$12$jD6tMm4yq3VCAidf.5xE1uFzN4gKixOELuRo46dyJQSoW7E./wYsG",
-  "email": "lyvandat12345688@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670225558472"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670225558472"
-    }
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638df1e7c265f6e17f772b20"
-  },
-  "password": "$2a$12$sTQrtoOuCcyRtrSuM8v4lOR4tnebnk4hLlZYw/Y6m5CA2c4sku7RS",
-  "email": "lyvandat3@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670246887843"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670246887843"
-    }
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638df1fdc265f6e17f772b23"
-  },
-  "password": "$2a$12$JrXoXLnocWMpRIT4x3pU1O0SUQrfO2WobTdegaa0dYAScMnNN2IwC",
-  "email": "lyvandat4@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670246909825"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670246909825"
-    }
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "638df29cc265f6e17f772b27"
-  },
-  "password": "$2a$12$ZX/7lz41FT0nWvfsqaQb5eHweZW8TKE1mclnEzGcQi.Xf79IUCRzW",
-  "email": "lyvandat5@gmail.com",
-  "role": "User",
-  "active": true,
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1670247068262"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1670247068262"
-    }
-  },
-  "__v": 0
-}]
+  {"name": "Vinny", 
+      "password": "123456", 
+      "email": "phucdat41016@gmail.com", 
+      "role": "user", 
+      "active": true, 
+      "photo": "/images/user/avt/vinny.png", 
+      "address": "hell",
+      "phone": "0337839146",
+      "total_spent": 890
+  }
+]

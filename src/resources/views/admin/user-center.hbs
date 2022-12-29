@@ -1,0 +1,191 @@
+<div class="row">
+  <div class="col-12 col-lg-3">
+    <div class="row">
+      <div class="col-6 col-lg-12">
+        <div class='admin-sm-card mb-3'>
+          <p class='text-thin formal-font opacity-75 pt-2 ps-2 pb-1'>
+              Users
+          </p>
+          <div class='card-icon blue-bg'>
+              <i class="fa-regular fa-user fa-lg"></i>
+          </div>
+          <p class='text-bold text-xlg formal-font pt-4 mt-2 ps-2'>
+              14.05 K
+          </p>
+          <p class='text-sm mt-2 ms-2'>
+            <span class='percent-wrapper text-green'>
+                <i class="fa-solid fa-arrow-up"></i>
+                &nbsp;14.2 %
+            </span>
+            <span class='text-thin opacity-75'>&nbsp;vs. Previous month</span>
+          </p> 
+        </div> 
+      </div>
+      <div class="col-6 col-lg-12">
+        <div class='admin-sm-card mb-3'>
+          <p class='text-thin formal-font opacity-75 pt-2 ps-2 pb-1'>
+              Sales
+          </p>
+          <div class='card-icon yellow-bg'>
+              <i class="fa-solid fa-dollar-sign fa-lg"></i>
+          </div>
+          <p class='text-bold text-xlg formal-font pt-4 mt-2 ps-2'>
+              $ 34.582
+          </p>
+          <p class='text-sm mt-2 ms-2'>
+            <span class='percent-wrapper text-green'>
+                <i class="fa-solid fa-arrow-up"></i>
+                &nbsp;24.5 %
+            </span>
+            <span class='text-thin opacity-75'>&nbsp;vs. Previous month</span>
+          </p> 
+        </div>
+      </div>
+    </div>
+    {{!-- Chart --}}
+    <div class="card z-index-2 mb-3">
+      <div class="card-header pb-0">
+        <h6><i class="fa-solid fa-filter"></i>&nbsp;Filter</h6>
+      </div>
+      <div class="card-body p-3">
+        <form class="user-filter">
+          <button 
+            type="button" 
+            id="user-name-filter"
+            data-id="user-name-filter"
+            class="filter-btn"
+          >
+            By name
+          </button>
+          <button 
+            type="button" 
+            id="user-name-filter"
+            data-id="user-email-filter"
+            class="filter-btn"
+          >
+            By email
+          </button>
+          <button 
+            type="button" 
+            id="user-name-filter"
+            data-id="user-registime-filter"
+            class="filter-btn"
+          >
+            By registration time
+          </button>
+          <button 
+            type="button" 
+            id="user-name-filter"
+            data-id="user-spent-filter"
+            class="filter-btn"
+          >
+            By total spent
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-9">
+      <div class="card card-shadow">
+        <div class="card-header">
+          <div class='row'>
+            <div class='col-12 col-md-5 d-flex align-items-center pb-3'>
+                <p class='formal-font text-xlg text-bold'>USER LIST</p>
+            </div>
+            <div class='col-12 col-md-7'>
+                <div class="input-group">
+                    <input
+                        type="text"
+                        class="form-control search-box"
+                        id="user-search-box"
+                        placeholder="Find any seller?"
+                    />
+                    <button 
+                        type='button' 
+                        class='cancel-btn-searchbox'
+                        id='user-clearsearch-btn'
+                    >
+                        <i class="fa-solid fa-x"></i>
+                    </button>
+                    <button 
+                        type="button" 
+                        class="search-btn" 
+                        id="usercenter-search-button" 
+                    >
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class='row userpanel-wrapper p-5 pt-3 user-list'>
+            
+          </div>
+          <div class='row pb-4 d-flex justify-content-center'>
+            <div class="admin-pagination-wrapper">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<script id="userlist-template" type="text/x-handlebars-template">
+  \{{#each users}}
+    <div class="col-6 col-xxl-4 pb-4 d-flex justify-content-center">
+      <div class="card admin-card">
+        <img src=\{{photo}} class="card-img-top p-3" alt='card'/>
+        <div class="card-body">
+            <p class="me-title text-lightblue user-name">\{{name}}</p>
+            <p class="sm-title user-spent">Total spent <span class="rtab-money">$\{{total_spent}}</span></p>
+            <div class="text-center">
+              <a 
+                  href='/admin/usercenter/\{{email}}'
+                  class="btn btn-outline-dark admin-ban-btn"
+              >
+                  See more detail
+              </a>
+            </div>
+        </div>
+      </div>
+    </div>
+  \{{/each}}
+</script>
+<script id="userpagination-template" type="text/x-handlebars-template">
+  \{{#if_cond pageIndex.maxpage '>=' 1}}
+    <button 
+      id='1'
+      type="button" 
+      class="page-number-btn"
+    >
+      <i class="fa-solid fa-angles-left"></i>
+    </button>
+    <button 
+      id="\{{../pageIndex.prev}}"
+      type="button"
+      class="page-number-btn"
+    >
+      <i class="fa-solid fa-angle-left"></i>
+    </button>
+    \{{#each ../pageList}}
+      <button id=\{{num}} type="button" class="page-number-btn \{{#if is_cur}}active-numpage\{{/if}}">
+        \{{num}}
+      </button>
+    \{{/each}}
+    <button 
+      id="\{{../pageIndex.nextNum}}"
+      type="button" 
+      class="page-number-btn"
+    >
+      <i class="fa-solid fa-angle-right"></i>
+    </button>
+    <button 
+      id="\{{../pageIndex.maxpage}}"
+      type="button" 
+      class="page-number-btn"
+    >
+      <i class="fa-solid fa-angles-right"></i>
+    </button>
+  \{{/if_cond}}
+</script>

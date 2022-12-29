@@ -37,6 +37,15 @@
       href="/assets/css/error-page.css"
       rel="stylesheet"
     />
+    {{!-- Custom css --}}
+    <link rel="stylesheet" href="/css/app.css">
+
+    {{!-- <!-- Boostrap --> --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+
+    {{!-- Handlebars --}}
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
   </head>
 
   {{#if user}}
@@ -108,7 +117,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/admin/tables">
+            <a class="nav-link" href="/admin/usercenter">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -151,7 +160,7 @@
                   </g>
                 </svg>
               </div>
-              <span class="nav-link-text ms-1">Tables</span>
+              <span class="nav-link-text ms-1">User Center</span>
             </a>
           </li>
           <li class="nav-item">
@@ -195,7 +204,7 @@
                   </g>
                 </svg>
               </div>
-              <span class="nav-link-text ms-1">Billing</span>
+              <span class="nav-link-text ms-1">Posts</span>
             </a>
           </li>
           <li class="nav-item mt-3">
@@ -709,9 +718,21 @@
         </div>
       </div>
     </div>
+        {{!-- icons fontawesome --}}
+    <script src="https://kit.fontawesome.com/be735780e2.js" crossorigin="anonymous"></script>
     <!--   Core JS Files   -->
+    {{!-- boostrap --}}
     <script src="/assets/js/core/popper.min.js"></script>
-    <script src="/assets/js/core/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+        integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+
     <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/chartjs.min.js"></script>
