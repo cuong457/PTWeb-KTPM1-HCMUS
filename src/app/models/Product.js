@@ -12,7 +12,7 @@ const ProductSchema = new Schema(
     stock: { type: Number },
     suspended: { type: Boolean },
     photo: { type: Array, required: true },
-    photoCover: { type: String },
+    foodThumbnail: { type: String },
     description: { type: String },
 
     slug: { type: String, slug: "name", unique: true },

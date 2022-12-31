@@ -1,6 +1,7 @@
 const catchAsync = require("../../utils/catchAsync");
 const UserModel = require("../models/User");
-const OrderModel = require("../models/Order");
+const ProductModel = require("../models/Product");
+
 const session = require("express-session");
 const passport = require("passport");
 const multer = require("multer");
@@ -26,25 +27,25 @@ const upload = multer({
 });
 
 exports.uploadTourImages = upload.fields([
-  { name: "photoCover", maxCount: 1 },
+  { name: "foodThumbnail", maxCount: 1 },
   { name: "photo", maxCount: 3 },
 ]);
 
 exports.resizeUploadImages = catchAsync(async (req, res, next) => {
-  if (!req.files["photoCover"] || !req.files["photo"]) return next();
+  if (!req.files["foodThumbnail"] || !req.files["photo"]) return next();
 
-  const photoCoverName = `food-${Math.ceil(
+  const foodThumbnailName = `food-${Math.ceil(
     Math.random() * 1000
   )}-${Date.now()}-cover.jpg`;
-  req.body.photoCover = `/images/foodCover/${photoCoverName}`;
+  req.body.foodThumbnail = `/images/foodCover/${foodThumbnailName}`;
   let images = [];
 
-  await sharp(req.files["photoCover"][0].buffer)
+  await sharp(req.files["foodThumbnail"][0].buffer)
     .resize(500, 500)
     .toFormat("jpg")
     .jpeg({ quality: 90 })
     // start at root folder
-    .toFile(`./src/public${req.body.photoCover}`);
+    .toFile(`./src/public${req.body.foodThumbnail}`);
 
   const resizeImagePromises = req.files["photo"].map(async (file, index) => {
     const imgIntroFileName = `food-${Math.ceil(
@@ -176,7 +177,21 @@ exports.renderCreateProduct = (req, res, next) => {
 };
 
 exports.createNewProduct = catchAsync(async (req, res, next) => {
-  console.log("ko nhận được", req.body);
+  const newFoodObj = {};
+  
+  const imgFields = [];
+  Object.keys(req.body).forEach((element) => {
+    if (!imgFields.includes(element)) {
+      newFoodObj[element] = req.body[element];
+    }
+  });  
+
+  const new_product = await ProductModel.create(newFoodObj);
+
+  if (!new_product) {
+    return next(new AppError(400, "Create product failed."));
+  }
+
   res.status(200).json({
     message: "success",
   });
