@@ -6,8 +6,10 @@ const {
   renderSignIn,
   renderSignUp,
   renderTables,
+  renderCreateProduct,
   renderUserDetail,
-  getUserData
+  getUserData,
+  createNewProduct,
 } = require("../app/controllers/AdminController");
 
 const { isLoggedIn } = require("../app/controllers/AuthViewController");
@@ -19,6 +21,11 @@ router.use(isLoggedIn);
 
 router.get("/usercenter/get-users-data", getUserData)
 router.use("/usercenter/:slug", renderUserDetail);
+
+router
+  .get("/products/create", renderCreateProduct)
+  .post("/products/create", createNewProduct)
+
 router.use("/dashboard", renderDashBoard);
 router.use("/billing", renderBilling);
 router.use("/profile", renderProfile);

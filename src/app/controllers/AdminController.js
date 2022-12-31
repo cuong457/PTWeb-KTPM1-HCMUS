@@ -98,3 +98,16 @@ exports.renderTables = (req, res, next) => {
     layout: "adminMain.hbs"
   });
 };
+
+exports.renderCreateProduct = (req, res, next) => {
+  res.render("./admin/create-product", { 
+  
+  });
+}
+
+exports.createNewProduct = catchAsync(async (req, res, next) => {
+  console.log("ko nhận được", req.body);
+  res.status(200).json({
+    message: "success"
+  })
+});

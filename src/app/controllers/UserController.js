@@ -31,6 +31,7 @@ exports.resizeUploadImage = catchAsync(async (req, res, next) => {
 
 exports.updateMe = catchAsync(async function (req, res, next) {
   // req.user
+  console.log("user: ", req.body)
   if (req.body.password || req.body.confirmPassword) {
     return next(
       new AppError(
