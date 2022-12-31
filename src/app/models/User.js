@@ -14,7 +14,7 @@ const UserSchema = new Schema(
     photo: { type: String },
     address: { type: String },
     phone: { type: String },
-    total_spent: { type: Number },
+    total_spent: { type: Number, default: 0 },
     emailVerifyToken: String,
     emailVerifyTokenExpires: Date,
   },

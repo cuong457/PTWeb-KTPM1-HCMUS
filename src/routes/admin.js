@@ -11,6 +11,8 @@ const {
   renderGoogleSignIn,
   renderGoogleCallback,
   getUserData,
+  uploadTourImages,
+  resizeUploadImages,
   createNewProduct,
 } = require("../app/controllers/AdminController");
 
@@ -36,8 +38,6 @@ router.get("/usercenter", renderTables);
 router.get("/usercenter/get-users-data", getUserData);
 router.get("/usercenter/:slug", renderUserDetail);
 
-router
-  .get("/products/create", renderCreateProduct)
-  .post("/products/create", createNewProduct);
+router.route("/products/create").get(renderCreateProduct);
 
 module.exports = router;

@@ -8,6 +8,12 @@ const {
 
 const { protect, restrictTo } = require("../app/controllers/AuthController");
 
+const {
+  uploadTourImages,
+  resizeUploadImages,
+  createNewProduct,
+} = require("../app/controllers/AdminController");
+
 const router = express.Router();
 
 router
@@ -17,6 +23,7 @@ router
 router
   .route("/")
   .patch([protect, updateSelectFieldToItem])
-  .get([protect, getListProduct]);
+  .get([protect, getListProduct])
+  .post([protect, uploadTourImages, resizeUploadImages, createNewProduct]);
 
 module.exports = router;

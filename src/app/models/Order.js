@@ -82,4 +82,14 @@ OrderSchema.methods.getPopulatedOrder = async function () {
   return orders[0];
 };
 
+OrderSchema.statics.getTotalSpent = async function (userId) {
+  const orders = await this.find({ userId });
+
+  const totalSpent = orders.reduce((accum, order) => {
+    return accum + order.subTotal;
+  });
+
+  return totalSpent;
+};
+
 module.exports = mongoose.model("Order", OrderSchema);

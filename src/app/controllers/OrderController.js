@@ -32,6 +32,13 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     return accumulator + prod.total;
   }, 0);
 
+  // update total spent for user
+  if (user.total_spent) {
+    user.total_spent += totalPrice + 20000;
+  }
+  user.total_spent = totalPrice + 20000;
+  await user.save();
+  // create order
   const order = await OrderModel.create({
     userId: cart.userId,
     products,

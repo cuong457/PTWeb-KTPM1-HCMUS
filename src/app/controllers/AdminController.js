@@ -1,5 +1,6 @@
 const catchAsync = require("../../utils/catchAsync");
 const UserModel = require("../models/User");
+const OrderModel = require("../models/Order");
 const session = require("express-session");
 const passport = require("passport");
 const multer = require("multer");
@@ -25,37 +26,41 @@ const upload = multer({
 });
 
 exports.uploadTourImages = upload.fields([
-  { name: "imageCover", maxCount: 1 },
-  { name: "images", maxCount: 3 },
+  { name: "photoCover", maxCount: 1 },
+  { name: "photo", maxCount: 3 },
 ]);
 
 exports.resizeUploadImages = catchAsync(async (req, res, next) => {
-  if (!req.files["imageCover"] || !req.files["images"]) return next();
+  if (!req.files["photoCover"] || !req.files["photo"]) return next();
 
-  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpg`;
+  const photoCoverName = `food-${Math.ceil(
+    Math.random() * 1000
+  )}-${Date.now()}-cover.jpg`;
+  req.body.photoCover = `/images/foodCover/${photoCoverName}`;
   let images = [];
 
-  await sharp(req.files["imageCover"][0].buffer)
+  await sharp(req.files["photoCover"][0].buffer)
     .resize(500, 500)
     .toFormat("jpg")
     .jpeg({ quality: 90 })
-    .toFile(`./public/img/tours/${req.body.imageCover}`);
+    // start at root folder
+    .toFile(`./src/public${req.body.photoCover}`);
 
-  const resizeImagePromises = req.files["images"].map(async (file, index) => {
-    const imgIntroFileName = `tour-${req.params.id}-${Date.now()}-${
-      index + 1
-    }.jpg`;
-    images.push(imgIntroFileName);
+  const resizeImagePromises = req.files["photo"].map(async (file, index) => {
+    const imgIntroFileName = `food-${Math.ceil(
+      Math.random() * 1000
+    )}-${Date.now()}-${index + 1}.jpg`;
+    images.push(`/images/foods/${imgIntroFileName}`);
 
     return sharp(file.buffer)
       .resize(500, 500)
       .toFormat("jpg")
       .jpeg({ quality: 90 })
-      .toFile(`./public/img/tours/${imgIntroFileName}`);
+      .toFile(`./src/public/images/foods/${imgIntroFileName}`);
   });
 
   Promise.all(resizeImagePromises);
-  req.body.images = images;
+  req.body.photo = images;
   next();
 });
 
@@ -150,7 +155,7 @@ exports.getUserData = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.renderTables = (req, res, next) => {
+exports.renderTables = async (req, res, next) => {
   res.render("./admin/user-center", {
     layout: "adminMain.hbs",
   });
