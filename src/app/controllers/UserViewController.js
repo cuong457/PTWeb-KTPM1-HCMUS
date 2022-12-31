@@ -323,7 +323,7 @@ exports.renderItems = async function (req, res, next) {
     .sortable(req);
 
   res.render("products", {
-    restaurant_logo
+    restaurant_logo,
   });
 };
 
@@ -344,10 +344,10 @@ exports.renderCart = catchAsync(async (req, res, next) => {
   }
   // create an empty cart
   else {
-    cart = await Cart.create({
-      userId: req.params.id,
-      products: [],
-    });
+    // cart = await Cart.create({
+    //   userId: req.params.id,
+    //   products: [],
+    // });
   }
 
   // render cart page

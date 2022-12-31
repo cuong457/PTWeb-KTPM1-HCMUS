@@ -52,14 +52,9 @@
           {{! Right links field }}
           <ul class="navbar-nav ml-0 d-flex align-items-center">
             <li class="nav-item dropdown">
-              <a 
-                class="nav-link active nav-dropdown-font" 
-                href="#" 
-                role="button"
-                data-bs-toggle="dropdown" 
-                aria-expanded="false"
-              >
-                <i class="fa-solid fa-earth-americas"></i> Ngôn ngữ 
+              <a class="nav-link active nav-dropdown-font" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fa-solid fa-earth-americas"></i> Ngôn ngữ
               </a>
               <ul class="dropdown-menu dropdown-menu-dark">
                 <li>
@@ -69,59 +64,53 @@
             </li>
 
             {{#if user}}
-              <li class="nav-item user-dropdown">
-                <a class="nav-link avt-btn-wrapper" href="/me">
-                    <span>
-                      <img src={{user.photo}} class='avt me-2' alt="avt"/>
-                      {{user.name}}
-                    </span>
-                    <i class="fa-solid fa-chevron-down fa-2xs"></i>
-                </a>
-                <div class='user-dropdown-content'>
-                  <div class='row p-2 simple-white-btn'>
-                      <a href="/me" class='erase-underline text-black'>
-                          <i class="fa-solid fa-user"></i>
-                          &nbsp; Thông tin cá nhân
-                      </a>
-                  </div>
-                  <div class='row p-2 simple-white-btn'>
-                      <a href="" class='erase-underline text-black'>
-                          <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
-                          &nbsp; Lịch sử mua hàng
-                      </a>
-                  </div>
-                  {{#if_cond user.role "===" "admin"}}
-                    <div class='row p-2 simple-white-btn'>
-                        <a 
-                            class='text-black emptyBtn text-align-left erase-underline' 
-                            href="/admin/dashboard"
-                        >
-                            <i class="fa-solid fa-users"></i>
-                            &nbsp; Trang Admin
-                        </a>
-                    </div>
-                  {{/if_cond}}
-                  <div class='row p-2 simple-white-btn'>
-                      <button 
-                          class='text-black emptyBtn text-align-left'
-                          id="signout-user"
-                      >
-                          <i class="fa-solid fa-right-from-bracket"></i>
-                          &nbsp; Đăng xuất
-                      </button>
-                  </div>  
+            <li class="nav-item user-dropdown">
+              <a class="nav-link avt-btn-wrapper" href="/me">
+                <span class="me-2">
+                  <img src={{user.photo}} class='avt me-2' alt="avt" />
+                  {{user.name}}
+                </span>
+                <i class="fa-solid fa-chevron-down fa-2xs"></i>
+              </a>
+              <div class='user-dropdown-content'>
+                <div class='row p-2 simple-white-btn'>
+                  <a href="/me" class='erase-underline text-black'>
+                    <i class="fa-solid fa-user"></i>
+                    &nbsp; Thông tin cá nhân
+                  </a>
+                </div>
+                <div class='row p-2 simple-white-btn'>
+                  <a href="" class='erase-underline text-black'>
+                    <i class="fa-sharp fa-.avt-bsolid fa-clock-rotate-left"></i>
+                    &nbsp; Lịch sử mua hàng
+                  </a>
+                </div>
+                {{#if_cond user.role "===" "admin"}}
+                <div class='row p-2 simple-white-btn'>
+                  <a class='text-black emptyBtn text-align-left erase-underline' href="/admin/dashboard">
+                    <i class="fa-solid fa-users"></i>
+                    &nbsp; Trang Admin
+                  </a>
+                </div>
+                {{/if_cond}}
+                <div class='row p-2 simple-white-btn'>
+                  <button class='text-black emptyBtn text-align-left' id="signout-user">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    &nbsp; Đăng xuất
+                  </button>
+                </div>
               </div>
             </li>
             {{else}}
-              <li class="nav-item">
-                <a class="nav-link active navbar-font-link pb-2 m-0" href="/admin/sign-up">Đăng ký</a>
-              </li>
-              <li class="nav-item">
-                <p class="nav-link disabled navbar-font-link pb-2 m-0">|</p>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active navbar-font-link pb-2 m-0" href="/admin/sign-in">Đăng nhập</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link active navbar-font-link pb-2 m-0" href="/admin/sign-up">Đăng ký</a>
+            </li>
+            <li class="nav-item">
+              <p class="nav-link disabled navbar-font-link pb-2 m-0">|</p>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active navbar-font-link pb-2 m-0" href="/admin/sign-in">Đăng nhập</a>
+            </li>
             {{/if}}
           </ul>
       </div>
@@ -156,7 +145,7 @@
             </div>
           </div>
           <div class="col d-flex justify-content-end" id="cart">
-            <a class="cart-icon-wrapper" href="/user/{{user.id}}/cart">
+            <a class="cart-icon-wrapper" href="/user/{{user._id}}/cart">
               <i class="bi bi-cart cart-icon"></i>
               <div class="cart-icon__quantity">{{quantity}}</div>
             </a>
@@ -166,62 +155,3 @@
     </div>
   </div>
 </header>
-
-{{!--
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-
-
-    function createUrl(field, value) {
-      const allowFields = [
-        "_sort",
-        "column",
-        "type",
-        "priceRange",
-        "manufacturer",
-        "category",
-        "page",
-        "_search",
-      ];
-      const params = new URLSearchParams(location.search);
-      if (allowFields.includes(field)) {
-        params.set(field, value);
-      }
-
-      let isFirstQuery = true;
-      const url = allowFields.reduce((accum, field, index) => {
-        if (params.has(field)) {
-          if (!isFirstQuery) {
-            accum += "&";
-          }
-
-          if (isFirstQuery) {
-            isFirstQuery = false;
-          }
-          return (accum += `${field}=${params.get(field)}`);
-        }
-        return accum;
-      }, "?");
-      return url;
-    }
-
-    buttonSearch.click(function () {
-      if (inputBoxSearch.val()) {
-        const url = createUrl("_search", inputBoxSearch.val());
-        location.href = `/products${url}`;
-      }
-      else location.href = '/products';
-    });
-
-    inputBoxSearch.on('keypress', function (e) {
-      if (e.which == 13) {
-        if (inputBoxSearch.val()) {
-          const url = createUrl("_search", inputBoxSearch.val());
-          location.href = `/products${url}`;
-        }
-        else location.href = '/products';
-      }
-    });
-
-  });
-</script> --}}

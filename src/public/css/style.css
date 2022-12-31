@@ -292,7 +292,6 @@
     margin-bottom: 1.5rem;
   }
 }
-
 .section-header {
   position: relative;
   height: 38vw;
@@ -309,11 +308,9 @@
     0 100%
   );
 }
-
 .header__hero {
   height: 100%;
 }
-
 .header__hero-img {
   -o-object-fit: cover;
   object-fit: cover;
@@ -322,7 +319,6 @@
   -o-object-position: 50% 25%;
   object-position: 50% 25%;
 }
-
 .header__hero-overlay {
   position: absolute;
   width: 100%;

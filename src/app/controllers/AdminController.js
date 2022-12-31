@@ -1,6 +1,8 @@
-
 const catchAsync = require("../../utils/catchAsync");
 const UserModel = require("../models/User");
+const session = require("express-session");
+const passport = require("passport");
+
 const ELEMENT_PER_PAGE = 6;
 
 exports.renderDashBoard = (req, res, next) => {
@@ -26,23 +28,22 @@ exports.renderSignUp = (req, res, next) => {
 };
 
 exports.renderUserDetail = (req, res, next) => {
-  res.render("./admin/user-detail", { 
-    layout: "adminMain.hbs"
+  res.render("./admin/user-detail", {
+    layout: "adminMain.hbs",
   });
 };
 
-exports.getUserData = catchAsync( async (req, res, next) => {
+exports.getUserData = catchAsync(async (req, res, next) => {
   let page = req.query.page;
   let filter = req.query.filter;
-  if(page) {
+  if (page) {
     // Get specific page
     page = parseInt(page);
-    if(page <= 0) page = 1;
-  }
-  else {
+    if (page <= 0) page = 1;
+  } else {
     page = 1;
   }
-  let prev = (page > 1) ? page - 1 : page;
+  let prev = page > 1 ? page - 1 : page;
   let skipNumElement = (page - 1) * ELEMENT_PER_PAGE;
 
   // Find all in database
@@ -50,36 +51,38 @@ exports.getUserData = catchAsync( async (req, res, next) => {
 
   const users = await UserModel.find({})
     .skip(skipNumElement)
-    .limit(ELEMENT_PER_PAGE)
-  
-  let pageNumber = (total % ELEMENT_PER_PAGE === 0) ? total / ELEMENT_PER_PAGE : Math.floor(total / ELEMENT_PER_PAGE) + 1;
-  
-  let nextNum = (page < pageNumber) ? page + 1 : page;
-  let pageIndex = {prev, nextNum, maxpage: pageNumber}
+    .limit(ELEMENT_PER_PAGE);
+
+  let pageNumber =
+    total % ELEMENT_PER_PAGE === 0
+      ? total / ELEMENT_PER_PAGE
+      : Math.floor(total / ELEMENT_PER_PAGE) + 1;
+
+  let nextNum = page < pageNumber ? page + 1 : page;
+  let pageIndex = { prev, nextNum, maxpage: pageNumber };
   let pageList = [];
 
-  if(pageNumber <= 3 || page === 1) {
+  if (pageNumber <= 3 || page === 1) {
     let count = 0;
-    for(let i = page; i <= pageNumber && count < 3; i++, count++) {
-      pageList.push({num: i, is_cur: false});
+    for (let i = page; i <= pageNumber && count < 3; i++, count++) {
+      pageList.push({ num: i, is_cur: false });
+    }
+  } else {
+    let count = 0;
+    if (page <= pageNumber) {
+      pageList.push({ num: page, is_cur: false });
+      count++;
+    }
+    if (page + 1 <= pageNumber) {
+      pageList.push({ num: page + 1, is_cur: false });
+      count++;
+    }
+    for (let i = page - 1; i >= 1 && count < 3; i--, count++) {
+      pageList.unshift({ num: i, is_cur: false });
     }
   }
-  else {
-      let count = 0;
-      if(page <= pageNumber) {
-        pageList.push({num: page, is_cur: false});
-        count++;
-      }
-      if(page + 1 <= pageNumber) {
-        pageList.push({num: page + 1, is_cur: false});
-        count++;
-      }
-      for(let i = page - 1; i >= 1 && count < 3; i--, count++) {
-        pageList.unshift({num: i, is_cur: false});
-      }
-  }
-  for(let i = 0; i < pageList.length; i++) {
-    if(pageList[i].num === page) {
+  for (let i = 0; i < pageList.length; i++) {
+    if (pageList[i].num === page) {
       pageList[i].is_cur = true;
     }
   }
@@ -88,13 +91,23 @@ exports.getUserData = catchAsync( async (req, res, next) => {
     data: {
       users,
       pageList,
-      pageIndex
+      pageIndex,
     },
   });
 });
 
 exports.renderTables = (req, res, next) => {
-  res.render("./admin/user-center", { 
-    layout: "adminMain.hbs"
+  res.render("./admin/user-center", {
+    layout: "adminMain.hbs",
   });
 };
+
+// sign in with google
+exports.renderGoogleSignIn = passport.authenticate("google", {
+  scope: ["email", "profile"],
+});
+
+exports.renderGoogleCallback = passport.authenticate("google", {
+  successRedirect: "/",
+  failureRedirect: "/admin/sign-in",
+});

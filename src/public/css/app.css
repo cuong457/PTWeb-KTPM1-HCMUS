@@ -665,6 +665,8 @@ body p {
   z-index: 9; }
 
 .avt-btn-wrapper {
+  display: inline-flex !important;
+  align-items: center !important;
   position: relative;
   height: 100%;
   color: aliceblue !important;
@@ -676,6 +678,16 @@ body p {
   outline: none;
   background-color: transparent;
   transition: transform 0.2s ease-in-out; }
+
+.avt-btn-wrapper span {
+  display: inline-flex;
+  height: 100%;
+  align-items: center; }
+
+.avt-btn-wrapper i {
+  margin-top: 3px;
+  display: inline-block;
+  height: 100%; }
 
 .simple-white-btn {
   border: none;
@@ -1169,3 +1181,12 @@ body p {
     font-size: medium; }
   #checkout-btn-rtab {
     font-size: small; } }
+
+.error-page-img-wrapper {
+  width: 250px;
+  height: 250px; }
+
+.error-page-img-wrapper img {
+  width: 100%;
+  object-fit: cover;
+  object-position: center; }

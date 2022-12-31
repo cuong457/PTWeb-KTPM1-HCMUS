@@ -1,11 +1,18 @@
 // send for developers
 const sendErrorDev = (err, req, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    err: err,
-    message: err.message,
-    stack: err.stack,
-  });
+  if (req.originalUrl.startsWith("/api")) {
+    res.status(err.statusCode).json({
+      status: err.status,
+      err: err,
+      message: err.message,
+      stack: err.stack,
+    });
+  } else {
+    res.status(err.statusCode).render("partials/Error", {
+      status: err.status,
+      message: err.message,
+    });
+  }
 };
 
 // send for users
@@ -21,11 +28,5 @@ module.exports = (err, req, res, next) => {
   error.message = err.message || "something wrong with server";
   error.status = err.status || "error";
 
-  if (process.env.NODE_ENV === "development") {
-    sendErrorDev(error, req, res);
-  } else {
-    if (err.name === "JsonWebToken") {
-      error = handleJsonWebTokenError();
-    }
-  }
+  sendErrorDev(error, req, res);
 };

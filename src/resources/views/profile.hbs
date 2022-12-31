@@ -42,9 +42,14 @@
               <input class="form__input" id="email" type="email" value="{{user.email}}" required=" required">
             </div>
             <div class="form__group form__photo-upload">
-              <img class="form__user-photo" id="avatar-display" src="/images/avatar/{{user.photo}}" alt="User photo" />
+              {{#if_cond user.type '===' 'local'}}
+              <img class="form__user-photo" id="avatar-display" src="/images/avatar/{{../user.photo}}"
+                alt="User photo" />
               <a class="btn-text" href=""><label for="avatar-input">Thay đổi ảnh đại diện</label></a>
               <input type="file" accept="*image/*" id="avatar-input" name="photo" hidden>
+              {{else}}
+              <img class="form__user-photo" id="avatar-display" src="{{../user.photo}}" alt="User photo" />
+              {{/if_cond}}
             </div>
             <div class="form__group right"><button type="submit" class="btn btn--small btn--green">Cập nhật</button>
             </div>

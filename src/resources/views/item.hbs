@@ -118,15 +118,11 @@
           </form>
           <div class="row w-75 m-auto">
             <div class="col text-center">
-              <button 
-                class="btn-addtocart mt-3" 
-                data-product-Id="{{food._id}}" 
-                data-price="{{food.price}}"
-              >
+              <button class="btn-addtocart mt-3" data-product-Id="{{food._id}}" data-price="{{food.price}}">
                 Thêm vào giỏ hàng
               </button>
               {{#if user}}
-              <a href="{{user.id}}mmm/buy"><button class="btn-buynow mt-2" id="item-final-single-buy">Mua
+              <a href="{{user._id}}mmm/buy"><button class="btn-buynow mt-2" id="item-final-single-buy">Mua
                   ngay</button></a>
               {{else}}
               <a href="/buy"><button class="btn-buynow mt-2" id="item-final-single-buy">Mua ngay</button></a>
@@ -204,7 +200,8 @@
             <span class="rtab-money">{{{toPrice price}}} VNĐ</span>
           </p>
           <div class="text-center">
-            <a href="/products/{{slug}}"><button class="btn btn-outline-dark rtab-detail-button" onclick="changepage()">See more
+            <a href="/products/{{slug}}"><button class="btn btn-outline-dark rtab-detail-button"
+                onclick="changepage()">See more
                 detail</button></a>
           </div>
         </div>

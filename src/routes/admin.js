@@ -7,24 +7,34 @@ const {
   renderSignUp,
   renderTables,
   renderUserDetail,
-  getUserData
+  renderGoogleSignIn,
+  renderGoogleCallback,
+  getUserData,
 } = require("../app/controllers/AdminController");
 
-const { isLoggedIn } = require("../app/controllers/AuthViewController");
+const {
+  protect,
+  restrictTo,
+} = require("../app/controllers/AuthViewController");
 
 const router = express.Router();
 
-// check login and permission
-router.use(isLoggedIn);
+// sign in with google
+router.get("/auth/google", renderGoogleSignIn);
+router.get("/google/callback", renderGoogleCallback);
 
-router.get("/usercenter/get-users-data", getUserData)
-router.use("/usercenter/:slug", renderUserDetail);
-router.use("/dashboard", renderDashBoard);
-router.use("/billing", renderBilling);
-router.use("/profile", renderProfile);
-router.use("/sign-in", renderSignIn);
-router.use("/sign-up", renderSignUp);
+// check login and permission
+router.use(protect);
+router.use(restrictTo("admin"));
+
+router.get("/usercenter/get-users-data", getUserData);
+router.get("/usercenter/:slug", renderUserDetail);
+router.get("/dashboard", renderDashBoard);
+router.get("/billing", renderBilling);
+router.get("/profile", renderProfile);
+router.get("/sign-in", renderSignIn);
+router.get("/sign-up", renderSignUp);
 router.get("/usercenter", renderTables);
-router.use("/", renderDashBoard);
+router.get("/", renderDashBoard);
 
 module.exports = router;

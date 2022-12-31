@@ -7,8 +7,8 @@ const paymentRouter = require("./payment");
 const globalErrorHandler = require("./errorHandler");
 
 function route(app) {
-  app.use("/admin", adminRouter);
   app.use("/", siteRouter);
+  app.use("/admin", adminRouter);
 
   // handle authentication
   app.use("/auth", authRouter);

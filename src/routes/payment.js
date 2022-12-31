@@ -6,8 +6,15 @@ const {
   createCheckoutSession,
 } = require("../app/controllers/PaymentController");
 
-const { protect } = require("../app/controllers/AuthViewController");
+const {
+  protect,
+  restrictTo,
+} = require("../app/controllers/AuthViewController");
 
-router.post("/checkout-session", [protect, createCheckoutSession]);
+router.post("/checkout-session", [
+  protect,
+  restrictTo("user"),
+  createCheckoutSession,
+]);
 
 module.exports = router;

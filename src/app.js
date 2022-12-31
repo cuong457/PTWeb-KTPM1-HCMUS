@@ -2,7 +2,21 @@ const express = require("express");
 const path = require("path");
 const methodOverride = require("method-override");
 const { engine } = require("express-handlebars");
+const passport = require("passport");
+const session = require("express-session");
+
 const app = express();
+// for gg login
+app.use(
+  session({
+    secret: "my-little-secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 // parsing cookies
 var cookieParser = require("cookie-parser");
 const route = require("./routes");

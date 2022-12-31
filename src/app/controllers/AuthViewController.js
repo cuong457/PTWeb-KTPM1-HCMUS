@@ -1,5 +1,6 @@
 // const catchAsync = require("../../src/utils/catchAsync");
 // const Error = require("../utils/Error");
+const { ObjectId } = require("mongodb");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/AppError");
 const UserModel = require("../models/User");
@@ -8,6 +9,62 @@ const jwt = require("jsonwebtoken");
 const Email = require("../../utils/Email");
 const { promisify } = require("util");
 const crypto = require("crypto");
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
+
+// sign in with gg
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID:
+        "10404818075-aso4sluema08vhp7gj4ipgqcio1e9u67.apps.googleusercontent.com",
+      clientSecret: "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",
+      callbackURL: "http://localhost:3000/admin/google/callback",
+      passReqToCallback: true,
+    },
+    async function (request, accessToken, refreshToken, profile, done) {
+      const user = await UserModel.findOne({ email: profile.email });
+
+      if (!user) {
+        // UserModel.create(
+        //   {
+        //     email: profile.email,
+        //     photo: profile.picture,
+        //     active: profile.verified,
+        //   },
+        //   function (err, user) {
+        //     return done(err, user);
+        //   }
+        // );
+
+        const user = await UserModel.create({
+          email: profile.email,
+          photo: profile.picture,
+          active: profile.verified,
+          name: profile.displayName,
+        });
+
+        const cart = await CartModel.create({
+          userId: user._id,
+          products: [],
+        });
+
+        return done(null, user);
+      }
+
+      return done(null, user);
+    }
+  )
+);
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+// end sign in with gg
 
 const signToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
@@ -143,112 +200,153 @@ exports.signIn = catchAsync(async (req, res, next) => {
 
 exports.signOut = catchAsync(async (req, res, next) => {
   // 1) replace jwt
-  const cookieOptions = {
-    // expires in 10 mins
-    expires: new Date(Date.now() + 10 * 60 * 1000),
-    httpOnly: true,
-  };
+  if (req.user.type === "local") {
+    const cookieOptions = {
+      // expires in 10 mins
+      expires: new Date(Date.now() + 10 * 60 * 1000),
+      httpOnly: true,
+    };
 
-  if (process.env.NODE_ENV === "production") {
-    cookieOptions["secure"] = true;
+    if (process.env.NODE_ENV === "production") {
+      cookieOptions["secure"] = true;
+    }
+
+    res.cookie("jwt", "loggedout", cookieOptions);
+
+    res.status(200).json({
+      status: "success",
+      message: "logout successfully",
+    });
+  } else {
+    req.session.destroy();
+    res.status(200).json({
+      status: "success",
+      message: `logout ${req.user.type} successfully`,
+    });
   }
-
-  res.cookie("jwt", "loggedout", cookieOptions);
-
-  res.status(200).json({
-    status: "success",
-    message: "log out successfully",
-  });
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-  // 1) check if user has signed in
-  let token = null;
-  const jsontoken = req.headers.authorization;
-  if (jsontoken && jsontoken.startsWith("Bearer")) {
-    token = jsontoken.split(" ")[1];
-  } else if (req.cookies.jwt) {
-    token = req.cookies.jwt;
-  }
+  // log in with gg
+  let userLoggedIn = null;
+  if (req.user) {
+    // res.locals.quantity = cartQuantity;
+    userLoggedIn = req.user;
+  } else {
+    try {
+      // 1) check if user has signed in
+      let token = null;
+      const jsontoken = req.headers.authorization;
+      if (jsontoken && jsontoken.startsWith("Bearer")) {
+        token = jsontoken.split(" ")[1];
+      } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
+      }
 
-  // throw error if token is not valid
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+      // throw error if token is not valid
+      const decoded = await promisify(jwt.verify)(
+        token,
+        process.env.JWT_SECRET
+      );
 
-  // 2) check if user has been deleted
-  const user = await UserModel.findOne({ _id: decoded.id });
+      // 2) check if user has been deleted
+      const user = await UserModel.findOne({ _id: decoded.id });
+      if (!user) {
+        return next(new AppError(401, "You are not logged in!"));
+      }
 
-  if (!user) {
-    return next(new AppError(401, "the user has been deleted"));
-  }
+      // 3) check if user changes password after token has been signed
+      const isChangedPassword = user.changePasswordAfter(decoded.iat);
 
-  // 3) check if user changes password after token has been signed
-  const isChangedPassword = user.changePasswordAfter(decoded.iat);
+      if (isChangedPassword) {
+        return next(
+          new AppError(401, "Please log in, Your password has been changed!")
+        );
+      }
 
-  if (isChangedPassword) {
-    return next(
-      new AppError(401, "password has been changed, please log in again")
-    );
+      req.user = user;
+      userLoggedIn = user;
+    } catch (err) {
+      // console.log(err);
+      return next(
+        new AppError(500, "you don't have permission to access this route")
+      );
+    }
   }
 
   // 4) user has logged in
-  const cart = await CartModel.findOne({ userId: user._id });
+  //global user for hbs view engine
+  const cart = await CartModel.findOne({ userId: userLoggedIn._id });
   let cartQuantity = 0;
 
   if (cart) {
     cartQuantity = cart.products.length;
   }
 
-  req.user = user;
   // res.locals.cartQuantity = cartQuantity;
+  res.locals.user = userLoggedIn;
   res.locals.quantity = cartQuantity;
-  res.locals.user = user;
   next();
 });
 
 exports.isLoggedIn = async (req, res, next) => {
-  try {
-    // 1) check if user has signed in
-    let token = null;
-    const jsontoken = req.headers.authorization;
-    if (jsontoken && jsontoken.startsWith("Bearer")) {
-      token = jsontoken.split(" ")[1];
-    } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
-    }
+  // log in with gg
+  let userLoggedIn = null;
+  if (req.user) {
+    console.log("gg user", req.user);
+    // res.locals.quantity = cartQuantity;
+    userLoggedIn = req.user;
+  } else {
+    try {
+      // 1) check if user has signed in
+      let token = null;
+      const jsontoken = req.headers.authorization;
+      if (jsontoken && jsontoken.startsWith("Bearer")) {
+        token = jsontoken.split(" ")[1];
+      } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
+      }
 
-    // throw error if token is not valid
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+      // throw error if token is not valid
+      const decoded = await promisify(jwt.verify)(
+        token,
+        process.env.JWT_SECRET
+      );
 
-    // 2) check if user has been deleted
-    const user = await UserModel.findOne({ _id: decoded.id });
-    if (!user) {
+      // 2) check if user has been deleted
+      const user = await UserModel.findOne({ _id: decoded.id });
+      if (!user) {
+        return next();
+      }
+
+      // 3) check if user changes password after token has been signed
+      const isChangedPassword = user.changePasswordAfter(decoded.iat);
+
+      if (isChangedPassword) {
+        return next();
+      }
+
+      req.user = user;
+      userLoggedIn = user;
+    } catch (err) {
+      // console.log(err);
       return next();
     }
-
-    // 3) check if user changes password after token has been signed
-    const isChangedPassword = user.changePasswordAfter(decoded.iat);
-
-    if (isChangedPassword) {
-      return next();
-    }
-
-    // 4) user has logged in
-    // global user for hbs view engine
-    const cart = await CartModel.findOne({ userId: user._id });
-    let cartQuantity = 0;
-
-    if (cart) {
-      cartQuantity = cart.products.length;
-    }
-
-    // res.locals.cartQuantity = cartQuantity;
-    res.locals.quantity = cartQuantity;
-    res.locals.user = user;
-    next();
-  } catch (err) {
-    // console.log(err);
-    next();
   }
+
+  // 4) user has logged in
+  //global user for hbs view engine
+  const cart = await CartModel.findOne({ userId: userLoggedIn._id });
+  let cartQuantity = 0;
+
+  if (cart) {
+    cartQuantity = cart.products.length;
+  }
+
+  // res.locals.cartQuantity = cartQuantity;
+  res.locals.user = userLoggedIn;
+  res.locals.quantity = cartQuantity;
+  next();
 };
 
 exports.restrictTo = (...roles) => {

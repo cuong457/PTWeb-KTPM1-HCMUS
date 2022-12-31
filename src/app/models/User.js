@@ -6,14 +6,15 @@ const crypto = require("crypto");
 const UserSchema = new Schema(
   {
     name: { type: String },
-    password: { type: String, required: true },
+    password: { type: String },
     email: { type: String, required: true },
     role: { type: String, default: "user" },
+    type: { type: String, default: "local" },
     active: { type: Boolean, default: false },
     photo: { type: String },
     address: { type: String },
     phone: { type: String },
-    total_spent: { type: Number},
+    total_spent: { type: Number },
     emailVerifyToken: String,
     emailVerifyTokenExpires: Date,
   },
@@ -57,12 +58,12 @@ UserSchema.methods.changePasswordAfter = function (JWTCreatedTime) {
 
 // verify email
 UserSchema.methods.createVerifyToken = function () {
-  const resetToken = crypto.randomBytes(32).toString('hex');
+  const resetToken = crypto.randomBytes(32).toString("hex");
 
   this.emailVerifyToken = crypto
-    .createHash('sha256')
+    .createHash("sha256")
     .update(resetToken)
-    .digest('hex');
+    .digest("hex");
 
   // milliseconds, 24h valid
   this.emailVerifyTokenExpires = Date.now() + 24 * 60 * 60 * 1000;

@@ -3,7 +3,11 @@
     <div class="col-12 col-md-3">
       <a href="/me" class="order__profile">
         <div class="profile__image-wrapper">
-          <img src="/images/avatar/{{user.photo}}">
+          {{#if_cond user.type '===' "local"}}
+          <img src="/images/avatar/{{../user.photo}}">
+          {{else}}
+          <img src="{{../user.photo}}">
+          {{/if_cond}}
         </div>
         <div class="profile__info">
           <h5>{{user.name}}</h5>
