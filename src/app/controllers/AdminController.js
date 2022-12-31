@@ -36,27 +36,25 @@ exports.resizeUploadImages = catchAsync(async (req, res, next) => {
 
   const foodThumbnailName = `food-${Math.ceil(
     Math.random() * 1000
-  )}-${Date.now()}-cover.jpg`;
-  req.body.foodThumbnail = `/images/foodCover/${foodThumbnailName}`;
+  )}-${Date.now()}-cover.png`;
+  req.body.foodThumbnail = `/images/foodThumnail/${foodThumbnailName}`;
   let images = [];
 
   await sharp(req.files["foodThumbnail"][0].buffer)
-    .resize(500, 500)
-    .toFormat("jpg")
-    .jpeg({ quality: 90 })
+    .resize(610, 610)
+    .toFormat("png")
     // start at root folder
     .toFile(`./src/public${req.body.foodThumbnail}`);
 
   const resizeImagePromises = req.files["photo"].map(async (file, index) => {
     const imgIntroFileName = `food-${Math.ceil(
       Math.random() * 1000
-    )}-${Date.now()}-${index + 1}.jpg`;
+    )}-${Date.now()}-${index + 1}.png`;
     images.push(`/images/foods/${imgIntroFileName}`);
 
     return sharp(file.buffer)
-      .resize(500, 500)
-      .toFormat("jpg")
-      .jpeg({ quality: 90 })
+      .resize(610, 610)
+      .toFormat("png")
       .toFile(`./src/public/images/foods/${imgIntroFileName}`);
   });
 
