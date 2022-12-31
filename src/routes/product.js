@@ -6,10 +6,7 @@ const {
   deleteItem,
 } = require("../app/controllers/ProductController");
 
-const {
-  protect,
-  restrictTo,
-} = require("../app/controllers/AuthViewController");
+const { protect, restrictTo } = require("../app/controllers/AuthController");
 
 const router = express.Router();
 

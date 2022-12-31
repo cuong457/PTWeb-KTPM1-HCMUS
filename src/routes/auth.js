@@ -6,7 +6,7 @@ const {
   verifyEmail,
   updatePassword,
   protect,
-} = require("../app/controllers/AuthViewController");
+} = require("../app/controllers/AuthController");
 
 const {
   updateMe,
@@ -18,7 +18,7 @@ const router = express.Router();
 // api
 router.post("/sign-up", signUp);
 router.post("/sign-in", signIn);
-router.get("/sign-out", signOut);
+router.get("/sign-out", [protect, signOut]);
 router.get("/verify/:verifyToken", verifyEmail);
 router.patch("/update-me", [
   protect,

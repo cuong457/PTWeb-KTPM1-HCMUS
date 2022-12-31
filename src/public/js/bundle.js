@@ -137,7 +137,7 @@ var signOut = /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return fetch("/auth/sign-out");
+            return fetch("/api/v1/auth/sign-out");
           case 3:
             response = _context.sent;
             if (response.ok) {

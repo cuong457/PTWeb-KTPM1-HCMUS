@@ -1,10 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-const {
-  isLoggedIn,
-  protect,
-} = require("../app/controllers/AuthViewController");
+const { isLoggedIn, protect } = require("../app/controllers/AuthController");
 const {
   renderCart,
   renderHome,

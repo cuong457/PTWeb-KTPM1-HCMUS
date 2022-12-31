@@ -11,7 +11,7 @@ function route(app) {
   app.use("/admin", adminRouter);
 
   // handle authentication
-  app.use("/auth", authRouter);
+  app.use("/api/v1/auth", authRouter);
 
   // handle products
   app.use("/api/v1/products", productRouter);

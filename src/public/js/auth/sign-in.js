@@ -4,7 +4,7 @@ if (loginForm) {
   const logUserIn = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/auth/sign-in", {
+      const response = await fetch("/api/v1/auth/sign-in", {
         method: "POST",
         body: JSON.stringify({
           email: loginForm.elements[(name = "email")].value,

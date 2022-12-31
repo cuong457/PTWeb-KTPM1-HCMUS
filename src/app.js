@@ -10,7 +10,7 @@ const app = express();
 app.use(
   session({
     secret: "my-little-secret",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     cookie: { secure: false },
   })

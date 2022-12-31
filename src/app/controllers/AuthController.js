@@ -268,9 +268,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       userLoggedIn = user;
     } catch (err) {
       // console.log(err);
-      return next(
-        new AppError(500, "you don't have permission to access this route")
-      );
+      return next(new AppError(500, "you are not logged in please log in"));
     }
   }
 
@@ -293,7 +291,6 @@ exports.isLoggedIn = async (req, res, next) => {
   // log in with gg
   let userLoggedIn = null;
   if (req.user) {
-    console.log("gg user", req.user);
     // res.locals.quantity = cartQuantity;
     userLoggedIn = req.user;
   } else {
@@ -325,8 +322,8 @@ exports.isLoggedIn = async (req, res, next) => {
       if (isChangedPassword) {
         return next();
       }
-
       req.user = user;
+
       userLoggedIn = user;
     } catch (err) {
       // console.log(err);
@@ -352,14 +349,16 @@ exports.isLoggedIn = async (req, res, next) => {
 exports.restrictTo = (...roles) => {
   return catchAsync(async (req, res, next) => {
     // check if role is valid
-    for (const role in roles) {
-      if (!["buyer", "seller", "admin"].includes(role)) {
-        return next(new AppError(400, "role is either buyer, seller or admin"));
+    for (const role of roles) {
+      if (!["user", "admin"].includes(role)) {
+        return next(new AppError(400, "role is either user or admin"));
       }
     }
 
     if (!roles.includes(req.user.role)) {
-      return next(new AppError(403, "you cannot perform this action"));
+      return next(
+        new AppError(403, "you don't have right to perform this action")
+      );
     }
 
     next();

@@ -1,11 +1,13 @@
-alert("we have email verification, please use your actual email or use our created account for testing purposes. email: lyvandat123@gmail.com, password: 123123");
+alert(
+  "we have email verification, please use your actual email or use our created account for testing purposes. email: lyvandat123@gmail.com, password: 123123"
+);
 const signUpForm = document.getElementById("signup-form");
 
 if (signUpForm) {
   const signUserUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/auth/sign-up", {
+      const response = await fetch("/api/v1/auth/sign-up", {
         method: "POST",
         body: JSON.stringify({
           name: signUpForm.elements[(name = "name")].value,

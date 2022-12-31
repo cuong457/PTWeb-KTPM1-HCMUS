@@ -6,16 +6,15 @@ const {
   renderSignIn,
   renderSignUp,
   renderTables,
+  renderCreateProduct,
   renderUserDetail,
   renderGoogleSignIn,
   renderGoogleCallback,
   getUserData,
+  createNewProduct,
 } = require("../app/controllers/AdminController");
 
-const {
-  protect,
-  restrictTo,
-} = require("../app/controllers/AuthViewController");
+const { protect, restrictTo } = require("../app/controllers/AuthController");
 
 const router = express.Router();
 
@@ -24,17 +23,21 @@ router.get("/auth/google", renderGoogleSignIn);
 router.get("/google/callback", renderGoogleCallback);
 
 // check login and permission
+router.get("/sign-in", renderSignIn);
+router.get("/sign-up", renderSignUp);
+
 router.use(protect);
 router.use(restrictTo("admin"));
 
-router.get("/usercenter/get-users-data", getUserData);
-router.get("/usercenter/:slug", renderUserDetail);
 router.get("/dashboard", renderDashBoard);
 router.get("/billing", renderBilling);
 router.get("/profile", renderProfile);
-router.get("/sign-in", renderSignIn);
-router.get("/sign-up", renderSignUp);
 router.get("/usercenter", renderTables);
-router.get("/", renderDashBoard);
+router.get("/usercenter/get-users-data", getUserData);
+router.get("/usercenter/:slug", renderUserDetail);
+
+router
+  .get("/products/create", renderCreateProduct)
+  .post("/products/create", createNewProduct);
 
 module.exports = router;

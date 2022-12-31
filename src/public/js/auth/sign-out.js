@@ -1,6 +1,6 @@
 export const signOut = async (e) => {
   try {
-    const response = await fetch("/auth/sign-out");
+    const response = await fetch("/api/v1/auth/sign-out");
 
     if (!response.ok) {
       const errRes = await response.json();
