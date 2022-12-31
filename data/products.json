@@ -1,7 +1,5 @@
 [{
-  "_id": {
-    "$oid": "5c8a1f4e2f8fb814b56fa185"
-  },
+  "_id" : "5c8a1f4e2f8fb814b56fa185", 
   "name": "Bún Đậu Mắm Tôm chuẩn ngon",
   "price": 89000,
   "category": [
@@ -11,113 +9,71 @@
   "stock": 100,
   "suspended": false,
   "photo": [
-    "bun.png",
-    "food_1.png"
+    "/images/FoodThumnail/bun.png",
+    "/images/foods/food_1.png"
   ],
   "description": "ngon",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910454068"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910454068"
-    }
-  },
   "slug": "bun-dau-mam-tom-chuan-ngon",
   "__v": 0
 },{
-  "_id": {
-    "$oid": "5c8a211f2f8fb814b56fa188"
-  },
+  "_id" : "5c8a211f2f8fb814b56fa188"
+  , 
   "name": "Nem Cuốn Hàn Xẻng",
   "price": 56000,
   "category": [
-    "general"
+    "nem"
   ],
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
   "photo": [
-    "dohan.png",
-    "food_4.png"
+    "/images/FoodThumnail/dohan.png",
+    "/images/foods/food_4.png"
   ],
   "description": "ngon",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
   "slug": "nem-cuon-han-xeng",
   "__v": 0
 },{
-  "_id": {
-    "$oid": "5c8a21d02f8fb814b56fa189"
-  },
+  "_id" : "5c8a21d02f8fb814b56fa189"
+  , 
   "name": "Thập Cẩm Chả Biết Tên",
   "price": 102000,
   "category": [
-    "general"
+    "lẩu"
   ],
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
   "photo": [
-    "donhat.png",
-    "food_1.png"
+    "/images/FoodThumnail/donhat.png",
+    "/images/foods/food_1.png"
   ],
   "description": "ngon",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
+   
   "slug": "thap-cam-cha-biet-ten",
   "__v": 0
 },{
-  "_id": {
-    "$oid": "5c8a22c62f8fb814b56fa18b"
-  },
+  "_id" : "5c8a22c62f8fb814b56fa18b"
+  , 
   "name": "Salad Ngũ Vị Hoàng Gia Anh",
   "price": 49000,
   "category": [
-    "general"
+    "salad"
   ],
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
   "photo": [
-    "com.png",
-    "food_3.png"
+    "/images/FoodThumnail/com.png",
+    "/images/foods/food_3.png"
   ],
   "description": "ngon",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
+   
   "slug": "salad-ngu-vi-hoang-gia-anh",
   "__v": 0
 },{
-  "_id": {
-    "$oid": "5c8a21f22f8fb814b56fa18a"
-  },
+  "_id" : "5c8a21f22f8fb814b56fa18a"
+  , 
   "name": "Cơm Chay Chỉ Thiên",
   "price": 89000,
   "category": [
@@ -127,26 +83,16 @@
   "stock": 100,
   "suspended": false,
   "photo": [
-    "bun.png",
-    "food_2.png"
+    "/images/FoodThumnail/bun.png",
+    "/images/foods/food_2.png"
   ],
   "description": "ngon",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
+   
   "slug": "com-chay-chi-thien",
   "__v": 0
 },{
-  "_id": {
-    "$oid": "5c8a23412f8fb814b56fa18c"
-  },
+  "_id" : "5c8a23412f8fb814b56fa18c"
+  , 
   "name": "Bò Bít Tết Hoàng Gia",
   "price": 369000,
   "category": [
@@ -156,26 +102,15 @@
   "stock": 100,
   "suspended": false,
   "photo": [
-    "lau.png",
-    "food_4.png"
+    "/images/FoodThumnail/lau.png",
+    "/images/foods/food_4.png"
   ],
   "description": "ngon",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910454070"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910454070"
-    }
-  },
   "slug": "bo-bit-tet-hoang-gia",
   "__v": 0
 },{
-  "_id": {
-    "$oid": "5c8a23c82f8fb814b56fa18d"
-  },
+  "_id" : "5c8a23c82f8fb814b56fa18d"
+  , 
   "name": "Gỏi Gia Truyền Truyền Từ Thời Ông Cố Nội",
   "price": 171000,
   "category": [
@@ -185,26 +120,15 @@
   "stock": 100,
   "suspended": false,
   "photo": [
-    "pho.png",
-    "food_1.png"
+    "/images/FoodThumnail/pho.png",
+    "/images/foods/food_1.png"
   ],
   "description": "ngon",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910454070"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910454070"
-    }
-  },
   "slug": "g-i-gia-truyen-truyen-tu-thoi-ong-co-noi",
   "__v": 0
 },{
-  "_id": {
-    "$oid": "5c8a20d32f8fb814b56fa187"
-  },
+  "_id" : "5c8a20d32f8fb814b56fa187"
+  , 
   "name": "Cá Viên Chiên Makima",
   "price": 999000,
   "category": [
@@ -214,26 +138,16 @@
   "stock": 100,
   "suspended": false,
   "photo": [
-    "doannhanh.png",
-    "food_3.png"
+    "/images/FoodThumnail/doannhanh.png",
+    "/images/foods/food_3.png"
   ],
   "description": "ngon",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
+   
   "slug": "ca-vien-chien-makima",
   "__v": 0
 },{
-  "_id": {
-    "$oid": "5c8a201e2f8fb814b56fa186"
-  },
+  "_id" : "5c8a201e2f8fb814b56fa186"
+  , 
   "name": "Cơm Tấm Hoàng Diệu 2",
   "price": 25000,
   "category": [
@@ -243,20 +157,220 @@
   "stock": 100,
   "suspended": false,
   "photo": [
-    "pho.png",
-    "food_2.png"
+    "/images/FoodThumnail/pho.png",
+    "/images/foods/food_2.png"
   ],
   "description": "ngon",
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1669910454069"
-    }
-  },
+   
   "slug": "com-tam-hoang-dieu-2",
+  "__v": 0
+},{
+  "_id" : "63909b5aa5437d00c0ea955e"
+  , 
+  "name": "Cơm Tấm Hoàng Gia",
+  "price": 30000,
+  "category": [
+    "cơm"
+  ],
+  "manufacturer": "Flavour of India",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/pho.png",
+    "/images/foods/food_2.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "com-tam-hoang-gia",
+  "__v": 0
+},{
+  "_id" : "63909b93a5437d00c0ea955f"
+  , 
+  "name": "Cơm Tấm Hoàng Á",
+  "price": 30000,
+  "category": [
+    "cơm"
+  ],
+  "manufacturer": "Friggitoria",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/pho.png",
+    "/images/foods/food_2.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "com-tam-hoang-a",
+  "__v": 0
+},{
+  "_id" : "63909bb5a5437d00c0ea9560"
+  , 
+  "name": "Nem Cuốn Hàn Quốc",
+  "price": 56000,
+  "category": [
+    "general"
+  ],
+  "manufacturer": "Panzer Hot",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/dohan.png",
+    "/images/foods/food_4.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "nem-cuon-han-quoc",
+  "__v": 0
+},{
+  "_id" : "63909f83a5437d00c0ea9561"
+  , 
+  "name": "Hủ tíu khô bò viên",
+  "price": 35000,
+  "category": [
+    "Hủ tíu"
+  ],
+  "manufacturer": "Panzer Hot",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/dohan.png",
+    "/images/foods/food_4.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "hu-tiu-kho-bo-vien",
+  "__v": 0
+},{
+  "_id" : "63a9234931d665cc66bd16ee"
+  , 
+  "name": "Hủ tíu khô",
+  "price": 25000,
+  "category": [
+    "Hủ tíu"
+  ],
+  "manufacturer": "Panzer Hot",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/dohan.png",
+    "/images/foods/food_4.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "hu-tiu-kho",
+  "__v": 0
+},{
+  "_id" : "63a9237831d665cc66bd16ef"
+  , 
+  "name": "Hủ tíu hoành thánh",
+  "price": 28000,
+  "category": [
+    "Hủ tíu"
+  ],
+  "manufacturer": "Panzer Hot",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/dohan.png",
+    "/images/foods/food_4.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "hu-tiu-hoanh-thanh",
+  "__v": 0
+},{
+  "_id" : "63a9239e31d665cc66bd16f1"
+  , 
+  "name": "Hủ tíu mì",
+  "price": 28000,
+  "category": [
+    "Hủ tíu"
+  ],
+  "manufacturer": "Panzer Hot",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/dohan.png",
+    "/images/foods/food_4.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "hu-tiu-mi",
+  "__v": 0
+},{
+  "_id" : "63a923bd31d665cc66bd16f2"
+  , 
+  "name": "Bún mắm nêm",
+  "price": 89000,
+  "category": [
+    "bún"
+  ],
+  "manufacturer": "Sunrise Foods",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/bun.png",
+    "/images/foods/food_2.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "bun-mam-nem",
+  "__v": 0
+},{
+  "_id" : "63a923d231d665cc66bd16f3"
+  , 
+  "name": "Thập Cẩm Chả Giò",
+  "price": 102000,
+  "category": [
+    "lẩu"
+  ],
+  "manufacturer": "Sunrise Foods",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/donhat.png",
+    "/images/foods/food_1.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "thap-cam-cha-gio",
+  "__v": 0
+},{
+  "_id" : "63a923f331d665cc66bd16f4"
+  , 
+  "name": "Salad Dầu Giấm",
+  "price": 49000,
+  "category": [
+    "salad"
+  ],
+  "manufacturer": "Sunrise Foods",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/com.png",
+    "/images/foods/food_3.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "salad-dau-giam",
+  "__v": 0
+},{
+  "_id" : "63a9241931d665cc66bd16f5"
+  , 
+  "name": "Phở bò",
+  "price": 80000,
+  "category": [
+    "phở"
+  ],
+  "manufacturer": "Sunrise Foods",
+  "stock": 100,
+  "suspended": false,
+  "photo": [
+    "/images/FoodThumnail/donhat.png",
+    "/images/foods/food_1.png"
+  ],
+  "description": "ngon",
+   
+  "slug": "pho-bo",
   "__v": 0
 }]

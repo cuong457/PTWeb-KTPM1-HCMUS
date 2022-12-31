@@ -9,31 +9,31 @@ const mongoose = require("mongoose");
 const modelsPath = "../src/app/models";
 // const Cart = require(`${modelsPath}/Cart`);
 // const Order = require(`${modelsPath}/Order`);
-// const Product = require(`${modelsPath}/Product`);
+const Product = require(`${modelsPath}/Product`);
 // const ProductReview = require(`${modelsPath}/ProductReview`);
-const User = require(`${modelsPath}/User`);
+// const User = require(`${modelsPath}/User`);
 
 // Nếu muốn sử dụng database khác thì đổi connection string thành của database đó.
 const connectionString = 'mongodb+srv://cuongpham:211319539@cluster0.b87mt4q.mongodb.net/PTWeb_FinalProject_HCMUS';
 mongoose.connect(connectionString);
 
 // nếu để file json trong thư mục gốc thì khỏi cần đổi
-const fileDataUsers = fs.readFileSync(`${__dirname}/users.json`, "utf-8");
-// const fileDataProducts = fs.readFileSync(`${__dirname}/products.json`, "utf-8");
+// const fileDataUsers = fs.readFileSync(`${__dirname}/users.json`, "utf-8");
+const fileDataProducts = fs.readFileSync(`${__dirname}/products.json`, "utf-8");
 // const fileDataOrders = fs.readFileSync(`${__dirname}/orders.json`, "utf-8");
 // const fileDataCarts = fs.readFileSync(`${__dirname}/carts.json`, "utf-8");
 // const fileDataProductReviews = fs.readFileSync(`${__dirname}/product-reviews.json`, "utf-8");
 
-const users = JSON.parse(fileDataUsers);
-// const products = JSON.parse(fileDataProducts);
+// const users = JSON.parse(fileDataUsers);
+const products = JSON.parse(fileDataProducts);
 // const orders = JSON.parse(fileDataOrders);
 // const carts = JSON.parse(fileDataCarts);
 // const productReviews = JSON.parse(fileDataProductReviews);
 
 const importData = async () => {
   try {
-    await User.create(users);
-    // await Product.create(products);
+    // await User.create(users);
+    await Product.create(products);
     // await Order.create(orders);
     // await Cart.create(carts);
     // await ProductReview.create(productReviews);
@@ -47,8 +47,8 @@ const importData = async () => {
 
 const deleteData = async () => {
   try {
-    await User.deleteMany();
-    // await Product.deleteMany();
+    // await User.deleteMany();
+    await Product.deleteMany();
     // await Order.deleteMany();
     // await Cart.deleteMany();
     // await ProductReview.deleteMany();
