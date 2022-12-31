@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 @font-face {
   font-family: Library-Records;
   src: url("/fonts/Library-Records/LibraryRecordsRegular-qZW66.ttf"); }
@@ -48,7 +50,7 @@ body p {
 
 .header-background {
   background-color: white;
-  background-image: url("../images/header-background.png");
+  background-image: url("../images/bg/header-background.png");
   background-position: center;
   background-size: cover;
   /* Resize the background image to cover the entire container */ }
@@ -805,6 +807,10 @@ body p {
   font-family: Ubuntu-Regular;
   line-height: 1; }
 
+.title-font {
+  font-family: 'Oswald', sans-serif;
+  line-height: 1; }
+
 .h-nav-icon {
   position: relative;
   font-size: x-large; }
@@ -960,6 +966,121 @@ body p {
   border: 1px solid black;
   border-radius: 1rem; }
 
+.admin-card-detail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0; }
+
+.admin-card-detail:target {
+  visibility: visible;
+  opacity: 1; }
+
+.popup {
+  width: 100%;
+  height: 100%;
+  position: relative; }
+
+.content {
+  padding: 20px;
+  background-image: url("../images/bg/user-detail-popup-bg.png");
+  border-radius: 0.5rem;
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 1000px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: start; }
+
+.ud-avt-holder {
+  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  padding: 4px;
+  border-radius: 1.4rem; }
+
+.user-detail-avt {
+  background-color: white;
+  border-radius: 1.2rem;
+  padding: 6px; }
+
+.card-popup-text {
+  font-family: Ubuntu-Regular;
+  white-space: normal !important;
+  font-weight: 550;
+  font-size: large; }
+
+.animate-to-top {
+  animation: move-up-ani 1s ease-in-out; }
+
+@keyframes move-up-ani {
+  0% {
+    transform: translate(0, 3em);
+    opacity: 0; }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1; } }
+
+.icon-text {
+  padding-right: 10px;
+  padding-bottom: 10px; }
+
+.text-bt {
+  font-weight: 800;
+  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animatedgradient 2s ease alternate infinite; }
+
+.ban-btn-ud, .unban-btn-ud {
+  background-color: #e01b1b;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+  color: white;
+  font-family: Ubuntu-Regular;
+  font-size: medium;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-shadow: 0 9px #999; }
+
+.unban-btn-ud {
+  background-color: #009200 !important; }
+
+.ban-btn-ud:active, .unban-btn-ud:active {
+  background-color: #CB0C9F;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px); }
+
+.exit-popup-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: large;
+  border: none;
+  background-color: transparent;
+  transition: transform 0.4s ease-in-out, color 0.2s ease-in-out; }
+
+.exit-popup-btn:hover {
+  color: red;
+  transform: scale(1.5); }
+
+@keyframes animatedgradient {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+
 .ban-icon {
   width: 100px; }
 
@@ -1033,9 +1154,14 @@ body p {
   background-color: #3838ee; }
 
 .card-shadow {
-  box-shadow: -5px 0px 10px #c5c5c5; }
+  box-shadow: 0px 0px 10px #c5c5c5; }
 
-.admin-pagination-wrapper {
+.admin-pagination-wrapper, .admin-products-pagination-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.pagination-btn-list {
   border-radius: 0.3rem;
   background-color: white;
   box-shadow: 0px 0px 10px #888888;
@@ -1045,7 +1171,7 @@ body p {
   width: 400px !important;
   height: 50px; }
 
-.page-number-btn {
+.page-number-btn, .products-page-number-btn {
   border: none;
   border-radius: 0.3rem;
   background-color: white;
@@ -1060,7 +1186,7 @@ body p {
   margin: 5px;
   transition: opacity, background-color 0.4s ease-in-out, color 0.4s ease-in-out; }
 
-.page-number-btn:hover {
+.page-number-btn:hover, .products-page-number-btn:hover {
   opacity: 100%;
   color: white;
   background-color: #3838fc !important; }
@@ -1070,7 +1196,7 @@ body p {
   color: white !important;
   background-color: red !important; }
 
-.filter-btn {
+.filter-btn, .products-filter-btn {
   background-color: #9c9c9c;
   color: white;
   border-radius: 0.5rem;
@@ -1082,12 +1208,62 @@ body p {
   margin: 5px;
   transition: transform 0.4s ease-in-out, background-color 0.4s ease-in-out; }
 
-.filter-btn:hover {
+.filter-btn:hover, .products-filter-btn:hover {
   background-color: blue;
   transform: scale(1.1); }
 
 .filter-btn-active {
   background-color: red !important; }
+
+.admin-type-btn {
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  border: 2px solid #7A7A7A;
+  font-family: Ubuntu-Regular;
+  font-size: small;
+  font-weight: 600; }
+
+.img-title-products {
+  border-top-right-radius: 0.8rem; }
+
+.product-cardfield-title {
+  font-family: 'Anton', sans-serif;
+  color: white;
+  font-size: larger;
+  letter-spacing: 1px;
+  background-color: #262855;
+  border-top-left-radius: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.product-manage-card {
+  background-color: white;
+  box-shadow: 0px 0px 10px #888888;
+  border-bottom-right-radius: 0.8rem;
+  border-bottom-left-radius: 0.8rem;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.add-btn-product {
+  background-color: #004492 !important;
+  border-radius: 0.8rem;
+  border: none;
+  outline: none;
+  color: white;
+  font-family: Ubuntu-Regular;
+  font-weight: 580;
+  font-size: small;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px; }
+
+.add-btn-product:hover {
+  background-color: #02a918 !important;
+  color: white !important; }
 
 @media (max-width: 576px) {
   #name-me-title {
@@ -1100,7 +1276,7 @@ body p {
     font-size: 10px !important; }
   .card-body {
     padding: 10px !important; }
-  .admin-pagination-wrapper {
+  .admin-pagination-wrapper, .admin-products-pagination-wrapper {
     height: 40px;
     width: 250px !important; } }
 

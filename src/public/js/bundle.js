@@ -178,74 +178,39 @@ var signOut = /*#__PURE__*/function () {
   };
 }();
 exports.signOut = signOut;
-},{}],"user/search.js":[function(require,module,exports) {
+},{}],"user/uc-handle.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.banUser = banUser;
+exports.handleBanUser = handleBanUser;
 exports.handleClearSearchboxUser = handleClearSearchboxUser;
 exports.handleFilter = handleFilter;
 exports.handleSearch = handleSearch;
+exports.handleSelectType = handleSelectType;
 exports.renderUC = renderUC;
-// // import $ from 'jquery'
-// Handlebars.registerHelper("stringConcat", (str_1, str_2) => new Handlebars.SafeString(str_1 + str_2));
-
-// function a(e) {
-//     console.log(e.target.dataset.id);
-// } 
-
-// document.querySelectorAll('.admin-ban-btn').forEach(btn => {
-//     btn.addEventListener('click', a)
-// })
-
-function handleClearSearchboxUser(e) {
-  var searchbox = document.getElementById('user-search-box');
-  if (searchbox.value.trim() !== '') {
-    searchbox.value = '';
-  }
-}
-function handleSearch(e) {
-  var searchbox = document.getElementById('user-search-box');
-  var key_search = searchbox.value.trim();
-  if (key_search !== '') {
-    // Handle
-  }
-}
-function handleFilter(e) {
-  var link = window.location.href;
-  var sq = link.substring(link.indexOf("/admin"), link.length);
-  var target = '&sort=';
-  switch (e.target.dataset.id) {
-    case 'user-name-filter':
-      target += 'name';
-      break;
-    case 'user-email-filter':
-      sq += 'email';
-      break;
-    case 'user-registime-filter':
-      sq += 'registime';
-      break;
-    case 'user-spent-filter':
-      sq += 'spent';
-      break;
-    default:
-      break;
-  }
-  window.history.pushState({}, "Final project", sq + target);
-  loadUserPage(target);
-}
+var option = '';
+var key_srch = '';
+var type_srch = 'none';
+var cur_page = 1;
 function reGetUserData(e) {
-  var cur_target = e.target;
-  if (cur_target.id) {
-    renderUC(cur_target.id);
+  var target = e.target;
+  if (target.id) {
+    cur_page = target.id;
+    renderUC(cur_page, option, key_srch, type_srch);
   } else {
-    renderUC(cur_target.parentElement.id);
+    cur_page = target.parentElement.id;
+    renderUC(cur_page, option, key_srch, type_srch);
   }
 }
 function renderUC() {
   var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-  fetch('http://localhost:3000/admin/usercenter/get-users-data?page=' + page).then(function (response) {
+  var sortQ = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'none';
+  var searchK = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+  var typeS = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'none';
+  fetch('http://localhost:3000/admin/usercenter/get-users-data?page=' + page + '&sort=' + sortQ + '&search=' + searchK + '&type=' + typeS).then(function (response) {
     return response.json();
   }).then(function (data) {
     var users = data.data.users;
@@ -254,7 +219,8 @@ function renderUC() {
     var source = $("#userlist-template").html();
     var template = Handlebars.compile(source);
     var html = template({
-      users: users
+      users: users,
+      pageIndex: pageIndex
     });
     $(".user-list").html(html);
     var psource = $("#userpagination-template").html();
@@ -270,11 +236,235 @@ function renderUC() {
         btn.addEventListener('click', reGetUserData);
       });
     }
+    var banUserBtn = document.querySelectorAll('.ban-btn-ud');
+    if (banUserBtn) {
+      banUserBtn.forEach(function (btn) {
+        btn.addEventListener('click', handleBanUser);
+      });
+    }
+    var unbanUserBtn = document.querySelectorAll('.unban-btn-ud');
+    if (unbanUserBtn) {
+      unbanUserBtn.forEach(function (btn) {
+        btn.addEventListener('click', handleBanUser);
+      });
+    }
   }).catch(function (err) {
     console.log(err);
   });
 }
 ;
+function handleClearSearchboxUser(e) {
+  var searchbox = document.getElementById('user-search-box');
+  if (searchbox.value.trim() !== '') {
+    searchbox.value = '';
+  }
+}
+function handleSelectType(e) {
+  var target_key = e.target.innerText;
+  $('#user-typesearch-btn').html(target_key);
+  document.getElementById('user-typesearch-btn').dataset.type = target_key;
+}
+;
+function handleSearch(e) {
+  key_srch = document.getElementById('user-search-box').value.trim();
+  type_srch = document.getElementById('user-typesearch-btn').dataset.type;
+  if (key_srch !== '' && type_srch != 'none') {
+    renderUC(1, option, key_srch, type_srch);
+  }
+}
+function handleFilter(e) {
+  option = ''; //refresh
+  var cur_target = e.target;
+  if (!$(cur_target).hasClass('filter-btn-active')) {
+    switch (cur_target.id) {
+      case 'user-name-filter':
+        option += 'name';
+        break;
+      case 'user-email-filter':
+        option += 'email';
+        break;
+      case 'user-registime-filter':
+        option += 'registime';
+        break;
+      case 'user-spent-filter':
+        option += 'spent';
+        break;
+      case 'user-desorder-filter':
+        option += 'desorder';
+        break;
+      default:
+        break;
+    }
+    var filterBtnList = document.querySelectorAll('.filter-btn');
+    if (filterBtnList) {
+      filterBtnList.forEach(function (btn) {
+        if ($('#' + btn.id).hasClass('filter-btn-active')) {
+          option += '-' + btn.id.split('-')[1];
+        }
+      });
+    }
+    $(cur_target).addClass('filter-btn-active');
+    renderUC(1, option);
+  } else {
+    // Handle active button
+    $(cur_target).removeClass('filter-btn-active');
+    // Get option
+    var _filterBtnList = document.querySelectorAll('.filter-btn');
+    if (_filterBtnList) {
+      _filterBtnList.forEach(function (btn) {
+        if ($('#' + btn.id).hasClass('filter-btn-active')) {
+          option += '-' + btn.id.split('-')[1];
+        }
+      });
+    }
+    option = option.slice(1, option.length);
+    renderUC(1, option);
+  }
+}
+function banUser() {
+  var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'none';
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'none';
+  fetch('http://localhost:3000/admin/usercenter/ban-user?id=' + id + '&type=' + type).then(function (response) {
+    return response.json();
+  }).catch(function (err) {
+    console.log(err);
+  });
+}
+function handleBanUser(e) {
+  var id = e.target.dataset.userid;
+  var ban_type = e.target.dataset.type;
+  banUser(id, ban_type);
+  setTimeout(function () {
+    renderUC(cur_page, option, key_srch, type_srch);
+  }, 500);
+}
+},{}],"user/products-handle.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleClearSearchboxProducts = handleClearSearchboxProducts;
+exports.handleFilterProducts = handleFilterProducts;
+exports.handleSearchProducts = handleSearchProducts;
+exports.handleSelectTypeProducts = handleSelectTypeProducts;
+exports.renderPC = renderPC;
+var option = '';
+var key_srch = '';
+var type_srch = 'none';
+var cur_page = 1;
+function reGetProductsData(e) {
+  var target = e.target;
+  if (target.id) {
+    cur_page = target.id;
+    renderPC(cur_page, option, key_srch, type_srch);
+  } else {
+    cur_page = target.parentElement.id;
+    renderPC(cur_page, option, key_srch, type_srch);
+  }
+}
+function renderPC() {
+  var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  var sortQ = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'none';
+  var searchK = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+  var typeS = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'none';
+  console.log('http://localhost:3000/admin/products/get-products-data?page=' + page + '&sort=' + sortQ + '&search=' + searchK + '&type=' + typeS);
+  fetch('http://localhost:3000/admin/products/get-products-data?page=' + page + '&sort=' + sortQ + '&search=' + searchK + '&type=' + typeS).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    var products = data.data.products;
+    var pageList = data.data.pageList;
+    var pageIndex = data.data.pageIndex;
+    var source = $("#products-list-template").html();
+    var template = Handlebars.compile(source);
+    var html = template({
+      products: products,
+      pageIndex: pageIndex
+    });
+    $(".products-list").html(html);
+    var psource = $("#products-pagination-template").html();
+    var ptemplate = Handlebars.compile(psource);
+    var phtml = ptemplate({
+      pageList: pageList,
+      pageIndex: pageIndex
+    });
+    $(".admin-products-pagination-wrapper").html(phtml);
+    var numpage_btn = document.querySelectorAll(".products-page-number-btn");
+    if (numpage_btn) {
+      numpage_btn.forEach(function (btn) {
+        btn.addEventListener('click', reGetProductsData);
+      });
+    }
+  }).catch(function (err) {
+    console.log(err);
+  });
+}
+;
+function handleClearSearchboxProducts(e) {
+  var searchbox = document.getElementById('products-search-box');
+  if (searchbox.value.trim() !== '') {
+    searchbox.value = '';
+  }
+}
+function handleSelectTypeProducts(e) {
+  var target_key = e.target.innerText;
+  $('#products-typesearch-btn').html(target_key);
+  document.getElementById('products-typesearch-btn').dataset.type = target_key;
+}
+;
+function handleSearchProducts(e) {
+  key_srch = document.getElementById('products-search-box').value.trim();
+  type_srch = document.getElementById('products-typesearch-btn').dataset.type;
+  if (key_srch !== '' && type_srch != 'none') {
+    renderPC(1, option, key_srch, type_srch);
+  }
+}
+function handleFilterProducts(e) {
+  option = ''; //refresh
+  var cur_target = e.target;
+  if (!$(cur_target).hasClass('filter-btn-active')) {
+    switch (cur_target.id) {
+      case 'products-name-filter':
+        option += 'name';
+        break;
+      case 'products-time-filter':
+        option += 'time';
+        break;
+      case 'products-price-filter':
+        option += 'price';
+        break;
+      case 'products-desorder-filter':
+        option += 'desorder';
+        break;
+      default:
+        break;
+    }
+    var filterBtnList = document.querySelectorAll('.products-filter-btn');
+    if (filterBtnList) {
+      filterBtnList.forEach(function (btn) {
+        if ($('#' + btn.id).hasClass('filter-btn-active')) {
+          option += '-' + btn.id.split('-')[1];
+        }
+      });
+    }
+    $(cur_target).addClass('filter-btn-active');
+    renderPC(1, option);
+  } else {
+    // Handle active button
+    $(cur_target).removeClass('filter-btn-active');
+    // Get option
+    var _filterBtnList = document.querySelectorAll('.products-filter-btn');
+    if (_filterBtnList) {
+      _filterBtnList.forEach(function (btn) {
+        if ($('#' + btn.id).hasClass('filter-btn-active')) {
+          option += '-' + btn.id.split('-')[1];
+        }
+      });
+    }
+    option = option.slice(1, option.length);
+    renderPC(1, option);
+  }
+}
 },{}],"payment/cart.js":[function(require,module,exports) {
 "use strict";
 
@@ -900,7 +1090,8 @@ exports.clickOrderButton = clickOrderButton;
 "use strict";
 
 var _signOut = require("./auth/sign-out.js");
-var _search = require("./user/search.js");
+var _ucHandle = require("./user/uc-handle.js");
+var _productsHandle = require("./user/products-handle.js");
 var _cart = require("./payment/cart.js");
 var _filter = require("./product/filter.js");
 var _order = require("./payment/order.js");
@@ -911,7 +1102,6 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-// Admin handling
 Handlebars.registerHelper("toPrice", function (rawPrice) {
   return rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 });
@@ -941,23 +1131,62 @@ Handlebars.registerHelper("if_cond", function (v1, op, v2, options) {
       return options.inverse(_this);
   }
 });
+Handlebars.registerHelper("toStandardDate", function (raw_date) {
+  return new Date(raw_date).toLocaleDateString();
+});
+Handlebars.registerHelper("getNameFromEmail", function (email) {
+  return email.slice(0, email.indexOf('@'));
+});
+
+// Admin handling
 var clearSearchboxUser = document.getElementById('user-clearsearch-btn');
 if (clearSearchboxUser) {
-  clearSearchboxUser.addEventListener('click', _search.handleClearSearchboxUser);
+  clearSearchboxUser.addEventListener('click', _ucHandle.handleClearSearchboxUser);
 }
 var userSearchBtn = document.getElementById('usercenter-search-button');
 if (userSearchBtn) {
-  userSearchBtn.addEventListener('click', _search.handleSearch);
+  userSearchBtn.addEventListener('click', _ucHandle.handleSearch);
 }
 var userFilterBtn = document.querySelectorAll(".filter-btn");
 if (userFilterBtn) {
   document.querySelectorAll(".filter-btn").forEach(function (btn) {
-    btn.addEventListener('click', _search.handleFilter);
+    btn.addEventListener('click', _ucHandle.handleFilter);
   });
 }
 var first_ren_UC = document.querySelector('.user-list');
 if (first_ren_UC) {
-  (0, _search.renderUC)();
+  (0, _ucHandle.renderUC)();
+}
+var userTypeBtn = document.querySelectorAll('.type-btn');
+if (userTypeBtn) {
+  userTypeBtn.forEach(function (btn) {
+    btn.addEventListener('click', _ucHandle.handleSelectType);
+  });
+}
+// Product handling
+var clearSearchboxProducts = document.getElementById('products-clearsearch-btn');
+if (clearSearchboxProducts) {
+  clearSearchboxProducts.addEventListener('click', _productsHandle.handleClearSearchboxProducts);
+}
+var productsSearchBtn = document.getElementById('products-search-button');
+if (productsSearchBtn) {
+  productsSearchBtn.addEventListener('click', _productsHandle.handleSearchProducts);
+}
+var productsFilterBtn = document.querySelectorAll(".products-filter-btn");
+if (productsFilterBtn) {
+  document.querySelectorAll(".products-filter-btn").forEach(function (btn) {
+    btn.addEventListener('click', _productsHandle.handleFilterProducts);
+  });
+}
+var first_ren_PC = document.querySelector('.products-list');
+if (first_ren_PC) {
+  (0, _productsHandle.renderPC)();
+}
+var productsTypeBtn = document.querySelectorAll('.products-type-btn');
+if (productsTypeBtn) {
+  productsTypeBtn.forEach(function (btn) {
+    btn.addEventListener('click', _productsHandle.handleSelectTypeProducts);
+  });
 }
 
 // auth handling
@@ -1058,7 +1287,7 @@ if (buttonSearch) {
     }
   });
 }
-},{"./auth/sign-out.js":"auth/sign-out.js","./user/search.js":"user/search.js","./payment/cart.js":"payment/cart.js","./product/filter.js":"product/filter.js","./payment/order.js":"payment/order.js"}],"../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./auth/sign-out.js":"auth/sign-out.js","./user/uc-handle.js":"user/uc-handle.js","./user/products-handle.js":"user/products-handle.js","./payment/cart.js":"payment/cart.js","./product/filter.js":"product/filter.js","./payment/order.js":"payment/order.js"}],"../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1083,7 +1312,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63005" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54766" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

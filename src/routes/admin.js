@@ -1,16 +1,17 @@
 const express = require("express");
 const {
   renderDashBoard,
-  renderBilling,
   renderProfile,
   renderSignIn,
   renderSignUp,
-  renderTables,
+  renderUserCenter,
   renderCreateProduct,
-  renderUserDetail,
+  getUserData,
   renderGoogleSignIn,
   renderGoogleCallback,
-  getUserData,
+  getProductsData,
+  renderProducts,
+  banUser,
   uploadTourImages,
   resizeUploadImages,
   createNewProduct,
@@ -31,13 +32,23 @@ router.get("/sign-up", renderSignUp);
 router.use(protect);
 router.use(restrictTo("admin"));
 
-router.get("/dashboard", renderDashBoard);
-router.get("/billing", renderBilling);
-router.get("/profile", renderProfile);
-router.get("/usercenter", renderTables);
+router.use("/dashboard", renderDashBoard);
+
+router.get("/usercenter/ban-user", banUser);
 router.get("/usercenter/get-users-data", getUserData);
-router.get("/usercenter/:slug", renderUserDetail);
+router.get("/usercenter", renderUserCenter);
+
+router.use("/profile", renderProfile);
+router.use("/sign-in", renderSignIn);
+router.use("/sign-up", renderSignUp);
 
 router.route("/products/create").get(renderCreateProduct);
+router.get("/products/get-products-data", getProductsData);
+router.use("/products", renderProducts);
+
+router.get("/dashboard", renderDashBoard);
+router.get("/profile", renderProfile);
+
+router.use("/", renderDashBoard);
 
 module.exports = router;

@@ -4,8 +4,16 @@ import {
   handleClearSearchboxUser,
   handleSearch,
   handleFilter,
-  renderUC
-} from './user/search.js'
+  renderUC,
+  handleSelectType
+} from './user/uc-handle.js'
+import { 
+  handleClearSearchboxProducts,
+  handleSearchProducts,
+  handleFilterProducts,
+  renderPC,
+  handleSelectTypeProducts
+} from './user/products-handle.js'
 import {
   handleAddItemToCart,
   handleCartToOrder,
@@ -21,7 +29,6 @@ import {
 } from "./product/filter.js";
 import { clickOrderButton } from "./payment/order.js";
 
-// Admin handling
 Handlebars.registerHelper("toPrice", (rawPrice) =>
   rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 );
@@ -49,8 +56,15 @@ Handlebars.registerHelper("if_cond", (v1, op, v2, options) => {
       return v1 || v2 ? options.fn(this) : options.inverse(this);
     default:
       return options.inverse(this);
-  }});
+}});
+Handlebars.registerHelper("toStandardDate", (raw_date) => {
+    return (new Date(raw_date)).toLocaleDateString();
+  });
+Handlebars.registerHelper("getNameFromEmail", (email) => {
+  return email.slice(0, email.indexOf('@'));
+});
 
+// Admin handling
 const clearSearchboxUser = document.getElementById('user-clearsearch-btn');
 if(clearSearchboxUser) {
   clearSearchboxUser.addEventListener('click', handleClearSearchboxUser)
@@ -69,7 +83,37 @@ const first_ren_UC = document.querySelector('.user-list');
 if(first_ren_UC) {
   renderUC();
 }
-
+const userTypeBtn = document.querySelectorAll('.type-btn');
+if(userTypeBtn) {
+  userTypeBtn.forEach(btn => {
+    btn.addEventListener('click', handleSelectType);
+  })
+}
+// Product handling
+const clearSearchboxProducts = document.getElementById('products-clearsearch-btn');
+if(clearSearchboxProducts) {
+  clearSearchboxProducts.addEventListener('click', handleClearSearchboxProducts)
+}
+const productsSearchBtn = document.getElementById('products-search-button');
+if(productsSearchBtn) {
+  productsSearchBtn.addEventListener('click', handleSearchProducts)
+}
+const productsFilterBtn = document.querySelectorAll(".products-filter-btn");
+if(productsFilterBtn) {
+  document.querySelectorAll(".products-filter-btn").forEach(btn => {
+    btn.addEventListener('click', handleFilterProducts)
+  })
+}
+const first_ren_PC = document.querySelector('.products-list');
+if(first_ren_PC) {
+  renderPC();
+}
+const productsTypeBtn = document.querySelectorAll('.products-type-btn');
+if(productsTypeBtn) {
+  productsTypeBtn.forEach(btn => {
+    btn.addEventListener('click', handleSelectTypeProducts);
+  })
+}
 
 // auth handling
 const signOutBtnAdmin = document.getElementById("signout-admin");
