@@ -2,8 +2,62 @@ const catchAsync = require("../../utils/catchAsync");
 const UserModel = require("../models/User");
 const session = require("express-session");
 const passport = require("passport");
+const multer = require("multer");
+const sharp = require("sharp");
 
 const ELEMENT_PER_PAGE = 6;
+
+// multer(upload file) setup
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  // only support image files
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("only image files are supported"));
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadTourImages = upload.fields([
+  { name: "imageCover", maxCount: 1 },
+  { name: "images", maxCount: 3 },
+]);
+
+exports.resizeUploadImages = catchAsync(async (req, res, next) => {
+  if (!req.files["imageCover"] || !req.files["images"]) return next();
+
+  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpg`;
+  let images = [];
+
+  await sharp(req.files["imageCover"][0].buffer)
+    .resize(500, 500)
+    .toFormat("jpg")
+    .jpeg({ quality: 90 })
+    .toFile(`./public/img/tours/${req.body.imageCover}`);
+
+  const resizeImagePromises = req.files["images"].map(async (file, index) => {
+    const imgIntroFileName = `tour-${req.params.id}-${Date.now()}-${
+      index + 1
+    }.jpg`;
+    images.push(imgIntroFileName);
+
+    return sharp(file.buffer)
+      .resize(500, 500)
+      .toFormat("jpg")
+      .jpeg({ quality: 90 })
+      .toFile(`./public/img/tours/${imgIntroFileName}`);
+  });
+
+  Promise.all(resizeImagePromises);
+  req.body.images = images;
+  next();
+});
 
 exports.renderDashBoard = (req, res, next) => {
   res.render("./admin/dashboard", {
