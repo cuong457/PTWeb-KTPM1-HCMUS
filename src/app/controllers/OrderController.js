@@ -3,6 +3,7 @@ const AppError = require("../../utils/AppError");
 const OrderModel = require("../models/Order");
 const CartModel = require("../models/Cart");
 const UserModel = require("../models/User");
+const ProductModel = require("../models/Product");
 
 exports.createOrder = catchAsync(async (req, res, next) => {
   const { phone, address, note, payment } = req.query;
@@ -24,9 +25,27 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     return next(new AppError(404, "cannot find your account"));
   }
 
+  // products
+  // [
+  //   {
+  //     productId: new ObjectId("63a923f331d665cc66bd16f4"),
+  //     quantity: 1,
+  //     total: 49000,
+  //     selected: true,
+  //     _id: new ObjectId("63b025ecd8fe1245e489edae"),
+  //     createdAt: 2022-12-31T12:07:08.017Z,
+  //     updatedAt: 2022-12-31T12:07:11.197Z
+  //   }
+  // ]
   const products = [...cart.products].filter((product) => {
     return product.selected;
   });
+
+  // dang lam
+  const productSelectedPromises = products.map((prod) => {
+    return ProductModel.findById(prod.productId);
+  });
+  // dang lam
 
   const totalPrice = products.reduce((accumulator, prod) => {
     return accumulator + prod.total;

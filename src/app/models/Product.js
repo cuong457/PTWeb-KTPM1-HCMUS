@@ -14,7 +14,7 @@ const ProductSchema = new Schema(
     photo: { type: Array, required: true },
     photoCover: { type: String },
     description: { type: String },
-
+    total_purchase: { type: Number, default: 0 },
     slug: { type: String, slug: "name", unique: true },
   },
   {
