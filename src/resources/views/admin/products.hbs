@@ -1,0 +1,246 @@
+<div class="row">
+  <div class="col-12 col-lg-3">
+    <div class="row">
+      <div class="card card-shadow z-index-2 mb-3">
+        <div class="card-header pb-0">
+          <h6><i class="fa-solid fa-filter"></i>&nbsp;Filter</h6>
+        </div>
+        <div class="card-body p-3">
+          <form class="user-filter">
+            <button 
+              type="button" 
+              id="products-name-filter"
+              class="products-filter-btn"
+            >
+              By name
+            </button>
+            <button 
+              type="button" 
+              id="products-time-filter"
+              class="products-filter-btn"
+            >
+              By creation time
+            </button>
+            <button 
+              type="button" 
+              id="products-price-filter"
+              class="products-filter-btn"
+            >
+              By price
+            </button>
+            <button 
+              type="button" 
+              id="products-desorder-filter"
+              class="products-filter-btn"
+            >
+              Descending Order
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-12 col-lg-12">
+          <div class="row">
+            <div class="product-cardfield-title col-6 ps-4">
+              PRODUCT MANAGEMENT
+            </div>
+            <div class="col-6 p-0">
+              <img src="/images/bg/component-bg.png" class="img-fluid img-title-products">
+            </div>
+          </div>
+          <div class='row'>
+            <div class="product-manage-card">
+              <a href="/admin/products/create" class="erase-underline add-btn-product">
+                ADD NEW PRODUCT
+              </a>
+            </div>
+          </div> 
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-9">
+      <div class="card card-shadow">
+        <div class="card-header">
+          <div class='row'>
+            <div class='col-12 col-md-5 d-flex align-items-center pb-3'>
+                <p class='title-font text-xlg text-bold'>PRODUCT LIST</p>
+            </div>
+            <div class='col-12 col-md-7'>
+                <div class="input-group">
+                    <button 
+                      class="admin-type-btn dropdown-toggle" 
+                      type="button" 
+                      data-bs-toggle="dropdown" 
+                      aria-expanded="false"
+                      id="products-typesearch-btn"
+                      data-type="none"
+                    >
+                      Search by
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <button 
+                          class="dropdown-item formal-font text-sm text-bold p-4 products-type-btn"
+                        >
+                          Name
+                        </button>
+                      </li>
+                      <li>
+                        <button 
+                          class="dropdown-item formal-font text-sm text-bold p-4 products-type-btn"
+                        >
+                          Category
+                        </button>
+                      </li>
+                      <li>
+                        <button 
+                          class="dropdown-item formal-font text-sm text-bold p-4 products-type-btn"
+                        >
+                          Manufacturer
+                        </button>
+                      </li>
+                    </ul>
+                    <input
+                        type="text"
+                        class="form-control search-box ps-2"
+                        id="products-search-box"
+                        placeholder="  Find any seller?"
+                    >
+                    <button 
+                        type='button' 
+                        class='cancel-btn-searchbox'
+                        id='products-clearsearch-btn'
+                    >
+                        <i class="fa-solid fa-x"></i>
+                    </button>
+                    <button 
+                        type="button" 
+                        class="search-btn" 
+                        id="products-search-button" 
+                    >
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class='row userpanel-wrapper p-5 pt-3 products-list'>
+            {{!-- PUT USER LIST HERE USING JS --}}
+          </div>
+          <div class='row pb-4 d-flex justify-content-center'>
+            <div class="admin-products-pagination-wrapper">
+            {{!-- PUT PAGINATION BUTTON HERE USING JS --}}
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+{{!-- JS --}}
+<script id="products-list-template" type="text/x-handlebars-template">
+  \{{#if_cond pageIndex.maxpage '===' 0}}
+      <img src='/images/noti/empty-user.png' class="img-fluid" alt='empty-user'/>
+  \{{else}}
+    \{{#each ../products}}
+      <div class="col-6 col-xxl-4 pb-4 d-flex justify-content-center">
+        <div class="card admin-card">
+          <img src=\{{foodThumbnail}} class="card-img-top p-3" alt='card'/>
+          <div class="card-body">
+              <p class="me-title text-lightblue user-name">\{{name}}</p>
+              <p class="sm-title user-spent">Created at <span class="rtab-money">\{{#toStandardDate createdAt}}\{{/toStandardDate}}</span></p>
+              <p class="sm-title user-spent">Price <span class="rtab-money">\{{#toPrice price}}\{{/toPrice}} VNĐ</span></p>
+              <div class="text-center">
+                <a 
+                    href='#show-productdetail-\{{_id}}'
+                    class="btn btn-outline-dark admin-ban-btn"
+                >
+                    See more detail
+                </a>
+              </div>
+          </div>
+        </div>
+        <div class="admin-card-detail" id='show-productdetail-\{{_id}}'>
+          <div class="popup">
+            <div class="product-content">
+              <a href="#" class="exit-popup-btn">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </a>
+              <div class="col h-100">
+                <div class="row d-flex justify-content-end mt-3 mb-5">
+                  <img src=\{{foodThumbnail}} class="product-thum-holder">
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <img src=\{{photo.[0]}} class="img-fluid product-detail-img-holder">
+                  </div>
+                  <div class="col-6">
+                    <p class="product-detail-text">\{{name}}</p>
+                    <p class="product-detail-text">\{{#toPrice price}}\{{/toPrice}} VNĐ</p>
+                    <p class="product-detail-text">Cooked by \{{manufacturer}}</p>
+                    \{{#if suspended}}
+                      <p class="product-detail-text">In stock right now!</p>
+                    \{{else}}
+                      <p class="product-detail-text">It's out of stock</p>
+                    \{{/if}}
+                    <p class="product-detail-text"> Category: 
+                      \{{#each category}}
+                        \{{this}}&nbsp;
+                      \{{/each}}
+                    </p>
+                    <div class="text-center mt-5">
+                      <a href="/admin/products/update" type="button" class="modify-btn">
+                        MODIFY
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    \{{/each}}
+  \{{/if_cond}}
+</script>
+<script id="products-pagination-template" type="text/x-handlebars-template">
+  \{{#if_cond pageIndex.maxpage '>=' 1}}
+  <div class="pagination-btn-list">
+    <button 
+      id='1'
+      type="button" 
+      class="products-page-number-btn"
+    >
+      <i class="fa-solid fa-angles-left"></i>
+    </button>
+    <button 
+      id="\{{../pageIndex.prev}}"
+      type="button"
+      class="products-page-number-btn"
+    >
+      <i class="fa-solid fa-angle-left"></i>
+    </button>
+    \{{#each ../pageList}}
+      <button id=\{{num}} type="button" class="products-page-number-btn \{{#if is_cur}}active-numpage\{{/if}}">
+        \{{num}}
+      </button>
+    \{{/each}}
+    <button 
+      id="\{{../pageIndex.nextNum}}"
+      type="button" 
+      class="products-page-number-btn"
+    >
+      <i class="fa-solid fa-angle-right"></i>
+    </button>
+    <button 
+      id="\{{../pageIndex.maxpage}}"
+      type="button" 
+      class="products-page-number-btn"
+    >
+      <i class="fa-solid fa-angles-right"></i>
+    </button>
+  </div>
+  \{{/if_cond}}
+</script>

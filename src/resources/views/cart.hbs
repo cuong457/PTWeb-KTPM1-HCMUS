@@ -24,7 +24,7 @@
                                 id={{productId._id}} data-product-id="{{productId._id}}">
                         </div>
                         <a href="/products/{{productId.slug}}">
-                            <img src="{{productId.photo.[0]}}" class="img-fluid">
+                            <img src="{{productId.foodThumbnail}}" class="img-fluid">
                         </a>
                     </div>
                     <div class="col-7 ctdetail-itemdetail">
@@ -109,7 +109,7 @@
                     <div class="col-12 col-lg-6 col-xl-12">
                         <div class="row pb-2">
                             <a href="/products/{{slug}}" class=" col-5 d-flex erase-underline">
-                                <img src="{{photo.[0]}}" class="img-fluid">
+                                <img src="{{foodThumbnail}}" class="img-fluid">
                             </a>
                             <div class="col-7">
                                 <a href="/products/{{slug}}" class=" erase-underline">

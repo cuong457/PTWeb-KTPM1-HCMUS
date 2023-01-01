@@ -8,8 +8,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/bun.png",
   "photo": [
-    "/images/FoodThumnail/bun.png",
     "/images/foods/food_1.png"
   ],
   "description": "ngon",
@@ -26,8 +26,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/dohan.png",
   "photo": [
-    "/images/FoodThumnail/dohan.png",
     "/images/foods/food_4.png"
   ],
   "description": "ngon",
@@ -44,8 +44,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/donhat.png",
   "photo": [
-    "/images/FoodThumnail/donhat.png",
     "/images/foods/food_1.png"
   ],
   "description": "ngon",
@@ -63,8 +63,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/com.png",
   "photo": [
-    "/images/FoodThumnail/com.png",
     "/images/foods/food_3.png"
   ],
   "description": "ngon",
@@ -82,8 +82,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/bun.png",
   "photo": [
-    "/images/FoodThumnail/bun.png",
     "/images/foods/food_2.png"
   ],
   "description": "ngon",
@@ -101,8 +101,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/lau.png",
   "photo": [
-    "/images/FoodThumnail/lau.png",
     "/images/foods/food_4.png"
   ],
   "description": "ngon",
@@ -119,8 +119,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/pho.png",
   "photo": [
-    "/images/FoodThumnail/pho.png",
     "/images/foods/food_1.png"
   ],
   "description": "ngon",
@@ -137,8 +137,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/doannhanh.png",
   "photo": [
-    "/images/FoodThumnail/doannhanh.png",
     "/images/foods/food_3.png"
   ],
   "description": "ngon",
@@ -156,8 +156,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/pho.png",
   "photo": [
-    "/images/FoodThumnail/pho.png",
     "/images/foods/food_2.png"
   ],
   "description": "ngon",
@@ -175,8 +175,8 @@
   "manufacturer": "Flavour of India",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/pho.png",
   "photo": [
-    "/images/FoodThumnail/pho.png",
     "/images/foods/food_2.png"
   ],
   "description": "ngon",
@@ -194,8 +194,8 @@
   "manufacturer": "Friggitoria",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/pho.png",
   "photo": [
-    "/images/FoodThumnail/pho.png",
     "/images/foods/food_2.png"
   ],
   "description": "ngon",
@@ -213,8 +213,8 @@
   "manufacturer": "Panzer Hot",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/dohan.png",
   "photo": [
-    "/images/FoodThumnail/dohan.png",
     "/images/foods/food_4.png"
   ],
   "description": "ngon",
@@ -232,8 +232,8 @@
   "manufacturer": "Panzer Hot",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/dohan.png",
   "photo": [
-    "/images/FoodThumnail/dohan.png",
     "/images/foods/food_4.png"
   ],
   "description": "ngon",
@@ -251,8 +251,8 @@
   "manufacturer": "Panzer Hot",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/dohan.png",
   "photo": [
-    "/images/FoodThumnail/dohan.png",
     "/images/foods/food_4.png"
   ],
   "description": "ngon",
@@ -270,8 +270,8 @@
   "manufacturer": "Panzer Hot",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/dohan.png",
   "photo": [
-    "/images/FoodThumnail/dohan.png",
     "/images/foods/food_4.png"
   ],
   "description": "ngon",
@@ -289,8 +289,8 @@
   "manufacturer": "Panzer Hot",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/dohan.png",
   "photo": [
-    "/images/FoodThumnail/dohan.png",
     "/images/foods/food_4.png"
   ],
   "description": "ngon",
@@ -308,8 +308,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/bun.png",
   "photo": [
-    "/images/FoodThumnail/bun.png",
     "/images/foods/food_2.png"
   ],
   "description": "ngon",
@@ -327,8 +327,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/donhat.png",
   "photo": [
-    "/images/FoodThumnail/donhat.png",
     "/images/foods/food_1.png"
   ],
   "description": "ngon",
@@ -346,8 +346,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/com.png",
   "photo": [
-    "/images/FoodThumnail/com.png",
     "/images/foods/food_3.png"
   ],
   "description": "ngon",
@@ -355,8 +355,7 @@
   "slug": "salad-dau-giam",
   "__v": 0
 },{
-  "_id" : "63a9241931d665cc66bd16f5"
-  , 
+  "_id" : "63a9241931d665cc66bd16f5", 
   "name": "Phở bò",
   "price": 80000,
   "category": [
@@ -365,8 +364,8 @@
   "manufacturer": "Sunrise Foods",
   "stock": 100,
   "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/donhat.png",
   "photo": [
-    "/images/FoodThumnail/donhat.png",
     "/images/foods/food_1.png"
   ],
   "description": "ngon",
