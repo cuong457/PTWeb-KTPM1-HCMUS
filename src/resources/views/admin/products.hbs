@@ -181,9 +181,9 @@
                     <p class="product-detail-text">\{{#toPrice price}}\{{/toPrice}} VNĐ</p>
                     <p class="product-detail-text">Cooked by \{{manufacturer}}</p>
                     \{{#if suspended}}
-                      <p class="product-detail-text">In stock right now!</p>
-                    \{{else}}
                       <p class="product-detail-text">It's out of stock</p>
+                    \{{else}}
+                      <p class="product-detail-text">In stock right now!</p>
                     \{{/if}}
                     <p class="product-detail-text"> Category: 
                       \{{#each category}}
@@ -191,7 +191,7 @@
                       \{{/each}}
                     </p>
                     <div class="text-center mt-5">
-                      <a href="/admin/products/update" type="button" class="modify-btn">
+                      <a href="/admin/products/update/\{{_id}}" type="button" class="modify-btn">
                         MODIFY
                       </a>
                     </div>

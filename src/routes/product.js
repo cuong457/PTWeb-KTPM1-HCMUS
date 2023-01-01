@@ -4,6 +4,8 @@ const {
   updateItemQuantity,
   updateSelectFieldToItem,
   deleteItem,
+  getProductInfo,
+  deleteProductsImg,
 } = require("../app/controllers/ProductController");
 
 const { protect, restrictTo } = require("../app/controllers/AuthController");
@@ -17,7 +19,11 @@ const {
 const router = express.Router();
 
 router
+  .route("/delete")
+  .delete([protect, deleteProductsImg])
+router
   .route("/:id")
+  .get([protect, getProductInfo])
   .patch([protect, updateItemQuantity])
   .delete([protect, deleteItem]);
 router

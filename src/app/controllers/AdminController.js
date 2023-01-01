@@ -6,6 +6,7 @@ const session = require("express-session");
 const passport = require("passport");
 const multer = require("multer");
 const sharp = require("sharp");
+const AppError = require("../../utils/AppError");
 
 const ELEMENT_PER_PAGE = 6;
 
@@ -319,6 +320,15 @@ exports.renderCreateProduct = (req, res, next) => {
   res.render("./admin/create-product", {layout: "adminMain.hbs"});
 };
 
+exports.renderUpdateProduct = catchAsync( async (req, res, next) => {
+  const food = await ProductModel.findById(req.params.id);
+
+  res.render("./admin/update-product", {
+    layout: "adminMain.hbs",
+    food,
+  });
+});
+
 exports.createNewProduct = catchAsync(async (req, res, next) => {
   const newFoodObj = {};
   
@@ -327,8 +337,8 @@ exports.createNewProduct = catchAsync(async (req, res, next) => {
     if (!imgFields.includes(element)) {
       newFoodObj[element] = req.body[element];
     }
-  });  
-
+  });
+  
   const new_product = await ProductModel.create(newFoodObj);
 
   if (!new_product) {
@@ -338,4 +348,25 @@ exports.createNewProduct = catchAsync(async (req, res, next) => {
   res.status(200).json({
     message: "success",
   });
+});
+
+exports.updateProduct = catchAsync(async (req, res, next) => {
+  const FoodObj = {};
+
+  const filter = ["_id"];
+  Object.keys(req.body).forEach((element) => {
+    if (!filter.includes(element)) {
+      FoodObj[element] = req.body[element];
+    }
+  });
+
+  const newProd = await ProductModel.findByIdAndUpdate(req.body._id, FoodObj);
+
+  if (!newProd) {
+    return next(new AppError(404, "Product not found."));
+  }
+
+  res.status(200).json({
+    message: "update success"
+  })
 });

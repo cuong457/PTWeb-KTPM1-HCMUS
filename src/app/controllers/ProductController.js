@@ -3,6 +3,7 @@ const AppError = require("../../utils/AppError");
 const CartModel = require("../models/Cart");
 const ProductModel = require("../models/Product");
 const Paginator = require("paginator");
+const fileSystem = require('fs');
 
 exports.getListProduct = catchAsync(async (req, res, next) => {
   const options = {};
@@ -160,4 +161,34 @@ exports.deleteItem = catchAsync(async (req, res, next) => {
       cart: newCart,
     },
   });
+});
+
+exports.getProductInfo = catchAsync(async (req, res, next) => {
+  const product = await ProductModel.findById(req.params.id);
+
+  if (!product) {
+    return next(new AppError (400, "Product's id not exists."));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      food: product,
+    },
+  });
+});
+
+exports.deleteProductsImg = catchAsync (async (req, res, next) => {
+  const paths = `${req.body.paths}`.split(",");
+
+  paths.forEach((path) => {
+    const serverPath = `src/public${path}`;
+    try {
+      fileSystem.unlinkSync(serverPath);
+    } catch (error) {
+      return next(new AppError(400, "File remove failed."));
+    }
+  });
+
+  res.status(200).json({ status: "success" });
 });

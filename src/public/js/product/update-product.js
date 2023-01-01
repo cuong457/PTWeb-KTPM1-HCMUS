@@ -1,23 +1,22 @@
-const submitBtn = document.querySelector(".btn-submit-create-prod");
-
 const createProductForm = document.querySelector(".form-create-product");
+const updateProductForm = document.querySelector(".form-update-product");
+const containerUpdateProduct = document.querySelector(".container-update-product");
 
 const productSettings = async function (data, type) {
-    const url = '/api/v1/products';
+    const url = type === 'create'
+             ? '/api/v1/products' 
+             : '/admin/api/v1/products';
     
     try {
         let fetchOptions = {
             method: 'POST',
-            body: data
+            body: data,
         };
 
         if (type === 'update') {
             fetchOptions = { 
-                method: 'PATCH',
-                body: JSON.stringify(data),
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                method: 'PUT',
+                body: data,
             }
         };
         
@@ -37,45 +36,35 @@ const productSettings = async function (data, type) {
     }
 };
 
-if (createProductForm) {
-    const handleCreateProduct = async function(e) {
-        e.preventDefault();
+const deleteProductsPhoto = async (paths) => {
+    const url = '/api/v1/products/delete';
 
-        const formData = new FormData();
-        const nameInput = this.elements[(name = "name")];
-        const priceInput = this.elements[(name = "price")];
-        const manufacturerInput = this.elements[(name = "manufacturer")];
-        const stockInput = this.elements[(name = "stock")];
-        const suspendedInput = this.elements[(name = "suspended")];
-        const descriptionInput = this.elements[(name = "description")];
+    var object = {};
+    paths.forEach((value, key) => object[key] = value);
+    var json = JSON.stringify(object);
+
+    try {
+        const fetchOptions = {
+            method: 'DELETE',
+            body: json,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        };
         
-        const foodThumbnailInput = this.elements[(name = "food-photo-input-thumbnail")];
-        const photoInput = this.elements[(name = "food-photo-input-detail")];
-        
-        formData.append("name", nameInput.value)
-        formData.append("price", priceInput.value);
-        formData.append("category", []);
-        formData.append("manufacturer", manufacturerInput.value);
-        formData.append("stock", stockInput.value);
-        formData.append("suspended", suspendedInput.value);
-        formData.append("description", descriptionInput.value);
+        const response = await fetch(url, fetchOptions);
+        if (!response.ok) {
+            const errRes = await response.json();
+            return false;
+        }
 
-        formData.append("foodThumbnail", foodThumbnailInput.files[0]);     
-        for (let i = 0; i < photoInput.files.length; i++) {
-            formData.append("photo", photoInput.files[i]);
-        } 
-
-        productSettings(formData, 'create');
-    };
-
-    createProductForm.addEventListener("submit", handleCreateProduct);
+        const resData = await response.json();
+        return true;
+    } catch (err) {
+        alert('error', err.message);
+        return false;
+    }
 }
-
-const imagesThumbnailInput = document.querySelector("#food-photo-input-thumbnail");
-const imagesDetailInput = document.querySelector("#food-photo-input-detail");
-
-const outputThumbnail = document.querySelector("#output-imgs-thumbnail");
-const outputDetail = document.querySelector("#output-imgs-detail");
 
 const previewFoodThumnail = (e, output) => { 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -92,7 +81,7 @@ const previewFoodThumnail = (e, output) => {
                 const img = document.createElement("img");
                 const btn_inside = document.createElement("div");
 
-                $("#recom-load-thumnail").addClass('undisplay')
+                $("#recom-load-thumnail").addClass('undisplay');
                 wraper.className = "create-food-admin-img-wraper";
                 img.className = "create-food-admin-img"
                 img.src = imgFile.result
@@ -110,6 +99,7 @@ const previewFoodThumnail = (e, output) => {
       alert("Your browser does not support File API");
     }
 };
+
 const previewFoodDetail = (e, output) => { 
     const files = e.target.files;
 
@@ -149,5 +139,137 @@ const previewFoodDetail = (e, output) => {
     }
 };
 
-imagesThumbnailInput.addEventListener("change", (e) => previewFoodThumnail(e, outputThumbnail));
-imagesDetailInput.addEventListener("change", (e) => previewFoodDetail(e, outputDetail))
+const imagesThumbnailInput = document.querySelector("#food-photo-input-thumbnail");
+const imagesDetailInput = document.querySelector("#food-photo-input-detail");
+
+const outputThumbnail = document.querySelector("#output-imgs-thumbnail");
+const outputDetail = document.querySelector("#output-imgs-detail");
+
+if (createProductForm) {
+    const handleCreateProduct = async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+        const nameInput = this.elements[(name = "name")];
+        const priceInput = this.elements[(name = "price")];
+        const manufacturerInput = this.elements[(name = "manufacturer")];
+        
+        const descriptionInput = this.elements[(name = "description")];
+        const foodThumbnailInput = this.elements[(name = "food-photo-input-thumbnail")];
+        const photoInput = this.elements[(name = "food-photo-input-detail")];
+        
+        formData.append("name", nameInput.value)
+        formData.append("price", priceInput.value);
+        formData.append("category", []);
+        formData.append("manufacturer", manufacturerInput.value);
+        formData.append("stock", 100);
+        formData.append("suspended", false);
+        formData.append("description", descriptionInput.value);
+
+        formData.append("foodThumbnail", foodThumbnailInput.files[0]);     
+        for (let i = 0; i < photoInput.files.length; i++) {
+            formData.append("photo", photoInput.files[i]);
+        } 
+
+        productSettings(formData, 'create');
+    };
+
+    createProductForm.addEventListener("submit", handleCreateProduct);
+
+    imagesThumbnailInput.addEventListener("change", (e) => previewFoodThumnail(e, outputThumbnail));
+    imagesDetailInput.addEventListener("change", (e) => previewFoodDetail(e, outputDetail));
+}
+
+if (containerUpdateProduct) {
+    const imagesThumbnailUpdate = document.querySelector("#food-photo-update-thumbnail");
+    const imagesDetailUpdate = document.querySelector("#food-photo-update-detail");
+
+    const outputThumbnailUpdate = document.querySelector("#output-imgs-thumbnail-update");
+    const outputDetailUpdate = document.querySelector("#output-imgs-detail-update");
+    
+    let foodThumbnailPath = '';
+    let foodPhotoPaths = [];
+    let foodId = '';
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const url = '/api/v1/products';
+
+        const startIndex = window.location.href.lastIndexOf('/');
+        foodId = window.location.href.substring(startIndex + 1);
+
+        const response = await fetch(`${url}/${foodId}`, { method: 'GET' });
+        const response_package = await response.json();
+
+        const foodToUpdate = response_package.data.food
+
+        const thumbnail = document.createElement("img"); 
+        thumbnail.className = "create-food-admin-img";
+        thumbnail.src = foodToUpdate.foodThumbnail;
+        outputThumbnailUpdate.appendChild(thumbnail);
+
+        const imgs = foodToUpdate.photo;
+        for (let i = 0; i < imgs.length; i++) {
+            const wraper = document.createElement("div");
+            const img = document.createElement("img");
+    
+            wraper.className = (i == 0) ? "carousel-item active" : "carousel-item";
+            img.className = "img-fluid"
+            img.src = imgs[i];
+        
+            wraper.appendChild(img);
+            outputDetailUpdate.appendChild(wraper);
+        }
+
+        foodThumbnailPath = foodToUpdate.foodThumbnail;
+        foodPhotoPaths = foodToUpdate.photo;
+    }) 
+
+    imagesThumbnailUpdate.addEventListener("change", (e) => previewFoodThumnail(e, outputThumbnailUpdate));
+    imagesDetailUpdate.addEventListener("change", (e) => previewFoodDetail(e, outputDetailUpdate))
+
+    const handleUpdateProduct = async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData();
+        const nameInput = this.elements[(name = "name")];
+        const priceInput = this.elements[(name = "price")];
+        const categoryInpur = this.elements[(name = "category")];
+        const manufacturerInput = this.elements[(name = "manufacturer")];
+        const stockInput = this.elements[(name = "stock")];
+        const suspendedInput = this.elements[(name = "suspended")];
+        const descriptionInput = this.elements[(name = "description")];
+
+        const foodThumbnailInput = this.elements[(name = "food-photo-update-thumbnail")];
+        const photoInput = this.elements[(name = "food-photo-update-detail")];
+        
+        formData.append("_id", foodId);
+        formData.append("name", nameInput.value);
+        formData.append("price", priceInput.value);
+        formData.append("category", categoryInpur.value);
+        formData.append("manufacturer", manufacturerInput.value);
+        formData.append("stock", stockInput.value);
+        formData.append("suspended", suspendedInput.value);
+        formData.append("description", descriptionInput.value);
+
+        if (foodThumbnailInput.files.length === 0 || photoInput.files.length === 0) {
+            alert('Missing Image!');
+            return;
+        }
+        
+        formData.append("foodThumbnail", foodThumbnailInput.files[0]);
+        for (let i = 0; i < photoInput.files.length; i++) {
+            formData.append("photo", photoInput.files[i]);
+        }
+    
+        const myDeleteImgData = new FormData();
+        foodPhotoPaths.push(foodThumbnailPath);
+        myDeleteImgData.append("paths", foodPhotoPaths);
+        
+        deleteProductsPhoto(myDeleteImgData);     
+        productSettings(formData, 'update');
+    };
+
+    updateProductForm.addEventListener("submit", handleUpdateProduct);
+}
+
+
