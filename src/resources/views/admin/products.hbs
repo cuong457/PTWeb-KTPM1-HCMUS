@@ -39,8 +39,8 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-6 col-lg-12">
+    <div class="row mb-3">
+      <div class="col-12 col-lg-12">
           <div class="row">
             <div class="product-cardfield-title col-6 ps-4">
               PRODUCT MANAGEMENT
@@ -164,59 +164,42 @@
         </div>
         <div class="admin-card-detail" id='show-productdetail-\{{_id}}'>
           <div class="popup">
-            <div class="content">
-              <div class="row m-4">
-                <div class="col-5">
-                  <div class="ud-avt-holder">
-                    <img src=\{{foodThumbnail}} class="user-detail-avt img-fluid" alt='avt'/>
-                  </div>
+            <div class="product-content">
+              <a href="#" class="exit-popup-btn">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </a>
+              <div class="col h-100">
+                <div class="row d-flex justify-content-end mt-3 mb-5">
+                  <img src=\{{foodThumbnail}} class="product-thum-holder">
                 </div>
-                <div class="col-7 pt-4">
-                  <div class="card-popup-text">
-                    <i class="fa-solid fa-chess-queen icon-text"></i>My name is
-                    <span class="text-bt">\{{name}}</span>
+                <div class="row">
+                  <div class="col-6">
+                    <img src=\{{photo.[0]}} class="img-fluid product-detail-img-holder">
                   </div>
-                  <div class="card-popup-text">
-                    <i class="fa-solid fa-location-dot icon-text"></i>&nbsp;I come from
-                    <span class="text-bt">\{{address}}</span>
+                  <div class="col-6">
+                    <p class="product-detail-text">\{{name}}</p>
+                    <p class="product-detail-text">\{{#toPrice price}}\{{/toPrice}} VNĐ</p>
+                    <p class="product-detail-text">Cooked by \{{manufacturer}}</p>
+                    \{{#if suspended}}
+                      <p class="product-detail-text">In stock right now!</p>
+                    \{{else}}
+                      <p class="product-detail-text">It's out of stock</p>
+                    \{{/if}}
+                    <p class="product-detail-text"> Category: 
+                      \{{#each category}}
+                        \{{this}}&nbsp;
+                      \{{/each}}
+                    </p>
+                    <div class="text-center mt-5">
+                      <a href="/admin/products/update" type="button" class="modify-btn">
+                        MODIFY
+                      </a>
+                    </div>
                   </div>
-                  <div class="card-popup-text">
-                    <i class="fa-solid fa-phone icon-text"></i>Call me
-                    <span class="text-bt">\{{phone}}</span>
-                  </div>
-                  <div class="card-popup-text">
-                    <i class="fa-solid fa-envelope icon-text"></i>Or contact me at
-                    <span class="text-bt">\{{email}}</span>
-                  </div>
-                  <div class="card-popup-text">
-                    <i class="fa-solid fa-sack-dollar icon-text"></i>Till now, I've spent
-                    <span class="text-bt">$\{{total_spent}}</span>
-                  </div>
-                  <div class="text-center ps-3 pt-5">
-                    <button 
-                      type="button" 
-                      class="ban-btn-ud \{{#if active}}\{{else}}undisplay\{{/if}}" 
-                      data-userid=\{{_id}} 
-                      data-type="ban"
-                    >
-                      Ban this account
-                    </button>
-                    <button 
-                      type="button" 
-                      class="unban-btn-ud \{{#if active}}undisplay\{{/if}}" 
-                      data-userid=\{{_id}} 
-                      data-type="unban"
-                    >
-                      Unban this account
-                    </button>
-                  </div>
-                  <a href="#" class="exit-popup-btn">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                  </a>
                 </div>
               </div>
             </div>
-        </div>
+          </div>
         </div>
       </div>
     \{{/each}}

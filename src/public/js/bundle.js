@@ -368,7 +368,6 @@ function renderPC() {
   var sortQ = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'none';
   var searchK = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
   var typeS = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'none';
-  console.log('http://localhost:3000/admin/products/get-products-data?page=' + page + '&sort=' + sortQ + '&search=' + searchK + '&type=' + typeS);
   fetch('http://localhost:3000/admin/products/get-products-data?page=' + page + '&sort=' + sortQ + '&search=' + searchK + '&type=' + typeS).then(function (response) {
     return response.json();
   }).then(function (data) {
@@ -1312,7 +1311,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54766" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55992" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

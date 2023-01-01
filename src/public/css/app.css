@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@500&family=Rubik&display=swap");
 @font-face {
   font-family: Library-Records;
   src: url("/fonts/Library-Records/LibraryRecordsRegular-qZW66.ttf"); }
@@ -987,18 +988,26 @@ body p {
   height: 100%;
   position: relative; }
 
-.content {
+.content, .product-content {
   padding: 20px;
-  background-image: url("../images/bg/user-detail-popup-bg.png");
   border-radius: 0.5rem;
   position: absolute;
-  top: 25%;
-  left: 25%;
-  width: 1000px;
-  height: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: start; }
+
+.content {
+  background-image: url("../images/bg/user-detail-popup-bg.png");
+  width: 1000px;
+  height: 400px; }
+
+.product-content {
+  background-image: url("../images/bg/product-bg.png");
+  width: 500px;
+  height: 700px; }
 
 .ud-avt-holder {
   background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
@@ -1062,8 +1071,8 @@ body p {
 
 .exit-popup-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   font-size: large;
   border: none;
   background-color: transparent;
@@ -1254,16 +1263,77 @@ body p {
   outline: none;
   color: white;
   font-family: Ubuntu-Regular;
-  font-weight: 580;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   font-size: small;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
-  padding-right: 20px; }
+  padding-right: 20px;
+  transition: transform 0.4s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s ease-in-out; }
 
 .add-btn-product:hover {
-  background-color: #02a918 !important;
-  color: white !important; }
+  transform: scale(1.1) translateY(-0.5em);
+  box-shadow: 0px 5px 10px #151529;
+  background-color: #009200 !important;
+  color: white; }
+
+#description {
+  height: 200px; }
+
+.upload-btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.upload-img-btn {
+  opacity: 75%;
+  border-radius: 1rem;
+  transition: opacity 0.3s ease-in-out;
+  width: 100%;
+  height: auto; }
+
+.upload-img-btn:hover {
+  opacity: 100%; }
+
+.product-thum-holder {
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  width: 50%; }
+
+.product-detail-img-holder {
+  border: 1px solid #b30000;
+  outline: none;
+  border-radius: 1rem; }
+
+.product-title-text {
+  color: #dadada;
+  font-size: medium;
+  font-weight: 600;
+  font-family: 'League Spartan', sans-serif; }
+
+.product-detail-text {
+  color: #dadada;
+  font-size: medium;
+  font-weight: 500;
+  font-family: 'Rubik', sans-serif; }
+
+.modify-btn {
+  background-color: red;
+  border: none;
+  border-radius: 1.5rem;
+  padding-top: 2px;
+  padding-left: 30px;
+  padding-right: 30px;
+  color: white;
+  font-family: 'League Spartan', sans-serif;
+  transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out; }
+
+.modify-btn:hover {
+  color: red;
+  background-color: white;
+  transform: scale(1.1); }
 
 @media (max-width: 576px) {
   #name-me-title {
@@ -1352,6 +1422,11 @@ body p {
   #scnd-endpage-expand {
     display: block; } }
 
+@media (min-width: 1550px) {
+  .product-cardfield-title {
+    font-size: x-large;
+    padding-left: 3rem !important; } }
+
 @media (max-width: 1400px) {
   #cart-subtotal {
     font-size: medium; }
@@ -1368,10 +1443,42 @@ body p {
   object-position: center; }
 
 .create-food-admin-img-wraper {
-  width: 250px;
-  height: 250px; }
+  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  padding: 4px;
+  border-radius: 1.4rem;
+  position: relative;
+  transition: opacity 0.2s ease-in-out; }
+
+.btn-change-img-hide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  font-family: Ubuntu-Regular;
+  background-color: transparent;
+  border: none;
+  color: white;
+  visibility: hidden;
+  opacity: 0;
+  font-size: small;
+  transition: opacity 0.2s ease-in-out; }
+
+.create-food-admin-img-wraper:hover .btn-change-img-hide {
+  visibility: visible;
+  opacity: 1; }
 
 .create-food-admin-img {
   width: 100%;
   object-fit: cover;
-  object-position: center; }
+  object-position: center;
+  background-color: white;
+  border-radius: 1.2rem;
+  transition: filter 0.2s ease-in-out; }
+
+.create-food-admin-img:hover {
+  filter: blur(4px); }
+
+.container-add-product {
+  width: 1000px;
+  margin: auto; }

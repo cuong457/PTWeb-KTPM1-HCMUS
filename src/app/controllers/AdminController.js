@@ -316,7 +316,7 @@ exports.renderGoogleCallback = passport.authenticate("google", {
 });
 
 exports.renderCreateProduct = (req, res, next) => {
-  res.render("./admin/create-product", {});
+  res.render("./admin/create-product", {layout: "adminMain.hbs"});
 };
 
 exports.createNewProduct = catchAsync(async (req, res, next) => {

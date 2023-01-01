@@ -36,13 +36,13 @@ router.use("/dashboard", renderDashBoard);
 
 router.get("/usercenter/ban-user", banUser);
 router.get("/usercenter/get-users-data", getUserData);
+router.route("/products/create").get(renderCreateProduct);
 router.get("/usercenter", renderUserCenter);
 
 router.use("/profile", renderProfile);
 router.use("/sign-in", renderSignIn);
 router.use("/sign-up", renderSignUp);
 
-router.route("/products/create").get(renderCreateProduct);
 router.get("/products/get-products-data", getProductsData);
 router.use("/products", renderProducts);
 

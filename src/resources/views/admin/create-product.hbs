@@ -1,59 +1,125 @@
-<div class="container mt-4">
-    <h3>Thêm Món ăn</h3>
-
-    <form class="mt-4 form form-create-product">
-        <div class="form-group">
-            <label for="name">Tên sản phẩm</label>
-            <input type="text" class="form-control" id="name", name="name">
+<div class="container-add-product mt-4">
+    <div class="card card-shadow">
+        <div class="card-header">
+            <h3>ADD NEW FOOD</h3>
         </div>
-        <div class="form-group">
-            <label for="price">Giá</label>
-            <input type="text" class="form-control" id="price", name="price">
+        <div class="card-body">
+            <form class="mt-4 form form-create-product">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="name">Product name</label>
+                            <input type="text" class="form-control" id="name", name="name">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="text" class="form-control" id="price", name="price">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-2">
+                    <a><label for="manufacturer">Manufacturer</label></a>
+                    <input type="text" class="form-control" id="manufacturer", name="manufacturer">
+                </div>
+
+                {{!-- <div class="form-group">
+                    <label for="stock">Số lượng</label>
+                    <input type="text" class="form-control" id="stock", name="stock">
+                </div>
+
+                <div class="form-group">
+                    <label for="suspended">Tình trạng</label>
+                    <select 
+                        class="form-select" 
+                        aria-label="Default select example" 
+                        id="suspended"
+                        name="suspended"
+                    >
+                        <option value="true" selected>Còn hàng</option>
+                        <option value="false">Hết hàng</option>
+                    </select>
+                </div> --}}
+                
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="upload-btn-wrapper">
+                            <label>
+                                Choose the main thumbnail
+                            </label>
+                        </div>
+                        <div class="upload-btn-wrapper">
+                            <label for="food-photo-input-thumbnail" type="button" class="w-50">
+                                <img src="/images/noti/recommend.png" id="recom-load-thumnail" class="upload-img-btn">
+                                <div id="output-imgs-thumbnail">
+                                </div>
+                            </label>
+                            <input 
+                                type="file" 
+                                accept="image/*" 
+                                id="food-photo-input-thumbnail" 
+                                name="food-photo-input-thumbnail" hidden
+                            >
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="upload-btn-wrapper">
+                            <label>
+                                Choose describe images <span class="text-red">(maximum 3 images)</span>
+                            </label>
+                        </div>
+                        <div class="upload-btn-wrapper" id="#detail-wrapper">
+                            <label for="food-photo-input-detail" type="button" class="w-50">
+                                <img src="/images/noti/recommend.png" id="recom-load-detail" class="upload-img-btn">
+                                <div id="product-preview-slide" class="carousel slide " data-bs-ride="carousel">
+                                    <div id="output-imgs-detail" class="carousel-inner">
+                                    </div>
+                                    <button 
+                                        class="preview-btn carousel-control-prev undisplay" 
+                                        type="button" 
+                                        data-bs-target="#product-preview-slide" 
+                                        data-bs-slide="prev"
+                                    >
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button 
+                                        class="preview-btn carousel-control-next undisplay" 
+                                        type="button" 
+                                        data-bs-target="#product-preview-slide" 
+                                        data-bs-slide="next"
+                                    >
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            </label>
+                            <input 
+                                type="file"  
+                                multiple="multiple" 
+                                accept="image/*" 
+                                id="food-photo-input-detail" 
+                                name="food-photo-input-detail" hidden
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="description">Description</label>
+                    <textarea type="text" class="form-control" id="description" name="description" rows="4" cols="50"></textarea>
+                </div>
+                <div class="text-center">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary mt-4 btn-submit-create-prod"
+                    >
+                        SUBMIT
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <div class="form-group mt-4">
-            <a class="btn-text"><label for="food-photo-input-thumbnail">Thêm ảnh đại diện cho món ăn</label></a>
-            <input type="file" accept="image/*" id="food-photo-input-thumbnail" name="food-photo-input-thumbnail" hidden>
-            <div id="output-imgs-thumbnail">
-
-            </div>
-        </div>
-
-        <div class="form-group mt-4">
-            <a class="btn-text"><label for="food-photo-input-detail">Thêm ảnh chi tiết món ăn (tối đa 3 ảnh)</label></a>
-            <input type="file" multiple="multiple" accept="image/*" id="food-photo-input-detail" name="food-photo-input-detail" hidden>
-            <div id="output-imgs-detail">
-
-            </div>
-        </div>
-
-        <div class="form-group mt-4">
-            <a><label for="manufacturer">Nhà sản xuất</label></a>
-            <input type="text" class="form-control" id="manufacturer", name="manufacturer">
-        </div>
-
-        <div class="form-group">
-            <label for="stock">Số lượng</label>
-            <input type="text" class="form-control" id="stock", name="stock">
-        </div>
-
-        <div class="form-group">
-            <label for="suspended">Tình trạng</label>
-            <select class="form-select" aria-label="Default select example" id="suspended", name="suspended">
-                <option value="true" selected>Còn hàng</option>
-                <option value="false">Hết hàng</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="description">Mô tả</label>
-            <input type="text" class="form-control" id="description", name="description">
-        </div>
-        
-        <button type="submit" class="btn btn-primary mt-4 btn-submit-create-prod">Thêm món ăn</button>
-    </form>
-
-    <div class="mt-4">
     </div>
 </div>
 

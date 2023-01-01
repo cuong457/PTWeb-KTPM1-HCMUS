@@ -77,7 +77,7 @@ const imagesDetailInput = document.querySelector("#food-photo-input-detail");
 const outputThumbnail = document.querySelector("#output-imgs-thumbnail");
 const outputDetail = document.querySelector("#output-imgs-detail");
 
-const previewFoodImg = (e, output) => { 
+const previewFoodThumnail = (e, output) => { 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         const files = e.target.files;
         output.innerHTML = "";
@@ -90,12 +90,17 @@ const previewFoodImg = (e, output) => {
                 const imgFile = event.target;
                 const wraper = document.createElement("div");
                 const img = document.createElement("img");
+                const btn_inside = document.createElement("div");
 
+                $("#recom-load-thumnail").addClass('undisplay')
                 wraper.className = "create-food-admin-img-wraper";
                 img.className = "create-food-admin-img"
                 img.src = imgFile.result
+                btn_inside.className = "btn-change-img-hide";
+                btn_inside.innerHTML = 'CHANGE IMAGE?';
             
                 wraper.appendChild(img);
+                wraper.appendChild(btn_inside);
                 output.appendChild(wraper);
             });
 
@@ -105,6 +110,44 @@ const previewFoodImg = (e, output) => {
       alert("Your browser does not support File API");
     }
 };
+const previewFoodDetail = (e, output) => { 
+    const files = e.target.files;
 
-imagesThumbnailInput.addEventListener("change", (e) => previewFoodImg(e, outputThumbnail));
-imagesDetailInput.addEventListener("change", (e) => previewFoodImg(e, outputDetail))
+    // Check files count
+    if (files.length > 3) {
+        alert(`Only 3 files are allowed to upload.`);
+        return;
+    }
+    else if (window.File && window.FileReader && window.FileList && window.Blob) {
+        const files = e.target.files;
+        output.innerHTML = "";
+
+        for (let i = 0; i < files.length; i++) {
+            if (!files[i].type.match("image")) continue;
+            const imgReader = new FileReader();
+
+            imgReader.addEventListener("load", function (event) {
+                const imgFile = event.target;
+                const wraper = document.createElement("div");
+                const img = document.createElement("img");
+
+
+                $("#recom-load-detail").addClass('undisplay');
+                $(".preview-btn").removeClass('undisplay');
+                wraper.className = (i == 0) ? "carousel-item active" : "carousel-item";
+                img.className = "img-fluid"
+                img.src = imgFile.result
+            
+                wraper.appendChild(img);
+                output.appendChild(wraper); 
+            });
+
+            imgReader.readAsDataURL(files[i]);
+        }
+    } else {
+      alert("Your browser does not support File API");
+    }
+};
+
+imagesThumbnailInput.addEventListener("change", (e) => previewFoodThumnail(e, outputThumbnail));
+imagesDetailInput.addEventListener("change", (e) => previewFoodDetail(e, outputDetail))
