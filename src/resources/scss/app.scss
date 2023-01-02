@@ -16,12 +16,12 @@
   background-color: #eee !important;
 }
 
-// body p {
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-//   margin-bottom: 0;
-// }
+body p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0;
+}
 
 //Color config
 .text-green {
@@ -1044,8 +1044,8 @@ i.page-item:hover {
 }
 .percent-wrapper {
   background-color: #ebebec;
-  padding-top:5px;
-  padding-bottom: 5px;
+  padding-top:3px;
+  padding-bottom: 3px;
   padding-left: 6px;
   padding-right: 6px;
   border-radius: 0.5rem;

@@ -15,6 +15,12 @@
 .banner {
   background-color: #eee !important; }
 
+body p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0; }
+
 .text-green {
   color: green; }
 
@@ -942,8 +948,8 @@ i.page-item:hover {
 
 .percent-wrapper {
   background-color: #ebebec;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   padding-left: 6px;
   padding-right: 6px;
   border-radius: 0.5rem;
@@ -1513,10 +1519,7 @@ i.page-item:hover {
 
 .hover-scale-ani:hover {
   transform: scale(1.1) translate(0.5em, 0); }
-<<<<<<< Updated upstream
 
 .review-list {
   max-height: 600px;
   overflow-y: auto; }
-=======
->>>>>>> Stashed changes
