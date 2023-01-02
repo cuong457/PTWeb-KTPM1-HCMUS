@@ -6,6 +6,7 @@ const {
   renderSignUp,
   renderUserCenter,
   renderCreateProduct,
+  renderUpdateProduct,
   getUserData,
   renderGoogleSignIn,
   renderGoogleCallback,
@@ -13,6 +14,10 @@ const {
   getOrdersData,
   renderProducts,
   banUser,
+  uploadTourImages,
+  resizeUploadImages,
+  createNewProduct,
+  updateProduct,
 } = require("../app/controllers/AdminController");
 
 const { protect, restrictTo } = require("../app/controllers/AuthController");
@@ -30,7 +35,12 @@ router.get("/sign-up", renderSignUp);
 router.use(protect);
 router.use(restrictTo("admin"));
 
-router.get("/dashboard", renderDashBoard);
+router
+  .route("/api/v1/products")
+  .put([uploadTourImages, resizeUploadImages, updateProduct]);
+
+router.use("/dashboard", renderDashBoard);
+router.route("/products/update/:id").get(renderUpdateProduct);
 
 router.get("/usercenter/ban-user", banUser);
 router.get("/usercenter/get-users-data", getUserData);

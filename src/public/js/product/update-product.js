@@ -1,9 +1,11 @@
-const submitBtn = document.querySelector(".btn-submit-create-prod");
-
 const createProductForm = document.querySelector(".form-create-product");
+const updateProductForm = document.querySelector(".form-update-product");
+const containerUpdateProduct = document.querySelector(
+  ".container-update-product"
+);
 
 const productSettings = async function (data, type) {
-  const url = "/api/v1/products";
+  const url = type === "create" ? "/api/v1/products" : "/admin/api/v1/products";
 
   try {
     let fetchOptions = {
@@ -13,11 +15,8 @@ const productSettings = async function (data, type) {
 
     if (type === "update") {
       fetchOptions = {
-        method: "PATCH",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "PUT",
+        body: data,
       };
     }
 
@@ -37,65 +36,35 @@ const productSettings = async function (data, type) {
   }
 };
 
-if (createProductForm) {
-  const handleCreateProduct = async function (e) {
-    e.preventDefault();
-    console.log("submit");
-    const formData = new FormData();
-    const nameInput = this.elements[(name = "name")];
-    const priceInput = this.elements[(name = "price")];
-    const manufacturerInput = this.elements[(name = "manufacturer")];
-    // const stockInput = this.elements[(name = "stock")];
-    // const suspendedInput = this.elements[(name = "suspended")];
-    const descriptionInput = this.elements[(name = "description")];
+const deleteProductsPhoto = async (paths) => {
+  const url = "/api/v1/products/delete";
 
-    const foodThumbnailInput =
-      this.elements[(name = "food-photo-input-thumbnail")];
-    const photoInput = this.elements[(name = "food-photo-input-detail")];
+  var object = {};
+  paths.forEach((value, key) => (object[key] = value));
+  var json = JSON.stringify(object);
 
-    if (
-      nameInput.value.trim().length === 0 ||
-      isNaN(+priceInput.value) ||
-      manufacturerInput.value.trim().length === 0 ||
-      descriptionInput.value.trim().length === 0
-    ) {
-      errorMessageElement.innerText = "Thông tin nhập vào không hợp lệ!";
-      return;
+  try {
+    const fetchOptions = {
+      method: "DELETE",
+      body: json,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, fetchOptions);
+    if (!response.ok) {
+      const errRes = await response.json();
+      return false;
     }
 
-    formData.append("name", nameInput.value);
-    formData.append("price", priceInput.value);
-    formData.append("category", []);
-    formData.append("manufacturer", manufacturerInput.value);
-    // formData.append("stock", stockInput.value);
-    // formData.append("suspended", suspendedInput.value);
-    formData.append("description", descriptionInput.value);
-
-    formData.append("foodThumbnail", foodThumbnailInput.files[0]);
-    for (let i = 0; i < photoInput.files.length; i++) {
-      formData.append("photo", photoInput.files[i]);
-    }
-
-    productSettings(formData, "create");
-  };
-
-  createProductForm.addEventListener("submit", handleCreateProduct);
-  createProductForm.addEventListener("click", (e) => {
-    console.log("focus");
-    errorMessageElement.innerText = "";
-  });
-}
-
-const imagesThumbnailInput = document.querySelector(
-  "#food-photo-input-thumbnail"
-);
-const imagesDetailInput = document.querySelector("#food-photo-input-detail");
-
-const outputThumbnail = document.querySelector("#output-imgs-thumbnail");
-const outputDetail = document.querySelector("#output-imgs-detail");
-const errorMessageElement = document.querySelector(
-  ".create-product-error-message"
-);
+    const resData = await response.json();
+    return true;
+  } catch (err) {
+    alert("error", err.message);
+    return false;
+  }
+};
 
 const previewFoodThumnail = (e, output) => {
   if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -136,13 +105,9 @@ const previewFoodThumnail = (e, output) => {
     errorMessageElement.innerText = "Your browser does not support File API";
   }
 };
+
 const previewFoodDetail = (e, output) => {
   const files = e.target.files;
-
-  if (files.length === 0) {
-    errorMessageElement.innerText = "vui lòng chọn ảnh cho món ăn";
-    return;
-  }
 
   // Check files count
   if (files.length > 3) {
@@ -183,11 +148,195 @@ const previewFoodDetail = (e, output) => {
   }
 };
 
-imagesThumbnailInput.addEventListener("change", (e) => {
-  errorMessageElement.innerText = "";
-  previewFoodThumnail(e, outputThumbnail);
-});
-imagesDetailInput.addEventListener("change", (e) => {
-  errorMessageElement.innerText = "";
-  previewFoodDetail(e, outputDetail);
-});
+const imagesThumbnailInput = document.querySelector(
+  "#food-photo-input-thumbnail"
+);
+const imagesDetailInput = document.querySelector("#food-photo-input-detail");
+
+const outputThumbnail = document.querySelector("#output-imgs-thumbnail");
+const outputDetail = document.querySelector("#output-imgs-detail");
+
+if (createProductForm) {
+  const handleCreateProduct = async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    const nameInput = this.elements[(name = "name")];
+    const priceInput = this.elements[(name = "price")];
+    const manufacturerInput = this.elements[(name = "manufacturer")];
+    const descriptionInput = this.elements[(name = "description")];
+
+    if (
+      !nameInput.value ||
+      !priceInput.value ||
+      !manufacturerInput.value ||
+      !descriptionInput.value
+    ) {
+      alert("Missing input field(s)!");
+      return;
+    }
+
+    const foodThumbnailInput =
+      this.elements[(name = "food-photo-input-thumbnail")];
+    const photoInput = this.elements[(name = "food-photo-input-detail")];
+
+    formData.append("name", nameInput.value);
+    formData.append("price", priceInput.value);
+    formData.append("category", ["general"]);
+    formData.append("manufacturer", manufacturerInput.value);
+    formData.append("stock", 100);
+    formData.append("suspended", false);
+    formData.append("description", descriptionInput.value);
+
+    if (
+      foodThumbnailInput.files.length === 0 ||
+      photoInput.files.length === 0
+    ) {
+      alert("Missing Image!");
+      return;
+    }
+
+    formData.append("foodThumbnail", foodThumbnailInput.files[0]);
+    for (let i = 0; i < photoInput.files.length; i++) {
+      formData.append("photo", photoInput.files[i]);
+    }
+
+    productSettings(formData, "create");
+  };
+
+  createProductForm.addEventListener("submit", handleCreateProduct);
+
+  imagesThumbnailInput.addEventListener("change", (e) =>
+    previewFoodThumnail(e, outputThumbnail)
+  );
+  imagesDetailInput.addEventListener("change", (e) =>
+    previewFoodDetail(e, outputDetail)
+  );
+}
+
+if (containerUpdateProduct) {
+  const imagesThumbnailUpdate = document.querySelector(
+    "#food-photo-update-thumbnail"
+  );
+  const imagesDetailUpdate = document.querySelector(
+    "#food-photo-update-detail"
+  );
+
+  const outputThumbnailUpdate = document.querySelector(
+    "#output-imgs-thumbnail-update"
+  );
+  const outputDetailUpdate = document.querySelector(
+    "#output-imgs-detail-update"
+  );
+
+  let foodThumbnailPath = "";
+  let foodPhotoPaths = [];
+  let foodId = "";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const url = "/api/v1/products";
+
+    const startIndex = window.location.href.lastIndexOf("/");
+    foodId = window.location.href.substring(startIndex + 1);
+
+    const response = await fetch(`${url}/${foodId}`, { method: "GET" });
+    const response_package = await response.json();
+
+    const foodToUpdate = response_package.data.food;
+
+    const thumbnail = document.createElement("img");
+    thumbnail.className = "create-food-admin-img";
+    thumbnail.src = foodToUpdate.foodThumbnail;
+    outputThumbnailUpdate.appendChild(thumbnail);
+
+    const imgs = foodToUpdate.photo;
+    for (let i = 0; i < imgs.length; i++) {
+      const wraper = document.createElement("div");
+      const img = document.createElement("img");
+
+      wraper.className = i == 0 ? "carousel-item active" : "carousel-item";
+      img.className = "img-fluid";
+      img.src = imgs[i];
+
+      wraper.appendChild(img);
+      outputDetailUpdate.appendChild(wraper);
+    }
+
+    foodThumbnailPath = foodToUpdate.foodThumbnail;
+    foodPhotoPaths = foodToUpdate.photo;
+
+    let categorySelect = document.getElementById("category-update");
+    let manufacturerSelect = document.getElementById("manufacturer-update");
+
+    for (let i, j = 0; (i = categorySelect.options[j]); j++) {
+      if (i.value == foodToUpdate.category[0]) {
+        categorySelect.selectedIndex = j;
+        break;
+      }
+    }
+
+    for (let i, j = 0; (i = manufacturerSelect.options[j]); j++) {
+      if (i.value == foodToUpdate.manufacturer) {
+        manufacturerSelect.selectedIndex = j;
+        break;
+      }
+    }
+  });
+
+  imagesThumbnailUpdate.addEventListener("change", (e) =>
+    previewFoodThumnail(e, outputThumbnailUpdate)
+  );
+  imagesDetailUpdate.addEventListener("change", (e) =>
+    previewFoodDetail(e, outputDetailUpdate)
+  );
+
+  const handleUpdateProduct = async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    const nameInput = this.elements[(name = "name-update")];
+    const priceInput = this.elements[(name = "price-update")];
+    const categoryInpur = this.elements[(name = "category-update")];
+    const manufacturerInput = this.elements[(name = "manufacturer-update")];
+    const stockInput = this.elements[(name = "stock-update")];
+    const suspendedInput = this.elements[(name = "suspended-update")];
+    const descriptionInput = this.elements[(name = "description-update")];
+
+    const foodThumbnailInput =
+      this.elements[(name = "food-photo-update-thumbnail")];
+    const photoInput = this.elements[(name = "food-photo-update-detail")];
+
+    formData.append("_id", foodId);
+    formData.append("name", nameInput.value);
+    formData.append("price", priceInput.value);
+    formData.append("category", categoryInpur.value);
+    formData.append("manufacturer", manufacturerInput.value);
+    formData.append("stock", stockInput.value);
+    formData.append("suspended", suspendedInput.value);
+    formData.append("description", descriptionInput.value);
+
+    if (foodThumbnailInput.files.length !== 0) {
+      const myDeleteImgData = new FormData();
+      myDeleteImgData.append("paths", foodThumbnailPath);
+
+      deleteProductsPhoto(myDeleteImgData);
+
+      formData.append("foodThumbnail", foodThumbnailInput.files[0]);
+    }
+
+    if (photoInput.files.length !== 0) {
+      const myDeleteImgData = new FormData();
+      myDeleteImgData.append("paths", foodPhotoPaths);
+
+      deleteProductsPhoto(myDeleteImgData);
+
+      for (let i = 0; i < photoInput.files.length; i++) {
+        formData.append("photo", photoInput.files[i]);
+      }
+    }
+
+    productSettings(formData, "update");
+  };
+
+  updateProductForm.addEventListener("submit", handleUpdateProduct);
+}

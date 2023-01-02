@@ -7,6 +7,7 @@ const session = require("express-session");
 const passport = require("passport");
 const multer = require("multer");
 const sharp = require("sharp");
+const AppError = require("../../utils/AppError");
 
 const ELEMENT_PER_PAGE = 6;
 
@@ -33,34 +34,42 @@ exports.uploadTourImages = upload.fields([
 ]);
 
 exports.resizeUploadImages = catchAsync(async (req, res, next) => {
-  if (!req.files["foodThumbnail"] || !req.files["photo"]) return next();
+  if (!req.files["foodThumbnail"] && !req.files["photo"]) {
+    return next();
+  }
 
-  const foodThumbnailName = `food-${Math.ceil(
-    Math.random() * 1000
-  )}-${Date.now()}-cover.png`;
-  req.body.foodThumbnail = `/images/foodThumnail/${foodThumbnailName}`;
-  let images = [];
-
-  await sharp(req.files["foodThumbnail"][0].buffer)
-    .resize(610, 610)
-    .toFormat("png")
-    // start at root folder
-    .toFile(`./src/public${req.body.foodThumbnail}`);
-
-  const resizeImagePromises = req.files["photo"].map(async (file, index) => {
-    const imgIntroFileName = `food-${Math.ceil(
+  if (req.files["foodThumbnail"]) {
+    const foodThumbnailName = `food-${Math.ceil(
       Math.random() * 1000
-    )}-${Date.now()}-${index + 1}.png`;
-    images.push(`/images/foods/${imgIntroFileName}`);
+    )}-${Date.now()}-cover.png`;
+    req.body.foodThumbnail = `/images/foodThumnail/${foodThumbnailName}`;
 
-    return sharp(file.buffer)
+    await sharp(req.files["foodThumbnail"][0].buffer)
       .resize(610, 610)
       .toFormat("png")
-      .toFile(`./src/public/images/foods/${imgIntroFileName}`);
-  });
+      // start at root folder
+      .toFile(`./src/public${req.body.foodThumbnail}`);
+  }
 
-  Promise.all(resizeImagePromises);
-  req.body.photo = images;
+  if (req.files["photo"]) {
+    let images = [];
+
+    const resizeImagePromises = req.files["photo"].map(async (file, index) => {
+      const imgIntroFileName = `food-${Math.ceil(
+        Math.random() * 1000
+      )}-${Date.now()}-${index + 1}.png`;
+      images.push(`/images/foods/${imgIntroFileName}`);
+
+      return sharp(file.buffer)
+        .resize(610, 610)
+        .toFormat("png")
+        .toFile(`./src/public/images/foods/${imgIntroFileName}`);
+    });
+
+    Promise.all(resizeImagePromises);
+    req.body.photo = images;
+  }
+
   next();
 });
 
@@ -502,6 +511,15 @@ exports.renderCreateProduct = (req, res, next) => {
   res.render("./admin/create-product", { layout: "adminMain.hbs" });
 };
 
+exports.renderUpdateProduct = catchAsync(async (req, res, next) => {
+  const food = await ProductModel.findById(req.params.id);
+
+  res.render("./admin/update-product", {
+    layout: "adminMain.hbs",
+    food,
+  });
+});
+
 exports.createNewProduct = catchAsync(async (req, res, next) => {
   const newFoodObj = {};
 
@@ -520,5 +538,26 @@ exports.createNewProduct = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     message: "success",
+  });
+});
+
+exports.updateProduct = catchAsync(async (req, res, next) => {
+  const FoodObj = {};
+
+  const filter = ["_id"];
+  Object.keys(req.body).forEach((element) => {
+    if (!filter.includes(element)) {
+      FoodObj[element] = req.body[element];
+    }
+  });
+
+  const newProd = await ProductModel.findByIdAndUpdate(req.body._id, FoodObj);
+
+  if (!newProd) {
+    return next(new AppError(404, "Product not found."));
+  }
+
+  res.status(200).json({
+    message: "update success",
   });
 });

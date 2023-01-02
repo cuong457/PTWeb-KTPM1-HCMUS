@@ -1,0 +1,158 @@
+<div class="container-update-product mt-4">
+    <div class="card card-shadow">
+        <div class="card-header">
+            <h3>UPDATE FOOD INFORMATION</h3>
+        </div>
+        <div class="card-body">
+            <form class="form form-update-product">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="name">Food name</label>
+                            <input type="text" class="form-control" value="{{food.name}}" id="name-update" name="name-update">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="text" class="form-control" value="{{food.price}}" id="price-update" name="price-update">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select class="form-select"
+                                id="category-update"
+                                name="category-update"
+                            >
+                                <option value="general">Chung</option>
+                                <option value="cơm">Cơm</option>
+                                <option value="bún">Bún</option>
+                                <option value="lẩu">Lẩu</option>
+                                <option value="salad">Salad</option>
+                                <option value="nem">Nem</option>
+                                <option value="hủ tíu">Hủ tíu</option>
+                                <option value="phở">Phở</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="manufacturer">Manufacturer</label>
+                            <select class="form-select" 
+                                id="manufacturer-update"
+                                name="manufacturer-update"
+                            >
+                                <option value="Sunrise Foods">Sunrise Foods</option>
+                                <option value="Friggitoria">Friggitoria</option>
+                                <option value="Panzer Hot">Panzer Hot</option>
+                                <option value="Flavour of India">Flavour of India</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="stock">Số lượng</label>
+                    <input type="text" class="form-control" value="{{food.stock}}" id="stock-update", name="stock-update">
+                </div>
+
+                <div class="form-group">
+                    <label for="suspended">Tình trạng</label>
+                    <select 
+                        class="form-select" 
+                        aria-label="Default select example" 
+                        id="suspended-update"
+                        name="suspended-update"
+                        value="{{food.suspended}}"
+                    >
+                        <option value="false">Còn hàng</option>
+                        <option value="true">Hết hàng</option>
+                    </select>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="upload-btn-wrapper">
+                            <label>
+                                Change the main thumbnail
+                            </label>
+                        </div>
+                        <div class="upload-btn-wrapper">
+                            <label for="food-photo-update-thumbnail" class="w-50">
+                                <div id="output-imgs-thumbnail-update">
+
+                                </div>
+                            </label>
+                            <input 
+                                type="file" 
+                                accept="image/*" 
+                                id="food-photo-update-thumbnail" 
+                                name="food-photo-update-thumbnail" hidden
+                            >
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="upload-btn-wrapper">
+                            <label for="food-photo-update-detail">
+                                Change describe images <span class="text-red">(maximum 3 images)</span>
+                            </label>
+                        </div>
+                        <div class="upload-btn-wrapper" id="#detail-wrapper">
+                            <label for="food-photo-update-detail" type="button" class="w-50">
+                                <div id="product-preview-slide" class="carousel slide" data-bs-ride="carousel">
+                                    <div id="output-imgs-detail-update" class="carousel-inner">
+                                    </div>
+                                    <button 
+                                        class="preview-btn carousel-control-prev" 
+                                        type="button" 
+                                        data-bs-target="#product-preview-slide" 
+                                        data-bs-slide="prev"
+                                    >
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button 
+                                        class="preview-btn carousel-control-next" 
+                                        type="button" 
+                                        data-bs-target="#product-preview-slide" 
+                                        data-bs-slide="next"
+                                    >
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                    
+                                </div>
+                                <input
+                                    type="file"  
+                                    multiple="multiple" 
+                                    accept="image/*" 
+                                    id="food-photo-update-detail" 
+                                    name="food-photo-update-detail" hidden
+                                >
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="description">Description</label>
+                    <textarea type="text" class="form-control" id="description-update" name="description-update" rows="4" cols="50">{{food.description}}</textarea>
+                </div>
+                <div class="text-center">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary mt-4 btn-submit-create-prod"
+                    >
+                        SUBMIT
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/js/product/update-product.js">
+</script>
