@@ -2,9 +2,9 @@ const express = require("express");
 
 const router = express.Router();
 
-const { createOrder } = require("../app/controllers/OrderController");
-const { protect, isLoggedIn } = require("../app/controllers/AuthController");
+const { updateOrder } = require("../app/controllers/OrderController");
+const { protect, restrictTo } = require("../app/controllers/AuthController");
 
-// router.post("/", [protect, createOrder]);
+router.route("/:id").patch([protect, restrictTo("admin"), updateOrder]);
 
 module.exports = router;

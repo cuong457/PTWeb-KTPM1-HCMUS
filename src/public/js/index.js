@@ -1,19 +1,24 @@
 // import "@babel/polyfill";
 import { signOut } from "./auth/sign-out.js";
-import { 
+import {
   handleClearSearchboxUser,
   handleSearch,
   handleFilter,
   renderUC,
-  handleSelectType
-} from './user/uc-handle.js'
-import { 
+  handleSelectType,
+} from "./user/uc-handle.js";
+import {
   handleClearSearchboxProducts,
   handleSearchProducts,
   handleFilterProducts,
   renderPC,
-  handleSelectTypeProducts
-} from './user/products-handle.js'
+  handleSelectTypeProducts,
+} from "./user/products-handle.js";
+import {
+  handleFilterOrders,
+  renderOC,
+  updateOrderStatus,
+} from "./user/orders-handle.js";
 import {
   handleAddItemToCart,
   handleCartToOrder,
@@ -56,63 +61,89 @@ Handlebars.registerHelper("if_cond", (v1, op, v2, options) => {
       return v1 || v2 ? options.fn(this) : options.inverse(this);
     default:
       return options.inverse(this);
-}});
+  }
+});
 Handlebars.registerHelper("toStandardDate", (raw_date) => {
-    return (new Date(raw_date)).toLocaleDateString();
-  });
+  return new Date(raw_date).toLocaleDateString();
+});
 Handlebars.registerHelper("getNameFromEmail", (email) => {
-  return email.slice(0, email.indexOf('@'));
+  return email.slice(0, email.indexOf("@"));
 });
 
 // Admin handling
-const clearSearchboxUser = document.getElementById('user-clearsearch-btn');
-if(clearSearchboxUser) {
-  clearSearchboxUser.addEventListener('click', handleClearSearchboxUser)
+const clearSearchboxUser = document.getElementById("user-clearsearch-btn");
+if (clearSearchboxUser) {
+  clearSearchboxUser.addEventListener("click", handleClearSearchboxUser);
 }
-const userSearchBtn = document.getElementById('usercenter-search-button');
-if(userSearchBtn) {
-  userSearchBtn.addEventListener('click', handleSearch)
+const userSearchBtn = document.getElementById("usercenter-search-button");
+if (userSearchBtn) {
+  userSearchBtn.addEventListener("click", handleSearch);
 }
 const userFilterBtn = document.querySelectorAll(".filter-btn");
-if(userFilterBtn) {
-  document.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.addEventListener('click', handleFilter)
-  })
+if (userFilterBtn) {
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.addEventListener("click", handleFilter);
+  });
 }
-const first_ren_UC = document.querySelector('.user-list');
-if(first_ren_UC) {
+const first_ren_UC = document.querySelector(".user-list");
+if (first_ren_UC) {
   renderUC();
 }
-const userTypeBtn = document.querySelectorAll('.type-btn');
-if(userTypeBtn) {
-  userTypeBtn.forEach(btn => {
-    btn.addEventListener('click', handleSelectType);
-  })
+const userTypeBtn = document.querySelectorAll(".type-btn");
+if (userTypeBtn) {
+  userTypeBtn.forEach((btn) => {
+    btn.addEventListener("click", handleSelectType);
+  });
 }
 // Product handling
-const clearSearchboxProducts = document.getElementById('products-clearsearch-btn');
-if(clearSearchboxProducts) {
-  clearSearchboxProducts.addEventListener('click', handleClearSearchboxProducts)
+const clearSearchboxProducts = document.getElementById(
+  "products-clearsearch-btn"
+);
+if (clearSearchboxProducts) {
+  clearSearchboxProducts.addEventListener(
+    "click",
+    handleClearSearchboxProducts
+  );
 }
-const productsSearchBtn = document.getElementById('products-search-button');
-if(productsSearchBtn) {
-  productsSearchBtn.addEventListener('click', handleSearchProducts)
+const productsSearchBtn = document.getElementById("products-search-button");
+if (productsSearchBtn) {
+  productsSearchBtn.addEventListener("click", handleSearchProducts);
 }
 const productsFilterBtn = document.querySelectorAll(".products-filter-btn");
-if(productsFilterBtn) {
-  document.querySelectorAll(".products-filter-btn").forEach(btn => {
-    btn.addEventListener('click', handleFilterProducts)
-  })
+if (productsFilterBtn) {
+  document.querySelectorAll(".products-filter-btn").forEach((btn) => {
+    btn.addEventListener("click", handleFilterProducts);
+  });
 }
-const first_ren_PC = document.querySelector('.products-list');
-if(first_ren_PC) {
+const first_ren_PC = document.querySelector(".products-list");
+if (first_ren_PC) {
   renderPC();
 }
-const productsTypeBtn = document.querySelectorAll('.products-type-btn');
-if(productsTypeBtn) {
-  productsTypeBtn.forEach(btn => {
-    btn.addEventListener('click', handleSelectTypeProducts);
-  })
+const productsTypeBtn = document.querySelectorAll(".products-type-btn");
+if (productsTypeBtn) {
+  productsTypeBtn.forEach((btn) => {
+    btn.addEventListener("click", handleSelectTypeProducts);
+  });
+}
+
+// remove: handleClearSearchboxProducts, handleSearchProducts
+// Order handling
+const productsFilterOrderBtn = document.querySelectorAll(".orders-filter-btn");
+console.log(productsFilterOrderBtn);
+if (productsFilterOrderBtn.length > 0) {
+  productsFilterOrderBtn.forEach((btn) => {
+    btn.addEventListener("click", handleFilterOrders);
+  });
+
+  const productsFilterOrderSelect = document.querySelector(
+    ".orders-status-filter"
+  );
+  productsFilterOrderSelect.addEventListener("change", handleFilterOrders);
+}
+
+const first_ren_OC = document.querySelector(".orders-list");
+if (first_ren_OC) {
+  renderOC();
 }
 
 // auth handling
@@ -139,10 +170,12 @@ const deleteItemBtn = [
 ];
 
 if (signOutBtnAdmin) {
+  console.log("hello");
   signOutBtnAdmin.addEventListener("click", signOut);
 }
 
 if (signOutBtnUser) {
+  console.log("hello");
   // alert("logout successfully");
   signOutBtnUser.addEventListener("click", signOut);
 }

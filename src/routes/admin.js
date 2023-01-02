@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   renderDashBoard,
-  renderProfile,
+  renderOrders,
   renderSignIn,
   renderSignUp,
   renderUserCenter,
@@ -10,11 +10,9 @@ const {
   renderGoogleSignIn,
   renderGoogleCallback,
   getProductsData,
+  getOrdersData,
   renderProducts,
   banUser,
-  uploadTourImages,
-  resizeUploadImages,
-  createNewProduct,
 } = require("../app/controllers/AdminController");
 
 const { protect, restrictTo } = require("../app/controllers/AuthController");
@@ -32,23 +30,19 @@ router.get("/sign-up", renderSignUp);
 router.use(protect);
 router.use(restrictTo("admin"));
 
-router.use("/dashboard", renderDashBoard);
+router.get("/dashboard", renderDashBoard);
 
 router.get("/usercenter/ban-user", banUser);
 router.get("/usercenter/get-users-data", getUserData);
 router.route("/products/create").get(renderCreateProduct);
 router.get("/usercenter", renderUserCenter);
+router.get("/orders", renderOrders);
 
-router.use("/profile", renderProfile);
-router.use("/sign-in", renderSignIn);
-router.use("/sign-up", renderSignUp);
+router.get("/sign-in", renderSignIn);
+router.get("/sign-up", renderSignUp);
 
 router.get("/products/get-products-data", getProductsData);
-router.use("/products", renderProducts);
-
-router.get("/dashboard", renderDashBoard);
-router.get("/profile", renderProfile);
-
-router.use("/", renderDashBoard);
+router.get("/orders/get-orders-data", getOrdersData);
+router.get("/products", renderProducts);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const catchAsync = require("../../utils/catchAsync");
 const UserModel = require("../models/User");
 const ProductModel = require("../models/Product");
+const OrderModel = require("../models/Order");
 
 const session = require("express-session");
 const passport = require("passport");
@@ -69,8 +70,9 @@ exports.renderDashBoard = (req, res, next) => {
   });
 };
 
-exports.renderProfile = (req, res, next) => {
-  res.render("./admin/profile", { layout: "adminMain.hbs" });
+// note: remember to remove profile.hbs
+exports.renderOrders = (req, res, next) => {
+  res.render("./admin/orders", { layout: "adminMain.hbs" });
 };
 
 exports.renderSignIn = (req, res, next) => {
@@ -81,114 +83,14 @@ exports.renderSignUp = (req, res, next) => {
   res.render("./admin/sign-up", { layout: false });
 };
 
-exports.getProductsData = catchAsync( async (req, res, next) => {
+exports.getProductsData = catchAsync(async (req, res, next) => {
   // Get params
   let page = req.query.page;
   let sortQ = req.query.sort;
   let key_search = req.query.search;
   let type_search = req.query.type.toLowerCase();
   // Handle Page Number
-  if(page) {
-    // Get specific page
-    page = parseInt(page);
-    if(page <= 0) page = 1;
-  }
-  else {
-    page = 1;
-  }
-  let prev = (page > 1) ? page - 1 : page;
-  let skipNumElement = (page - 1) * ELEMENT_PER_PAGE;
-  // Handle Sort Option
-  let sort_option = {};
-  let option_list = sortQ.split('-');
-  let is_descending = false;
-  for(let i = 0; i < option_list.length; i++) {
-    if(option_list[i] === 'name') {
-      sort_option['name'] = 1;
-    }
-    else if(option_list[i] === 'time') {
-      sort_option['createdAt'] = 1;
-    }
-    else if(option_list[i] === 'price') {
-      sort_option['price'] = 1;
-    }
-    else if(option_list[i] === 'desorder') {
-      is_descending = true;
-    }
-  }
-
-  if(is_descending) {
-    Object.keys(sort_option).forEach(key => {
-      sort_option[key] = -1;
-    });
-  }
-
-  // Handle search
-  let search_option = {}
-  if(type_search != 'none' && key_search != '') {
-    search_option[type_search] = { $regex: key_search, $options: 'i' };
-  }
-
-  // Find all in database
-  const total = await ProductModel.find(search_option).count();
-
-  let products = await ProductModel.find(search_option).sort(sort_option)
-    .skip(skipNumElement)
-    .limit(ELEMENT_PER_PAGE)
-  
-  let pageNumber = (total % ELEMENT_PER_PAGE === 0) ? total / ELEMENT_PER_PAGE : Math.floor(total / ELEMENT_PER_PAGE) + 1;
-  
-  let nextNum = (page < pageNumber) ? page + 1 : page;
-  let pageIndex = {prev, nextNum, maxpage: pageNumber}
-  let pageList = [];
-
-  if(pageNumber <= 3 || page === 1) {
-    let count = 0;
-    for(let i = page; i <= pageNumber && count < 3; i++, count++) {
-      pageList.push({num: i, is_cur: false});
-    }
-  }
-  else {
-      let count = 0;
-      if(page <= pageNumber) {
-        pageList.push({num: page, is_cur: false});
-        count++;
-      }
-      if(page + 1 <= pageNumber) {
-        pageList.push({num: page + 1, is_cur: false});
-        count++;
-      }
-      for(let i = page - 1; i >= 1 && count < 3; i--, count++) {
-        pageList.unshift({num: i, is_cur: false});
-      }
-  }
-  for(let i = 0; i < pageList.length; i++) {
-    if(pageList[i].num === page) {
-      pageList[i].is_cur = true;
-    }
-  }
-  res.status(200).json({
-    status: "success",
-    data: {
-      products,
-      pageList,
-      pageIndex
-    },
-  });
-});
-
-exports.renderProducts = (req, res, next) => {
-  res.render("./admin/products", { layout: "adminMain.hbs" });
-};
-
-exports.getUserData = catchAsync( async (req, res, next) => {
-  // Get params
-  let page = req.query.page;
-  let sortQ = req.query.sort;
-  let key_search = req.query.search;
-  let type_search = req.query.type.toLowerCase();
-  // Handle Page Number
-  if(page) {
+  if (page) {
     // Get specific page
     page = parseInt(page);
     if (page <= 0) page = 1;
@@ -199,42 +101,324 @@ exports.getUserData = catchAsync( async (req, res, next) => {
   let skipNumElement = (page - 1) * ELEMENT_PER_PAGE;
   // Handle Sort Option
   let sort_option = {};
-  let option_list = sortQ.split('-');
+  let option_list = sortQ.split("-");
   let is_descending = false;
-  for(let i = 0; i < option_list.length; i++) {
-    if(option_list[i] === 'name') {
-      sort_option['name'] = 1;
-    }
-    else if(option_list[i] === 'email') {
-      sort_option['email'] = 1;
-    }
-    else if(option_list[i] === 'registime') {
-      sort_option['createdAt'] = 1;
-    }
-    else if(option_list[i] === 'spent') {
-      sort_option['total_spent'] = 1;
-    }
-    else if(option_list[i] === 'desorder') {
+  for (let i = 0; i < option_list.length; i++) {
+    if (option_list[i] === "name") {
+      sort_option["name"] = 1;
+    } else if (option_list[i] === "time") {
+      sort_option["createdAt"] = 1;
+    } else if (option_list[i] === "price") {
+      sort_option["price"] = 1;
+    } else if (option_list[i] === "desorder") {
       is_descending = true;
     }
   }
 
-  if(is_descending) {
-    Object.keys(sort_option).forEach(key => {
+  if (is_descending) {
+    Object.keys(sort_option).forEach((key) => {
       sort_option[key] = -1;
     });
   }
 
   // Handle search
-  let search_option = {}
-  if(type_search != 'none' && key_search != '') {
-    search_option[type_search] = { $regex: key_search, $options: 'i' };
+  let search_option = {};
+  if (type_search != "none" && key_search != "") {
+    search_option[type_search] = { $regex: key_search, $options: "i" };
+  }
+
+  // Find all in database
+  const total = await ProductModel.find(search_option).count();
+
+  let products = await ProductModel.find(search_option)
+    .sort(sort_option)
+    .skip(skipNumElement)
+    .limit(ELEMENT_PER_PAGE);
+
+  let pageNumber =
+    total % ELEMENT_PER_PAGE === 0
+      ? total / ELEMENT_PER_PAGE
+      : Math.floor(total / ELEMENT_PER_PAGE) + 1;
+
+  let nextNum = page < pageNumber ? page + 1 : page;
+  let pageIndex = { prev, nextNum, maxpage: pageNumber };
+  let pageList = [];
+
+  if (pageNumber <= 3 || page === 1) {
+    let count = 0;
+    for (let i = page; i <= pageNumber && count < 3; i++, count++) {
+      pageList.push({ num: i, is_cur: false });
+    }
+  } else {
+    let count = 0;
+    if (page <= pageNumber) {
+      pageList.push({ num: page, is_cur: false });
+      count++;
+    }
+    if (page + 1 <= pageNumber) {
+      pageList.push({ num: page + 1, is_cur: false });
+      count++;
+    }
+    for (let i = page - 1; i >= 1 && count < 3; i--, count++) {
+      pageList.unshift({ num: i, is_cur: false });
+    }
+  }
+  for (let i = 0; i < pageList.length; i++) {
+    if (pageList[i].num === page) {
+      pageList[i].is_cur = true;
+    }
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      products,
+      pageList,
+      pageIndex,
+    },
+  });
+});
+
+exports.getOrdersData = catchAsync(async (req, res, next) => {
+  // Get params
+  let page = req.query.page;
+  let sortQ = req.query.sort;
+  let status = req.query.status;
+  // Handle Page Number
+  if (page) {
+    // Get specific page
+    page = parseInt(page);
+    if (page <= 0) page = 1;
+  } else {
+    page = 1;
+  }
+  let prev = page > 1 ? page - 1 : page;
+  let skipNumElement = (page - 1) * ELEMENT_PER_PAGE;
+  // Handle Sort Option
+  let sort_option = {};
+  let option_list = sortQ.split("-");
+  let is_descending = false;
+  for (let i = 0; i < option_list.length; i++) {
+    if (option_list[i] === "name") {
+      sort_option["name"] = 1;
+    } else if (option_list[i] === "time") {
+      sort_option["createdAt"] = 1;
+    } else if (option_list[i] === "subTotal") {
+      sort_option["subTotal"] = 1;
+    } else if (option_list[i] === "desorder") {
+      is_descending = true;
+    }
+  }
+
+  if (is_descending) {
+    Object.keys(sort_option).forEach((key) => {
+      sort_option[key] = -1;
+    });
+  }
+
+  // Handle search
+  let search_option = {};
+  if (status) {
+    search_option["status"] = status;
+  }
+
+  // Find all in database
+  const total = await OrderModel.find(search_option).count();
+
+  let orders = await OrderModel.find(search_option)
+    .sort(sort_option)
+    .skip(skipNumElement)
+    .limit(ELEMENT_PER_PAGE)
+    .populate("userId");
+
+  let pageNumber =
+    total % ELEMENT_PER_PAGE === 0
+      ? total / ELEMENT_PER_PAGE
+      : Math.floor(total / ELEMENT_PER_PAGE) + 1;
+
+  let nextNum = page < pageNumber ? page + 1 : page;
+  let pageIndex = { prev, nextNum, maxpage: pageNumber };
+  let pageList = [];
+
+  if (pageNumber <= 3 || page === 1) {
+    let count = 0;
+    for (let i = page; i <= pageNumber && count < 3; i++, count++) {
+      pageList.push({ num: i, is_cur: false });
+    }
+  } else {
+    let count = 0;
+    if (page <= pageNumber) {
+      pageList.push({ num: page, is_cur: false });
+      count++;
+    }
+    if (page + 1 <= pageNumber) {
+      pageList.push({ num: page + 1, is_cur: false });
+      count++;
+    }
+    for (let i = page - 1; i >= 1 && count < 3; i--, count++) {
+      pageList.unshift({ num: i, is_cur: false });
+    }
+  }
+  for (let i = 0; i < pageList.length; i++) {
+    if (pageList[i].num === page) {
+      pageList[i].is_cur = true;
+    }
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      orders,
+      pageList,
+      pageIndex,
+    },
+  });
+});
+
+// exports.getOrdersData = catchAsync(async (req, res, next) => {
+//   // Get params
+//   let page = req.query.page;
+//   let sortQ = req.query.sort;
+//   let type_search = req.query.type.toLowerCase();
+//   // Handle Page Number
+//   if (page) {
+//     // Get specific page
+//     page = parseInt(page);
+//     if (page <= 0) page = 1;
+//   } else {
+//     page = 1;
+//   }
+//   let prev = page > 1 ? page - 1 : page;
+//   let skipNumElement = (page - 1) * ELEMENT_PER_PAGE;
+//   // Handle Sort Option
+//   let sort_option = {};
+//   let option_list = sortQ.split("-");
+//   let is_descending = false;
+//   for (let i = 0; i < option_list.length; i++) {
+//     if (option_list[i] === "name") {
+//       sort_option["name"] = 1;
+//     } else if (option_list[i] === "time") {
+//       sort_option["createdAt"] = 1;
+//     } else if (option_list[i] === "price") {
+//       sort_option["price"] = 1;
+//     } else if (option_list[i] === "desorder") {
+//       is_descending = true;
+//     }
+//   }
+
+//   if (is_descending) {
+//     Object.keys(sort_option).forEach((key) => {
+//       sort_option[key] = -1;
+//     });
+//   }
+
+//   // Handle search
+//   let search_option = {};
+
+//   // Find all in database
+//   const total = await OrderModel.find(search_option).count();
+
+//   let orders = await OrderModel.find(search_option)
+//     .sort(sort_option)
+//     .skip(skipNumElement)
+//     .limit(ELEMENT_PER_PAGE);
+
+//   let pageNumber =
+//     total % ELEMENT_PER_PAGE === 0
+//       ? total / ELEMENT_PER_PAGE
+//       : Math.floor(total / ELEMENT_PER_PAGE) + 1;
+
+//   let nextNum = page < pageNumber ? page + 1 : page;
+//   let pageIndex = { prev, nextNum, maxpage: pageNumber };
+//   let pageList = [];
+
+//   if (pageNumber <= 3 || page === 1) {
+//     let count = 0;
+//     for (let i = page; i <= pageNumber && count < 3; i++, count++) {
+//       pageList.push({ num: i, is_cur: false });
+//     }
+//   } else {
+//     let count = 0;
+//     if (page <= pageNumber) {
+//       pageList.push({ num: page, is_cur: false });
+//       count++;
+//     }
+//     if (page + 1 <= pageNumber) {
+//       pageList.push({ num: page + 1, is_cur: false });
+//       count++;
+//     }
+//     for (let i = page - 1; i >= 1 && count < 3; i--, count++) {
+//       pageList.unshift({ num: i, is_cur: false });
+//     }
+//   }
+//   for (let i = 0; i < pageList.length; i++) {
+//     if (pageList[i].num === page) {
+//       pageList[i].is_cur = true;
+//     }
+//   }
+//   res.status(200).json({
+//     status: "success",
+//     data: {
+//       orders,
+//       pageList,
+//       pageIndex,
+//     },
+//   });
+// });
+
+exports.renderProducts = (req, res, next) => {
+  res.render("./admin/products", { layout: "adminMain.hbs" });
+};
+
+exports.getUserData = catchAsync(async (req, res, next) => {
+  // Get params
+  let page = req.query.page;
+  let sortQ = req.query.sort;
+  let key_search = req.query.search;
+  let type_search = req.query.type.toLowerCase();
+  // Handle Page Number
+  if (page) {
+    // Get specific page
+    page = parseInt(page);
+    if (page <= 0) page = 1;
+  } else {
+    page = 1;
+  }
+  let prev = page > 1 ? page - 1 : page;
+  let skipNumElement = (page - 1) * ELEMENT_PER_PAGE;
+  // Handle Sort Option
+  let sort_option = {};
+  let option_list = sortQ.split("-");
+  let is_descending = false;
+  for (let i = 0; i < option_list.length; i++) {
+    if (option_list[i] === "name") {
+      sort_option["name"] = 1;
+    } else if (option_list[i] === "email") {
+      sort_option["email"] = 1;
+    } else if (option_list[i] === "registime") {
+      sort_option["createdAt"] = 1;
+    } else if (option_list[i] === "spent") {
+      sort_option["total_spent"] = 1;
+    } else if (option_list[i] === "desorder") {
+      is_descending = true;
+    }
+  }
+
+  if (is_descending) {
+    Object.keys(sort_option).forEach((key) => {
+      sort_option[key] = -1;
+    });
+  }
+
+  // Handle search
+  let search_option = {};
+  if (type_search != "none" && key_search != "") {
+    search_option[type_search] = { $regex: key_search, $options: "i" };
   }
 
   // Find all in database
   const total = await UserModel.find(search_option).count();
 
-  let users = await UserModel.find(search_option).sort(sort_option)
+  let users = await UserModel.find(search_option)
+    .sort(sort_option)
     .skip(skipNumElement)
     .limit(ELEMENT_PER_PAGE);
 
@@ -281,27 +465,26 @@ exports.getUserData = catchAsync( async (req, res, next) => {
   });
 });
 
-exports.banUser = catchAsync( async (req, res, next) => {
+exports.banUser = catchAsync(async (req, res, next) => {
   let userid = req.query.id;
   let handle_type = req.query.type;
-  if(userid !== 'none') {
+  if (userid !== "none") {
     const ban_user = await UserModel.findById(userid);
-    if(handle_type === 'ban') {
+    if (handle_type === "ban") {
       ban_user.active = false;
-    }
-    else if(handle_type === 'unban') {
+    } else if (handle_type === "unban") {
       ban_user.active = true;
     }
     await ban_user.save();
   }
   res.status(200).json({
-    status: "success"
+    status: "success",
   });
-})
+});
 
 exports.renderUserCenter = (req, res, next) => {
-  res.render("./admin/user-center", { 
-    layout: "adminMain.hbs"
+  res.render("./admin/user-center", {
+    layout: "adminMain.hbs",
   });
 };
 
@@ -316,18 +499,18 @@ exports.renderGoogleCallback = passport.authenticate("google", {
 });
 
 exports.renderCreateProduct = (req, res, next) => {
-  res.render("./admin/create-product", {layout: "adminMain.hbs"});
+  res.render("./admin/create-product", { layout: "adminMain.hbs" });
 };
 
 exports.createNewProduct = catchAsync(async (req, res, next) => {
   const newFoodObj = {};
-  
+
   const imgFields = [];
   Object.keys(req.body).forEach((element) => {
     if (!imgFields.includes(element)) {
       newFoodObj[element] = req.body[element];
     }
-  });  
+  });
 
   const new_product = await ProductModel.create(newFoodObj);
 

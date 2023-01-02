@@ -20,6 +20,7 @@ const ItemSchema = new Schema(
     },
     note: {
       type: String,
+      default: "Đang xử lí",
     },
   },
   {

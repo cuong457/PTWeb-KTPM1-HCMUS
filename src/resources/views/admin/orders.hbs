@@ -1,0 +1,171 @@
+<div class="row">
+  <div class="col-12 col-lg-3">
+    <div class="row">
+      <div class="card card-shadow z-index-2 mb-3">
+        <div class="card-header pb-0">
+          <h6><i class="fa-solid fa-filter"></i>&nbsp;Filter</h6>
+        </div>
+        <div class="card-body p-3">
+          <form class="user-filter">
+            <button type="button" value="orders-time-filter" id="orders-time-filter" class="orders-filter-btn">
+              By creation time
+            </button>
+            <button type="button" value="orders-subTotal-filter" id="orders-subTotal-filter" class="orders-filter-btn">
+              By total spent
+            </button>
+            <button type="button" value="orders-desorder-filter" id="orders-desorder-filter" class="orders-filter-btn">
+              Descending Order
+            </button>
+          </form>
+
+          <h6><i class="fa-solid fa-truck"></i>&nbsp;Tình trạng đơn hàng</h6>
+          <select style="background-color: #9C9C9C;" class="orders-status-filter rounded-pill border-0 text-white p-1">
+            <option value="Đang xử lí">Đang xử lí</option>
+            <option value="Đã tiếp nhận">Đã tiếp nhận</option>
+            <option value="Đang giao">Đang giao</option>
+            <option selected="selected" value="all">Tất cả</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-9">
+    <div class="card card-shadow">
+      <div class="card-header">
+        <div class='row'>
+          <div class='col-12 col-md-5 d-flex align-items-center pb-3'>
+            <p class='title-font text-xlg text-bold'>PRODUCT LIST</p>
+          </div>
+          <div class='col-12 col-md-7'>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class='row userpanel-wrapper p-5 pt-3 orders-list'>
+          {{!-- PUT USER LIST HERE USING JS --}}
+        </div>
+        <div class='row pb-4 d-flex justify-content-center'>
+          <div class="admin-products-pagination-wrapper">
+            {{!-- PUT PAGINATION BUTTON HERE USING JS --}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- JS --}}
+<script id="orders-list-template" type="text/x-handlebars-template">
+  \{{#if_cond pageIndex.maxpage '===' 0}}
+      <img src='/images/noti/empty-user.png' class="img-fluid" alt='empty-user'/>
+  \{{else}}
+    \{{#each ../orders}}
+      <div class="col-6 col-xxl-4 pb-4 d-flex justify-content-center">
+        <div class="card admin-card">
+          <img src="https://i.ytimg.com/vi/hKVhJ4xdZSE/maxresdefault.jpg" class="card-img-top p-3 pb-0" alt='card'/>
+          <div class="card-body">
+              \{{#with userId}}
+              \{{#if name}}
+              <p class="me-title text-lightblue user-name">Customer: \{{name}}</p>
+              \{{/if}}
+              \{{/with}}
+              <p class="sm-title user-spent">Created at <span class="rtab-money">\{{#toStandardDate createdAt}}\{{/toStandardDate}}</span></p>
+              <p class="sm-title user-spent">Payment <span class="rtab-money">\{{payment}}</span></p>
+              <p class="sm-title user-spent">Subtotal <span class="rtab-money">\{{#toPrice subTotal}}\{{/toPrice}} VNĐ</span>
+              <p class="sm-title user-spent">Status <span class="rtab-money">\{{status}}</span></p>
+              <div class="text-center">
+                <a 
+                    href='#show-productdetail-\{{_id}}'
+                    class="btn btn-outline-dark admin-ban-btn"
+                >
+                    See more detail
+                </a>
+              </div>
+          </div>
+        </div>
+        <div class="admin-card-detail" id='show-productdetail-\{{_id}}'>
+          <div class="popup">
+            <div class="product-content">
+              <a href="#" class="exit-popup-btn">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </a>
+              <div class="col h-100">
+                <div class="row d-flex justify-content-end mt-3 mb-5">
+                  &nbsp;
+                </div>
+                <div class="row mb-5">
+                  \{{#with userId}}
+                  <div class="col-3">
+                    <img src="\{{photo}}"  class="img-fluid product-detail-img-holder">
+                  </div>
+                  <div class="col-9">
+                    <p class="product-detail-text">Tên: \{{name}}</p>
+                    <p class="product-detail-text">Tổng chi: \{{#toPrice total_spent}}\{{/toPrice}} VNĐ</p>
+                    <p class="product-detail-text">Sđt \{{phone}}</p>
+                    <p class="sm-title user-spent">Địa chỉ <span class="rtab-money">\{{address}}</span></p>
+                  \{{/with}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-8">
+                    <p class="product-detail-text">Giá trị đơn hàng: \{{#toPrice subTotal}}\{{/toPrice}} VNĐ</p>
+                    <p class="product-detail-text">Phương thức thanh toán: \{{payment}}</p>
+                    <p class="product-detail-text">Ghi chú: \{{note}}</p>
+                    <p class="sm-title user-spent">Ngày tạo: <span class="rtab-money">\{{#toStandardDate createdAt}}\{{/toStandardDate}}</span></p>
+                    <select data-order-id="\{{_id}}" class="orders-status-select mt-3 rounded-pill border-0 bg-secondary text-white px-2 py-1">
+                      <option value="Đang xử lí">Đang xử lí</option>
+                      <option value="Đã tiếp nhận">Đã tiếp nhận</option>
+                      <option value="Đang giao">Đang giao</option>
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <img src="https://i.ytimg.com/vi/hKVhJ4xdZSE/maxresdefault.jpg"  class="img-fluid product-detail-img-holder">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    \{{/each}}
+  \{{/if_cond}}
+</script>
+<script id="products-pagination-template" type="text/x-handlebars-template">
+  \{{#if_cond pageIndex.maxpage '>=' 1}}
+  <div class="pagination-btn-list">
+    <button 
+      id='1'
+      type="button" 
+      class="products-page-number-btn"
+    >
+      <i class="fa-solid fa-angles-left"></i>
+    </button>
+    <button 
+      id="\{{../pageIndex.prev}}"
+      type="button"
+      class="products-page-number-btn"
+    >
+      <i class="fa-solid fa-angle-left"></i>
+    </button>
+    \{{#each ../pageList}}
+      <button id=\{{num}} type="button" class="products-page-number-btn \{{#if is_cur}}active-numpage\{{/if}}">
+        \{{num}}
+      </button>
+    \{{/each}}
+    <button 
+      id="\{{../pageIndex.nextNum}}"
+      type="button" 
+      class="products-page-number-btn"
+    >
+      <i class="fa-solid fa-angle-right"></i>
+    </button>
+    <button 
+      id="\{{../pageIndex.maxpage}}"
+      type="button" 
+      class="products-page-number-btn"
+    >
+      <i class="fa-solid fa-angles-right"></i>
+    </button>
+  </div>
+  \{{/if_cond}}
+</script>

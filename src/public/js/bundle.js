@@ -464,6 +464,210 @@ function handleFilterProducts(e) {
     renderPC(1, option);
   }
 }
+},{}],"user/orders-handle.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleFilterOrders = handleFilterOrders;
+exports.renderOC = renderOC;
+exports.updateOrderStatus = updateOrderStatus;
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, catch: function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+var option = "";
+var status = "";
+var key_srch = "";
+var type_srch = "none";
+var cur_page = 1;
+
+// handle update order status
+
+function reGetOrdersData(e) {
+  var target = e.target;
+  if (target.id) {
+    cur_page = target.id;
+    renderOC(cur_page, option);
+  } else {
+    cur_page = target.parentElement.id;
+    renderOC(cur_page, option);
+  }
+}
+function updateOrderStatus(_x) {
+  return _updateOrderStatus.apply(this, arguments);
+}
+function _updateOrderStatus() {
+  _updateOrderStatus = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
+    var value, orderId, response, errRes;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            value = e.target.value;
+            orderId = e.target.dataset.orderId;
+            _context.prev = 2;
+            _context.next = 5;
+            return fetch("/api/v1/orders/".concat(orderId), {
+              method: "PATCH",
+              body: JSON.stringify({
+                status: value
+              }),
+              headers: {
+                "Content-Type": "application/json"
+              }
+            });
+          case 5:
+            response = _context.sent;
+            if (response.ok) {
+              _context.next = 12;
+              break;
+            }
+            _context.next = 9;
+            return response.json();
+          case 9:
+            errRes = _context.sent;
+            alert(errRes.message);
+            return _context.abrupt("return");
+          case 12:
+            _context.next = 14;
+            return response.json();
+          case 14:
+            _context.next = 19;
+            break;
+          case 16:
+            _context.prev = 16;
+            _context.t0 = _context["catch"](2);
+            alert(_context.t0.message);
+          case 19:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[2, 16]]);
+  }));
+  return _updateOrderStatus.apply(this, arguments);
+}
+function renderOC() {
+  var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  var sortQ = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "none";
+  var status = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+  fetch("http://localhost:3000/admin/orders/get-orders-data?page=" + page + "&sort=" + sortQ + "&status=" + status).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    var orders = data.data.orders;
+    var pageList = data.data.pageList;
+    var pageIndex = data.data.pageIndex;
+    var source = $("#orders-list-template").html();
+    var template = Handlebars.compile(source);
+    var html = template({
+      orders: orders,
+      pageIndex: pageIndex
+    });
+    $(".orders-list").html(html);
+    var psource = $("#products-pagination-template").html();
+    var ptemplate = Handlebars.compile(psource);
+    var phtml = ptemplate({
+      pageList: pageList,
+      pageIndex: pageIndex
+    });
+    $(".admin-products-pagination-wrapper").html(phtml);
+
+    // add update order event
+    $(".orders-status-select").change(updateOrderStatus);
+    var numpage_btn = document.querySelectorAll(".products-page-number-btn");
+    if (numpage_btn) {
+      numpage_btn.forEach(function (btn) {
+        btn.addEventListener("click", reGetOrdersData);
+      });
+    }
+  }).catch(function (err) {
+    console.log(err);
+  });
+}
+
+// export function handleClearSearchboxProducts(e) {
+//   const searchbox = document.getElementById("products-search-box");
+//   if (searchbox.value.trim() !== "") {
+//     searchbox.value = "";
+//   }
+// }
+
+// export function handleSelectTypeProducts(e) {
+//   const target_key = e.target.innerText;
+//   $("#products-typesearch-btn").html(target_key);
+//   document.getElementById("products-typesearch-btn").dataset.type = target_key;
+// }
+
+// export function handleSearchProducts(e) {
+//   key_srch = document.getElementById("products-search-box").value.trim();
+//   type_srch = document.getElementById("products-typesearch-btn").dataset.type;
+//   if (key_srch !== "" && type_srch != "none") {
+//     renderPC(1, option, key_srch, type_srch);
+//   }
+// }
+
+function handleFilterOrders(e) {
+  option = ""; //refresh
+  var cur_target = e.target;
+
+  // handle select element
+  var isSelectElement = cur_target.classList.contains("orders-status-filter");
+  if (isSelectElement) {
+    if (cur_target.value === "all") {
+      status = "";
+    } else {
+      status = cur_target.value;
+    }
+  }
+  if (!$(cur_target).hasClass("filter-btn-active")) {
+    switch (cur_target.value) {
+      case "orders-name-filter":
+        option += "name";
+        break;
+      case "orders-time-filter":
+        option += "time";
+        break;
+      case "orders-subTotal-filter":
+        option += "subTotal";
+        break;
+      case "orders-desorder-filter":
+        option += "desorder";
+        break;
+      default:
+        break;
+    }
+    var filterBtnList = document.querySelectorAll(".orders-filter-btn");
+    if (filterBtnList) {
+      filterBtnList.forEach(function (btn) {
+        if ($("#" + btn.id).hasClass("filter-btn-active")) {
+          option += "-" + btn.id.split("-")[1];
+        }
+      });
+    }
+    if (!isSelectElement) {
+      $(cur_target).addClass("filter-btn-active");
+    }
+    renderOC(1, option, status);
+  } else {
+    // Handle active button
+    if (!isSelectElement) {
+      $(cur_target).removeClass("filter-btn-active");
+    }
+    // Get option
+    var _filterBtnList = document.querySelectorAll(".orders-filter-btn");
+    if (_filterBtnList) {
+      _filterBtnList.forEach(function (btn) {
+        if ($("#" + btn.id).hasClass("filter-btn-active")) {
+          option += "-" + btn.id.split("-")[1];
+        }
+      });
+    }
+    option = option.slice(1, option.length);
+    renderOC(1, option, status);
+  }
+}
 },{}],"payment/cart.js":[function(require,module,exports) {
 "use strict";
 
@@ -825,10 +1029,17 @@ function loadProductPage(query) {
         selected: idx + pagination_info.first_page === pagination_info.current_page
       };
     });
-    $("#pagination-list").html(Handlebars.compile($("#pagination-template").html())(links));
+    $("#pagination-list").html(Handlebars.compile($("#pagination-template").html())({
+      links: links,
+      prev: pagination_info.previous_page,
+      next: pagination_info.next_page,
+      start: 1,
+      end: pagination_info.total_pages
+    }));
     $(".pagination-item .page-item").click(function (event) {
       event.preventDefault();
-      var newQuery = createUrl("page", $(this).html());
+      event.stopPropagation();
+      var newQuery = createUrl("page", this.getAttribute("value"));
       loadProductPage(newQuery);
     });
   }).catch(function (err) {
@@ -1091,6 +1302,7 @@ exports.clickOrderButton = clickOrderButton;
 var _signOut = require("./auth/sign-out.js");
 var _ucHandle = require("./user/uc-handle.js");
 var _productsHandle = require("./user/products-handle.js");
+var _ordersHandle = require("./user/orders-handle.js");
 var _cart = require("./payment/cart.js");
 var _filter = require("./product/filter.js");
 var _order = require("./payment/order.js");
@@ -1134,58 +1346,74 @@ Handlebars.registerHelper("toStandardDate", function (raw_date) {
   return new Date(raw_date).toLocaleDateString();
 });
 Handlebars.registerHelper("getNameFromEmail", function (email) {
-  return email.slice(0, email.indexOf('@'));
+  return email.slice(0, email.indexOf("@"));
 });
 
 // Admin handling
-var clearSearchboxUser = document.getElementById('user-clearsearch-btn');
+var clearSearchboxUser = document.getElementById("user-clearsearch-btn");
 if (clearSearchboxUser) {
-  clearSearchboxUser.addEventListener('click', _ucHandle.handleClearSearchboxUser);
+  clearSearchboxUser.addEventListener("click", _ucHandle.handleClearSearchboxUser);
 }
-var userSearchBtn = document.getElementById('usercenter-search-button');
+var userSearchBtn = document.getElementById("usercenter-search-button");
 if (userSearchBtn) {
-  userSearchBtn.addEventListener('click', _ucHandle.handleSearch);
+  userSearchBtn.addEventListener("click", _ucHandle.handleSearch);
 }
 var userFilterBtn = document.querySelectorAll(".filter-btn");
 if (userFilterBtn) {
   document.querySelectorAll(".filter-btn").forEach(function (btn) {
-    btn.addEventListener('click', _ucHandle.handleFilter);
+    btn.addEventListener("click", _ucHandle.handleFilter);
   });
 }
-var first_ren_UC = document.querySelector('.user-list');
+var first_ren_UC = document.querySelector(".user-list");
 if (first_ren_UC) {
   (0, _ucHandle.renderUC)();
 }
-var userTypeBtn = document.querySelectorAll('.type-btn');
+var userTypeBtn = document.querySelectorAll(".type-btn");
 if (userTypeBtn) {
   userTypeBtn.forEach(function (btn) {
-    btn.addEventListener('click', _ucHandle.handleSelectType);
+    btn.addEventListener("click", _ucHandle.handleSelectType);
   });
 }
 // Product handling
-var clearSearchboxProducts = document.getElementById('products-clearsearch-btn');
+var clearSearchboxProducts = document.getElementById("products-clearsearch-btn");
 if (clearSearchboxProducts) {
-  clearSearchboxProducts.addEventListener('click', _productsHandle.handleClearSearchboxProducts);
+  clearSearchboxProducts.addEventListener("click", _productsHandle.handleClearSearchboxProducts);
 }
-var productsSearchBtn = document.getElementById('products-search-button');
+var productsSearchBtn = document.getElementById("products-search-button");
 if (productsSearchBtn) {
-  productsSearchBtn.addEventListener('click', _productsHandle.handleSearchProducts);
+  productsSearchBtn.addEventListener("click", _productsHandle.handleSearchProducts);
 }
 var productsFilterBtn = document.querySelectorAll(".products-filter-btn");
 if (productsFilterBtn) {
   document.querySelectorAll(".products-filter-btn").forEach(function (btn) {
-    btn.addEventListener('click', _productsHandle.handleFilterProducts);
+    btn.addEventListener("click", _productsHandle.handleFilterProducts);
   });
 }
-var first_ren_PC = document.querySelector('.products-list');
+var first_ren_PC = document.querySelector(".products-list");
 if (first_ren_PC) {
   (0, _productsHandle.renderPC)();
 }
-var productsTypeBtn = document.querySelectorAll('.products-type-btn');
+var productsTypeBtn = document.querySelectorAll(".products-type-btn");
 if (productsTypeBtn) {
   productsTypeBtn.forEach(function (btn) {
-    btn.addEventListener('click', _productsHandle.handleSelectTypeProducts);
+    btn.addEventListener("click", _productsHandle.handleSelectTypeProducts);
   });
+}
+
+// remove: handleClearSearchboxProducts, handleSearchProducts
+// Order handling
+var productsFilterOrderBtn = document.querySelectorAll(".orders-filter-btn");
+console.log(productsFilterOrderBtn);
+if (productsFilterOrderBtn.length > 0) {
+  productsFilterOrderBtn.forEach(function (btn) {
+    btn.addEventListener("click", _ordersHandle.handleFilterOrders);
+  });
+  var productsFilterOrderSelect = document.querySelector(".orders-status-filter");
+  productsFilterOrderSelect.addEventListener("change", _ordersHandle.handleFilterOrders);
+}
+var first_ren_OC = document.querySelector(".orders-list");
+if (first_ren_OC) {
+  (0, _ordersHandle.renderOC)();
 }
 
 // auth handling
@@ -1207,9 +1435,11 @@ var orderBtn = document.getElementById("buy-btn");
 var quantityCartBtn = _toConsumableArray(document.querySelectorAll("input[name='quantity']"));
 var deleteItemBtn = _toConsumableArray(document.querySelectorAll("button[name='delete-item-btn']"));
 if (signOutBtnAdmin) {
+  console.log("hello");
   signOutBtnAdmin.addEventListener("click", _signOut.signOut);
 }
 if (signOutBtnUser) {
+  console.log("hello");
   // alert("logout successfully");
   signOutBtnUser.addEventListener("click", _signOut.signOut);
 }
@@ -1286,7 +1516,7 @@ if (buttonSearch) {
     }
   });
 }
-},{"./auth/sign-out.js":"auth/sign-out.js","./user/uc-handle.js":"user/uc-handle.js","./user/products-handle.js":"user/products-handle.js","./payment/cart.js":"payment/cart.js","./product/filter.js":"product/filter.js","./payment/order.js":"payment/order.js"}],"../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./auth/sign-out.js":"auth/sign-out.js","./user/uc-handle.js":"user/uc-handle.js","./user/products-handle.js":"user/products-handle.js","./user/orders-handle.js":"user/orders-handle.js","./payment/cart.js":"payment/cart.js","./product/filter.js":"product/filter.js","./payment/order.js":"payment/order.js"}],"../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1311,7 +1541,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55992" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54934" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

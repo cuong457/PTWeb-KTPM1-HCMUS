@@ -687,9 +687,6 @@ body p {
 
 // pagination
 .pagination-list {
-  padding-bottom: 12px;
-  max-width: 400px;
-  overflow-x: auto;
   list-style: none;
   padding-left: 0;
   height: 100%;
@@ -715,15 +712,16 @@ body p {
 /* Handle on hover */
 .pagination-list::-webkit-scrollbar-thumb:hover {
   background: #555;
+  margin: 0 12px;
 }
 
 .pagination-item a {
   text-decoration: none;
-  padding: 4px 12px;
   display: block;
   color: #333;
   font-size: 18px;
-  margin: 0 12px;
+  padding: 4px 12px;
+  margin: 0 8px;
   border-radius: 0.3rem;
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out
 }
@@ -733,10 +731,22 @@ body p {
   color: white;
 }
 
-.pagination-item a:hover {
+.pagination-item a:hover, .pagination-item li:hover {
   background-color: #333;
   color: white;
   // text-decoration: underline;
+}
+
+i.page-item {
+  border-radius: 0.3rem;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  padding: 8px 12px;
+  margin: 0 12px;
+}
+
+i.page-item:hover {
+  background-color: #333;
+  color: white;
 }
 
 .user-dropdown {
@@ -1301,7 +1311,7 @@ body p {
   color: white!important;
   background-color: red!important;
 }
-.filter-btn, .products-filter-btn {
+.filter-btn, .products-filter-btn, .orders-filter-btn {
   background-color: rgb(156, 156, 156);
   color: white;
   border-radius: 0.5rem;

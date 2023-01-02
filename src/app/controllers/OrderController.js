@@ -37,14 +37,21 @@ exports.createOrder = catchAsync(async (req, res, next) => {
   //     updatedAt: 2022-12-31T12:07:11.197Z
   //   }
   // ]
-  const products = [...cart.products].filter((product) => {
-    return product.selected;
+  const products = [...cart.products].filter((prod) => {
+    return prod.selected;
   });
 
   // dang lam
   const productSelectedPromises = products.map((prod) => {
     return ProductModel.findById(prod.productId);
   });
+
+  const productsUpdatedSpent = await Promise.all(productSelectedPromises);
+  const productsUpdatedSpentPromises = products.map((prod, index) => {
+    productsUpdatedSpent[index]["total_purchase"] += prod.total;
+    return productsUpdatedSpent[index].save();
+  });
+  await Promise.all(productsUpdatedSpentPromises);
   // dang lam
 
   const totalPrice = products.reduce((accumulator, prod) => {
@@ -74,4 +81,23 @@ exports.createOrder = catchAsync(async (req, res, next) => {
   const newCart = await cart.save();
 
   res.redirect(`/`);
+});
+
+exports.updateOrder = catchAsync(async (req, res, next) => {
+  const orderId = req.params.id;
+  const order = await OrderModel.findByIdAndUpdate(orderId, req.body, {
+    validateBeforeSave: true,
+    new: true,
+  });
+
+  if (!order) {
+    return next(new AppError(400, "cannot find order with that id"));
+  }
+
+  return res.status(200).json({
+    status: "success",
+    data: {
+      order,
+    },
+  });
 });

@@ -69,11 +69,18 @@ export function loadProductPage(query) {
       }));
 
       $("#pagination-list").html(
-        Handlebars.compile($("#pagination-template").html())(links)
+        Handlebars.compile($("#pagination-template").html())({
+          links,
+          prev: pagination_info.previous_page,
+          next: pagination_info.next_page,
+          start: 1,
+          end: pagination_info.total_pages,
+        })
       );
       $(".pagination-item .page-item").click(function (event) {
         event.preventDefault();
-        const newQuery = createUrl("page", $(this).html());
+        event.stopPropagation();
+        const newQuery = createUrl("page", this.getAttribute("value"));
         loadProductPage(newQuery);
       });
     })

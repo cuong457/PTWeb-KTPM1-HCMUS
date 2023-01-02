@@ -123,6 +123,7 @@
         <div class="row py-4">
             <div class="col-4"></div>
             <div class="col-8 d-flex justify-content-center align-items-center bg-white">
+
                 <ul id="pagination-list" class="pagination-list d-flex align-items-center bg-white">
                 </ul>
             </div>
@@ -168,10 +169,22 @@
 </script>
 
 <script id="pagination-template" type="text/x-handlebars-template">
-\{{#each .}}
+<li class="pagination-item">
+    <i class="page-item fa-solid fa-angles-left" value=\{{start}} data-query="page=\{{start}}"></i>
+</li>
+<li class="pagination-item">
+    <i class="page-item fa-solid fa-angle-left" value=\{{prev}} data-query="page=\{{prev}}"></i>
+</li>
+\{{#each links}}
     <li class="pagination-item">
         <a class="page-item \{{#if selected}}selected\{{/if}}" href="javascript:;" value=\{{pageNumber}}
             data-query="page=\{{pageNumber}}">\{{pageNumber}}</a>
     </li>
 \{{/each}}
+<li class="pagination-item">
+    <i class="page-item fa-solid fa-angle-right" value=\{{next}} data-query="page=\{{next}}"></i>
+</li>
+<li class="pagination-item">
+    <i class="page-item fa-solid fa-angles-right" value=\{{end}} data-query="page=\{{end}}"></i>
+</li>
 </script>
