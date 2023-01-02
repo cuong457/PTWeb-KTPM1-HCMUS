@@ -153,19 +153,33 @@ if (createProductForm) {
         const nameInput = this.elements[(name = "name")];
         const priceInput = this.elements[(name = "price")];
         const manufacturerInput = this.elements[(name = "manufacturer")];
-        
         const descriptionInput = this.elements[(name = "description")];
+
+        if (!nameInput.value 
+            || !priceInput.value 
+            || !manufacturerInput.value 
+            || !descriptionInput.value) {
+            alert('Missing input field(s)!');
+            return;
+        }
+
         const foodThumbnailInput = this.elements[(name = "food-photo-input-thumbnail")];
         const photoInput = this.elements[(name = "food-photo-input-detail")];
         
         formData.append("name", nameInput.value)
         formData.append("price", priceInput.value);
-        formData.append("category", []);
+        formData.append("category", ["general"]);
         formData.append("manufacturer", manufacturerInput.value);
         formData.append("stock", 100);
         formData.append("suspended", false);
         formData.append("description", descriptionInput.value);
-
+        
+        if (foodThumbnailInput.files.length === 0 || photoInput.files.length === 0) {
+            alert('Missing Image!');
+            return;
+        }
+        
+        
         formData.append("foodThumbnail", foodThumbnailInput.files[0]);     
         for (let i = 0; i < photoInput.files.length; i++) {
             formData.append("photo", photoInput.files[i]);
@@ -222,6 +236,23 @@ if (containerUpdateProduct) {
 
         foodThumbnailPath = foodToUpdate.foodThumbnail;
         foodPhotoPaths = foodToUpdate.photo;
+
+        let categorySelect = document.getElementById('category-update');
+        let manufacturerSelect = document.getElementById('manufacturer-update');
+
+        for(let i, j = 0; i = categorySelect.options[j]; j++) {
+            if(i.value == foodToUpdate.category[0]) {
+                categorySelect.selectedIndex = j;
+                break;
+            }
+        }
+        
+        for(let i, j = 0; i = manufacturerSelect.options[j]; j++) {
+            if(i.value == foodToUpdate.manufacturer) {
+                manufacturerSelect.selectedIndex = j;
+                break;
+            }
+        }        
     }) 
 
     imagesThumbnailUpdate.addEventListener("change", (e) => previewFoodThumnail(e, outputThumbnailUpdate));
@@ -231,13 +262,13 @@ if (containerUpdateProduct) {
         e.preventDefault();
         
         const formData = new FormData();
-        const nameInput = this.elements[(name = "name")];
-        const priceInput = this.elements[(name = "price")];
-        const categoryInpur = this.elements[(name = "category")];
-        const manufacturerInput = this.elements[(name = "manufacturer")];
-        const stockInput = this.elements[(name = "stock")];
-        const suspendedInput = this.elements[(name = "suspended")];
-        const descriptionInput = this.elements[(name = "description")];
+        const nameInput = this.elements[(name = "name-update")];
+        const priceInput = this.elements[(name = "price-update")];
+        const categoryInpur = this.elements[(name = "category-update")];
+        const manufacturerInput = this.elements[(name = "manufacturer-update")];
+        const stockInput = this.elements[(name = "stock-update")];
+        const suspendedInput = this.elements[(name = "suspended-update")];
+        const descriptionInput = this.elements[(name = "description-update")];
 
         const foodThumbnailInput = this.elements[(name = "food-photo-update-thumbnail")];
         const photoInput = this.elements[(name = "food-photo-update-detail")];
@@ -251,22 +282,27 @@ if (containerUpdateProduct) {
         formData.append("suspended", suspendedInput.value);
         formData.append("description", descriptionInput.value);
 
-        if (foodThumbnailInput.files.length === 0 || photoInput.files.length === 0) {
-            alert('Missing Image!');
-            return;
+        if (foodThumbnailInput.files.length !== 0) {
+            const myDeleteImgData = new FormData();
+            myDeleteImgData.append("paths", foodThumbnailPath);
+            
+            deleteProductsPhoto(myDeleteImgData);  
+            
+            formData.append("foodThumbnail", foodThumbnailInput.files[0]);
         }
-        
-        formData.append("foodThumbnail", foodThumbnailInput.files[0]);
-        for (let i = 0; i < photoInput.files.length; i++) {
-            formData.append("photo", photoInput.files[i]);
+
+        if (photoInput.files.length !== 0) {
+            const myDeleteImgData = new FormData();
+            myDeleteImgData.append("paths", foodPhotoPaths);
+            
+            deleteProductsPhoto(myDeleteImgData);
+            
+            for (let i = 0; i < photoInput.files.length; i++) {
+                formData.append("photo", photoInput.files[i]);
+            }
         }
-    
-        const myDeleteImgData = new FormData();
-        foodPhotoPaths.push(foodThumbnailPath);
-        myDeleteImgData.append("paths", foodPhotoPaths);
-        
-        deleteProductsPhoto(myDeleteImgData);     
-        productSettings(formData, 'update');
+         
+        productSettings(formData, 'update')
     };
 
     updateProductForm.addEventListener("submit", handleUpdateProduct);

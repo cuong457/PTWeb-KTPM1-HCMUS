@@ -33,34 +33,43 @@ exports.uploadTourImages = upload.fields([
 ]);
 
 exports.resizeUploadImages = catchAsync(async (req, res, next) => {
-  if (!req.files["foodThumbnail"] || !req.files["photo"]) return next();
+  if (!req.files["foodThumbnail"] && !req.files["photo"]) { return next(); }
 
-  const foodThumbnailName = `food-${Math.ceil(
-    Math.random() * 1000
-  )}-${Date.now()}-cover.png`;
-  req.body.foodThumbnail = `/images/foodThumnail/${foodThumbnailName}`;
-  let images = [];
-
-  await sharp(req.files["foodThumbnail"][0].buffer)
+  if (req.files["foodThumbnail"]) {
+    
+    const foodThumbnailName = `food-${Math.ceil(
+      Math.random() * 1000
+    )}-${Date.now()}-cover.png`;
+    req.body.foodThumbnail = `/images/foodThumnail/${foodThumbnailName}`;
+    
+    await sharp(req.files["foodThumbnail"][0].buffer)
     .resize(610, 610)
     .toFormat("png")
     // start at root folder
     .toFile(`./src/public${req.body.foodThumbnail}`);
 
-  const resizeImagePromises = req.files["photo"].map(async (file, index) => {
-    const imgIntroFileName = `food-${Math.ceil(
-      Math.random() * 1000
-    )}-${Date.now()}-${index + 1}.png`;
-    images.push(`/images/foods/${imgIntroFileName}`);
+  }
 
-    return sharp(file.buffer)
-      .resize(610, 610)
-      .toFormat("png")
-      .toFile(`./src/public/images/foods/${imgIntroFileName}`);
-  });
+  if (req.files["photo"]) { 
+    let images = [];
+    
+    const resizeImagePromises = req.files["photo"].map(async (file, index) => {
+      const imgIntroFileName = `food-${Math.ceil(
+        Math.random() * 1000
+      )}-${Date.now()}-${index + 1}.png`;
+      images.push(`/images/foods/${imgIntroFileName}`);
 
-  Promise.all(resizeImagePromises);
-  req.body.photo = images;
+      return sharp(file.buffer)
+        .resize(610, 610)
+        .toFormat("png")
+        .toFile(`./src/public/images/foods/${imgIntroFileName}`);
+    });
+
+    Promise.all(resizeImagePromises);
+    req.body.photo = images;
+  
+  }
+  
   next();
 });
 

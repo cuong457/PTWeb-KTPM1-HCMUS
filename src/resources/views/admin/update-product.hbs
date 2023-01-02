@@ -9,13 +9,13 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="name">Food name</label>
-                            <input type="text" class="form-control" value="{{food.name}}" id="name" name="name">
+                            <input type="text" class="form-control" value="{{food.name}}" id="name-update" name="name-update">
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="price">Price</label>
-                            <input type="text" class="form-control" value="{{food.price}}" id="price" name="price">
+                            <input type="text" class="form-control" value="{{food.price}}" id="price-update" name="price-update">
                         </div>
                     </div>
                 </div>
@@ -25,9 +25,10 @@
                         <div class="form-group">
                             <label for="category">Category</label>
                             <select class="form-select"
-                                id="category"
-                                name="category"
+                                id="category-update"
+                                name="category-update"
                             >
+                                <option value="general">Chung</option>
                                 <option value="cơm">Cơm</option>
                                 <option value="bún">Bún</option>
                                 <option value="lẩu">Lẩu</option>
@@ -35,7 +36,6 @@
                                 <option value="nem">Nem</option>
                                 <option value="hủ tíu">Hủ tíu</option>
                                 <option value="phở">Phở</option>
-                                <option value="general">Chung</option>
                             </select>
                         </div>
                     </div>
@@ -43,9 +43,8 @@
                         <div class="form-group">
                             <label for="manufacturer">Manufacturer</label>
                             <select class="form-select" 
-                                id="manufacturer"
-                                name="manufacturer"
-                                value="{{food.manufacturer}}"
+                                id="manufacturer-update"
+                                name="manufacturer-update"
                             >
                                 <option value="Sunrise Foods">Sunrise Foods</option>
                                 <option value="Friggitoria">Friggitoria</option>
@@ -58,7 +57,7 @@
 
                 <div class="form-group">
                     <label for="stock">Số lượng</label>
-                    <input type="text" class="form-control" value="{{food.stock}}" id="stock", name="stock">
+                    <input type="text" class="form-control" value="{{food.stock}}" id="stock-update", name="stock-update">
                 </div>
 
                 <div class="form-group">
@@ -66,8 +65,8 @@
                     <select 
                         class="form-select" 
                         aria-label="Default select example" 
-                        id="suspended"
-                        name="suspended"
+                        id="suspended-update"
+                        name="suspended-update"
                         value="{{food.suspended}}"
                     >
                         <option value="false">Còn hàng</option>
@@ -140,7 +139,7 @@
                 </div>
                 <div class="form-group mt-2">
                     <label for="description">Description</label>
-                    <textarea type="text" class="form-control" id="description" name="description" rows="4" cols="50">{{food.description}}</textarea>
+                    <textarea type="text" class="form-control" id="description-update" name="description-update" rows="4" cols="50">{{food.description}}</textarea>
                 </div>
                 <div class="text-center">
                     <button 
