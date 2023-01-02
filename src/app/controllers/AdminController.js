@@ -377,7 +377,35 @@ exports.renderProducts = (req, res, next) => {
   res.render("./admin/products", { layout: "adminMain.hbs" });
 };
 
-exports.getUserData = catchAsync(async (req, res, next) => {
+function percentCompareToLastMonth (type, list) {
+  let length = list.length;
+  if(length <= 1) return 100;
+  if(type === 0) {
+      return (((list[length - 1].users - list[length - 2].users) / list[length - 1].users)  * 100).toFixed(2)
+  }
+  else if(type === 1) {
+      return (((list[length - 1].sales - list[length - 2].sales) / list[length - 1].sales)  * 100).toFixed(2)
+  }
+}
+function createMonthDetailList (arr) {
+  let result = [{users: 0, sales: 0}];
+  let users = 0;
+  let sales = 0;
+  let this_month = (new Date(arr[0].createdAt)).getUTCMonth();
+  for(let i = 0; i < arr.length; i++) {
+    let cur_month = (new Date(arr[i].createdAt)).getUTCMonth();
+    if(this_month != cur_month) {
+      this_month = cur_month;
+      result.push({users, sales});
+    }
+    ++users;
+    sales += arr[i].total_spent;
+  }
+  result.push({users, sales});
+  console.log(result);
+  return result;
+} 
+exports.getUserData = catchAsync( async (req, res, next) => {
   // Get params
   let page = req.query.page;
   let sortQ = req.query.sort;
@@ -423,8 +451,16 @@ exports.getUserData = catchAsync(async (req, res, next) => {
     search_option[type_search] = { $regex: key_search, $options: "i" };
   }
 
-  // Find all in database
+  //Find all in database and get detail
   const total = await UserModel.find(search_option).count();
+  let total_sales = 0;
+  const allData = await UserModel.find({}).sort({createdAt: 1});
+  allData.forEach(user => {total_sales += user.total_spent})
+  let month_list = createMonthDetailList(allData);
+  const total_percent = percentCompareToLastMonth(0, month_list);
+  const total_sales_percent = percentCompareToLastMonth(1, month_list);
+  // Find all in database by search
+  const total_s = await UserModel.find(search_option).count();
 
   let users = await UserModel.find(search_option)
     .sort(sort_option)
@@ -432,9 +468,9 @@ exports.getUserData = catchAsync(async (req, res, next) => {
     .limit(ELEMENT_PER_PAGE);
 
   let pageNumber =
-    total % ELEMENT_PER_PAGE === 0
-      ? total / ELEMENT_PER_PAGE
-      : Math.floor(total / ELEMENT_PER_PAGE) + 1;
+    total_s % ELEMENT_PER_PAGE === 0
+      ? total_s / ELEMENT_PER_PAGE
+      : Math.floor(total_s / ELEMENT_PER_PAGE) + 1;
 
   let nextNum = page < pageNumber ? page + 1 : page;
   let pageIndex = { prev, nextNum, maxpage: pageNumber };
@@ -470,6 +506,10 @@ exports.getUserData = catchAsync(async (req, res, next) => {
       users,
       pageList,
       pageIndex,
+      total,
+      total_percent,
+      total_sales,
+      total_sales_percent
     },
   });
 });

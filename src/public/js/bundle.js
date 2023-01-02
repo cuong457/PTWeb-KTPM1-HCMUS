@@ -216,6 +216,14 @@ function renderUC() {
     var users = data.data.users;
     var pageList = data.data.pageList;
     var pageIndex = data.data.pageIndex;
+    var total = data.data.total;
+    var total_percent = data.data.total_percent;
+    var total_sales = data.data.total_sales;
+    var total_sales_percent = data.data.total_sales_percent;
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
     var source = $("#userlist-template").html();
     var template = Handlebars.compile(source);
     var html = template({
@@ -230,6 +238,20 @@ function renderUC() {
       pageIndex: pageIndex
     });
     $(".admin-pagination-wrapper").html(phtml);
+    var ucsource = $("#users-count-template").html();
+    var uctemplate = Handlebars.compile(ucsource);
+    var uchtml = uctemplate({
+      total: total,
+      total_percent: total_percent
+    });
+    $(".user-count-number").html(uchtml);
+    var ussource = $("#users-sales-template").html();
+    var ustemplate = Handlebars.compile(ussource);
+    var ushtml = ustemplate({
+      sales: formatter.format(total_sales),
+      total_sales_percent: total_sales_percent
+    });
+    $(".user-sales-number").html(ushtml);
     var numpage_btn = document.querySelectorAll(".page-number-btn");
     if (numpage_btn) {
       numpage_btn.forEach(function (btn) {
@@ -1351,6 +1373,20 @@ Handlebars.registerHelper("toStandardDate", function (raw_date) {
 Handlebars.registerHelper("getNameFromEmail", function (email) {
   return email.slice(0, email.indexOf("@"));
 });
+Handlebars.registerHelper("countTotal", function (arr) {
+  var result = 0;
+  for (var i in arr) {
+    ++result;
+  }
+  return result;
+});
+Handlebars.registerHelper("countTotal", function (arr) {
+  var result = 0;
+  for (var i in arr) {
+    ++result;
+  }
+  return result;
+});
 
 // Admin handling
 var clearSearchboxUser = document.getElementById("user-clearsearch-btn");
@@ -1624,7 +1660,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59948" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65271" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

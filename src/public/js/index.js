@@ -69,6 +69,16 @@ Handlebars.registerHelper("toStandardDate", (raw_date) => {
 Handlebars.registerHelper("getNameFromEmail", (email) => {
   return email.slice(0, email.indexOf("@"));
 });
+Handlebars.registerHelper("countTotal", (arr) => {
+  let result = 0;
+  for(let i in arr) ++result;
+  return result;
+});
+Handlebars.registerHelper("countTotal", (arr) => {
+  let result = 0;
+  for(let i in arr) ++result;
+  return result;
+});
 
 // Admin handling
 const clearSearchboxUser = document.getElementById("user-clearsearch-btn");

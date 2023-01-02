@@ -2,43 +2,13 @@
   <div class="col-12 col-lg-3">
     <div class="row">
       <div class="col-6 col-lg-12">
-        <div class='admin-sm-card mb-3'>
-          <p class='text-thin formal-font opacity-75 pt-2 ps-2 pb-1'>
-            Users
-          </p>
-          <div class='card-icon blue-bg'>
-            <i class="fa-regular fa-user fa-lg"></i>
-          </div>
-          <p class='text-bold text-xlg formal-font pt-4 mt-2 ps-2'>
-            14.05 K
-          </p>
-          <p class='text-sm mt-2 ms-2'>
-            <span class='percent-wrapper text-green'>
-              <i class="fa-solid fa-arrow-up"></i>
-              &nbsp;14.2 %
-            </span>
-            <span class='text-thin opacity-75'>&nbsp;vs. Previous month</span>
-          </p>
+        <div class='admin-sm-card mb-3 user-count-number'>
+          {{!-- Put sc here --}}
         </div>
       </div>
       <div class="col-6 col-lg-12">
-        <div class='admin-sm-card mb-3'>
-          <p class='text-thin formal-font opacity-75 pt-2 ps-2 pb-1'>
-            Sales
-          </p>
-          <div class='card-icon yellow-bg'>
-            <i class="fa-solid fa-dollar-sign fa-lg"></i>
-          </div>
-          <p class='text-bold text-xlg formal-font pt-4 mt-2 ps-2'>
-            $ 34.582
-          </p>
-          <p class='text-sm mt-2 ms-2'>
-            <span class='percent-wrapper text-green'>
-              <i class="fa-solid fa-arrow-up"></i>
-              &nbsp;24.5 %
-            </span>
-            <span class='text-thin opacity-75'>&nbsp;vs. Previous month</span>
-          </p>
+        <div class='admin-sm-card mb-3 user-sales-number'>
+          {{!-- Put sc here --}}
         </div>
       </div>
     </div>
@@ -162,6 +132,44 @@
 </div>
 
 {{!-- JS --}}
+<script id="users-count-template" type="text/x-handlebars-template">
+  <p class='text-thin formal-font opacity-75 pt-2 ps-2 pb-1'>
+    Users
+  </p>
+  <div class='card-icon blue-bg'>
+    <i class="fa-regular fa-user fa-lg"></i>
+  </div>
+  <p class='text-bold text-xlg formal-font pt-4 mt-2 ps-2'>
+    \{{total}}
+  </p>
+  <p class='text-sm mt-2 ms-2'>
+    <span class='percent-wrapper text-green'>
+      <i class="fa-solid fa-arrow-up"></i>
+      &nbsp;\{{total_percent}} %
+    </span>
+    <span class='text-thin opacity-75'>&nbsp;vs. Previous month</span>
+  </p>
+</script>
+
+<script id="users-sales-template" type="text/x-handlebars-template">
+  <p class='text-thin formal-font opacity-75 pt-2 ps-2 pb-1'>
+    Sales
+  </p>
+  <div class='card-icon yellow-bg'>
+    <i class="fa-solid fa-dollar-sign fa-lg"></i>
+  </div>
+  <p class='text-bold text-xlg formal-font pt-4 mt-2 ps-2'>
+    \{{sales}}
+  </p>
+  <p class='text-sm mt-2 ms-2'>
+    <span class='percent-wrapper text-green'>
+      <i class="fa-solid fa-arrow-up"></i>
+      &nbsp;\{{total_sales_percent}} %
+    </span>
+    <span class='text-thin opacity-75'>&nbsp;vs. Previous month</span>
+  </p>
+</script>
+
 <script id="userlist-template" type="text/x-handlebars-template">
   \{{#if_cond pageIndex.maxpage '===' 0}}
       <img src='/images/noti/empty-user.png' class="img-fluid" alt='empty-user'/>
