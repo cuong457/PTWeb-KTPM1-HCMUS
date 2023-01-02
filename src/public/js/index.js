@@ -262,3 +262,60 @@ if (buttonSearch) {
     }
   });
 }
+
+// review
+const reviewForm = document.querySelector("#review-form");
+
+if (reviewForm) {
+  async function handleCreateReview(e) {
+    e.preventDefault();
+    const review = this.elements[(name = "review")].value;
+    const rating = this.elements[(name = "rating")].value;
+    const product = reviewForm.dataset.productId;
+
+    if (
+      !review ||
+      !rating ||
+      review.trim().length === 0 ||
+      rating.trim().length === 0
+    ) {
+      alert("vui lòng nhập đầy đủ thông tin");
+      return;
+    }
+
+    if (isNaN(+rating) || +rating > 5 || +rating < 1) {
+      alert("Đánh giá phải là số từ 1 - 5");
+      return;
+    }
+
+    try {
+      let fetchOptions = {
+        method: "POST",
+        body: JSON.stringify({
+          product,
+          review,
+          rating: +rating,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const response = await fetch("/api/v1/reviews", fetchOptions);
+      if (!response.ok) {
+        const errRes = await response.json();
+        alert(errRes.message);
+        return false;
+      }
+
+      const resData = await response.json();
+      alert(`Thêm đánh giá thành công`);
+      return true;
+    } catch (err) {
+      alert("error", err.message);
+      return false;
+    }
+  }
+
+  reviewForm.addEventListener("submit", handleCreateReview);
+}

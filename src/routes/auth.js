@@ -6,6 +6,7 @@ const {
   verifyEmail,
   updatePassword,
   protect,
+  checkEmailExist,
 } = require("../app/controllers/AuthController");
 
 const {
@@ -18,6 +19,7 @@ const router = express.Router();
 // api
 router.post("/sign-up", signUp);
 router.post("/sign-in", signIn);
+router.post("/email-exist", checkEmailExist);
 router.get("/sign-out", [protect, signOut]);
 router.get("/verify/:verifyToken", verifyEmail);
 router.patch("/update-me", [

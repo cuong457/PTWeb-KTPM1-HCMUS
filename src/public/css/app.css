@@ -15,12 +15,6 @@
 .banner {
   background-color: #eee !important; }
 
-body p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 0; }
-
 .text-green {
   color: green; }
 
@@ -1494,3 +1488,7 @@ i.page-item:hover {
 .container-update-product {
   width: 1000px;
   margin: auto; }
+
+.review-list {
+  max-height: 600px;
+  overflow-y: auto; }

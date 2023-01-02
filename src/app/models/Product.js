@@ -16,11 +16,32 @@ const ProductSchema = new Schema(
     description: { type: String },
     total_purchase: { type: Number, default: 0 },
     slug: { type: String, slug: "name", unique: true },
+    ratingsAverage: {
+      type: Number,
+      min: [1, "Rating must be greater than or equal 1"],
+      max: [5, "Rating must be less than or equal 5"],
+      set: function (val) {
+        return Math.round(val * 10) / 10;
+      },
+    },
+    ratingsQuantity: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+ProductSchema.virtual("reviews", {
+  ref: "Review",
+  localField: "_id",
+  foreignField: "product",
+});
+
 //Custom query helper
 ProductSchema.query.sortable = function (req) {
   if (req.query.hasOwnProperty("_sort")) {

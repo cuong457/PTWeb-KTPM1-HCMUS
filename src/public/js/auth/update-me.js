@@ -1,6 +1,9 @@
 const updateInfoForm = document.querySelector(".form-user-data");
 const updatePasswordForm = document.querySelector(".form-user-settings");
 const avatarInput = document.getElementById("avatar-input");
+const errorMessageElement = document.querySelector(
+  ".create-product-error-message"
+);
 
 const updateSettings = async function (data, type) {
   const url =
@@ -8,6 +11,31 @@ const updateSettings = async function (data, type) {
       ? "/api/v1/auth/update-password"
       : "/api/v1/auth/update-me";
   try {
+    const name = data.get("name");
+    const email = data.get("email");
+    const photo = data.get("photo");
+
+    console.log(photo);
+    const userPhoto = document.querySelector(".form__user-photo");
+    const isLoaded = userPhoto.complete && userPhoto.naturalHeight !== 0;
+    console.log(isLoaded);
+    console.log(name, email);
+    if (
+      !name ||
+      name.trim().value === 0 ||
+      !email ||
+      email.trim().value === 0
+    ) {
+      errorMessageElement.innerText =
+        "vui lòng nhập tên, địa chỉ email và chọn ảnh đại diện";
+      return;
+    }
+
+    if (!photo && !isLoaded) {
+      errorMessageElement.innerText = "vui lòng chọn ảnh đại diện";
+      return;
+    }
+
     let fetchOptions = {
       method: "PATCH",
       // gửi form data thì không cần JSON.stringify với lại "Content-Type"
@@ -67,6 +95,9 @@ if (updateInfoForm) {
   };
 
   updateInfoForm.addEventListener("submit", updateUserData);
+  updateInfoForm.addEventListener("change", function (e) {
+    errorMessageElement.innerText = "";
+  });
 }
 
 if (updatePasswordForm) {
@@ -89,4 +120,7 @@ if (updatePasswordForm) {
   };
 
   updatePasswordForm.addEventListener("submit", updatePassword);
+  updatePasswordForm.addEventListener("change", function (e) {
+    errorMessageElement.innerText = "";
+  });
 }

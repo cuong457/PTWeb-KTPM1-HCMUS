@@ -72,7 +72,9 @@ export function loadProductPage(query) {
         Handlebars.compile($("#pagination-template").html())({
           links,
           prev: pagination_info.previous_page,
-          next: pagination_info.next_page,
+          next: pagination_info.has_next_page
+            ? pagination_info.next_page
+            : pagination_info.current_page,
           start: 1,
           end: pagination_info.total_pages,
         })
@@ -97,7 +99,6 @@ export const handleSearchAndFilter = function (e) {
   // 1.price search
   const fromInput = document.querySelector('input[name="price-from"]').value;
   const toInput = document.querySelector('input[name="price-to"]').value;
-
   // 2. sort order (thứ tự sắp xếp)
   const sortOptions = $('input[name="flexRadioDefault"]:checked');
   let oldSearchParams = new URLSearchParams(location.search);

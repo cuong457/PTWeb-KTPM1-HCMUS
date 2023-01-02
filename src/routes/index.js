@@ -4,6 +4,7 @@ const authRouter = require("./auth");
 const productRouter = require("./product");
 const orderRouter = require("./order");
 const paymentRouter = require("./payment");
+const reviewRouter = require("./review");
 const globalErrorHandler = require("./errorHandler");
 
 function route(app) {
@@ -18,6 +19,9 @@ function route(app) {
 
   // handle orders
   app.use("/api/v1/orders", orderRouter);
+
+  // handle reviews
+  app.use("/api/v1/reviews", reviewRouter);
 
   // handle payment
   app.use("/api/v1/payment", paymentRouter);

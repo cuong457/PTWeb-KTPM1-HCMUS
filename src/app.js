@@ -90,6 +90,9 @@ app.engine(
       },
       toPrice: (rawPrice) =>
         rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+      toStandardDate: (raw_date) => {
+        return new Date(raw_date).toLocaleDateString();
+      },
     },
   })
 );

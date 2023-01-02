@@ -9,13 +9,15 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="name">Food name</label>
-                            <input type="text" class="form-control" value="{{food.name}}" id="name-update" name="name-update">
+                            <input type="text" class="form-control" value="{{food.name}}" id="name-update"
+                                name="name-update">
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="price">Price</label>
-                            <input type="text" class="form-control" value="{{food.price}}" id="price-update" name="price-update">
+                            <input type="number" class="form-control" value="{{food.price}}" id="price-update"
+                                name="price-update">
                         </div>
                     </div>
                 </div>
@@ -24,10 +26,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="category">Category</label>
-                            <select class="form-select"
-                                id="category-update"
-                                name="category-update"
-                            >
+                            <select class="form-select" id="category-update" name="category-update">
                                 <option value="general">Chung</option>
                                 <option value="cơm">Cơm</option>
                                 <option value="bún">Bún</option>
@@ -42,10 +41,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="manufacturer">Manufacturer</label>
-                            <select class="form-select" 
-                                id="manufacturer-update"
-                                name="manufacturer-update"
-                            >
+                            <select class="form-select" id="manufacturer-update" name="manufacturer-update">
                                 <option value="Sunrise Foods">Sunrise Foods</option>
                                 <option value="Friggitoria">Friggitoria</option>
                                 <option value="Panzer Hot">Panzer Hot</option>
@@ -56,24 +52,20 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="stock">Số lượng</label>
-                    <input type="text" class="form-control" value="{{food.stock}}" id="stock-update", name="stock-update">
+                    <label for="stock">Quantity</label>
+                    <input type="number" class="form-control" value="{{food.stock}}" id="stock-update" ,
+                        name="stock-update">
                 </div>
 
                 <div class="form-group">
-                    <label for="suspended">Tình trạng</label>
-                    <select 
-                        class="form-select" 
-                        aria-label="Default select example" 
-                        id="suspended-update"
-                        name="suspended-update"
-                        value="{{food.suspended}}"
-                    >
+                    <label for="suspended">Status</label>
+                    <select class="form-select" aria-label="Default select example" id="suspended-update"
+                        name="suspended-update" value="{{food.suspended}}">
                         <option value="false">Còn hàng</option>
                         <option value="true">Hết hàng</option>
                     </select>
                 </div>
-                
+
                 <div class="row mt-4">
                     <div class="col-6">
                         <div class="upload-btn-wrapper">
@@ -87,12 +79,8 @@
 
                                 </div>
                             </label>
-                            <input 
-                                type="file" 
-                                accept="image/*" 
-                                id="food-photo-update-thumbnail" 
-                                name="food-photo-update-thumbnail" hidden
-                            >
+                            <input type="file" accept="image/*" id="food-photo-update-thumbnail"
+                                name="food-photo-update-thumbnail" hidden>
                         </div>
                     </div>
                     <div class="col-6">
@@ -106,46 +94,32 @@
                                 <div id="product-preview-slide" class="carousel slide" data-bs-ride="carousel">
                                     <div id="output-imgs-detail-update" class="carousel-inner">
                                     </div>
-                                    <button 
-                                        class="preview-btn carousel-control-prev" 
-                                        type="button" 
-                                        data-bs-target="#product-preview-slide" 
-                                        data-bs-slide="prev"
-                                    >
+                                    <button class="preview-btn carousel-control-prev" type="button"
+                                        data-bs-target="#product-preview-slide" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Previous</span>
                                     </button>
-                                    <button 
-                                        class="preview-btn carousel-control-next" 
-                                        type="button" 
-                                        data-bs-target="#product-preview-slide" 
-                                        data-bs-slide="next"
-                                    >
+                                    <button class="preview-btn carousel-control-next" type="button"
+                                        data-bs-target="#product-preview-slide" data-bs-slide="next">
                                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                         <span class="visually-hidden">Next</span>
                                     </button>
-                                    
+
                                 </div>
-                                <input
-                                    type="file"  
-                                    multiple="multiple" 
-                                    accept="image/*" 
-                                    id="food-photo-update-detail" 
-                                    name="food-photo-update-detail" hidden
-                                >
+                                <input type="file" multiple="multiple" accept="image/*" id="food-photo-update-detail"
+                                    name="food-photo-update-detail" hidden>
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group mt-2">
                     <label for="description">Description</label>
-                    <textarea type="text" class="form-control" id="description-update" name="description-update" rows="4" cols="50">{{food.description}}</textarea>
+                    <textarea type="text" class="form-control" id="description-update" name="description-update"
+                        rows="4" cols="50">{{food.description}}</textarea>
                 </div>
                 <div class="text-center">
-                    <button 
-                        type="submit" 
-                        class="btn btn-primary mt-4 btn-submit-create-prod"
-                    >
+                    <p class="create-product-error-message text-center text-danger fs-6 font-italic mt-4"></p>
+                    <button type="submit" class="btn btn-primary mt-4 btn-submit-create-prod">
                         SUBMIT
                     </button>
                 </div>

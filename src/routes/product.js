@@ -18,9 +18,7 @@ const {
 
 const router = express.Router();
 
-router
-  .route("/delete")
-  .delete([protect, deleteProductsImg])
+router.route("/delete").delete([protect, deleteProductsImg]);
 router
   .route("/:id")
   .get([protect, getProductInfo])
@@ -28,8 +26,14 @@ router
   .delete([protect, deleteItem]);
 router
   .route("/")
-  .patch([protect, updateSelectFieldToItem])
-  .get([protect, getListProduct])
-  .post([protect, uploadTourImages, resizeUploadImages, createNewProduct]);
+  .patch([protect, restrictTo("admin"), updateSelectFieldToItem])
+  .get(getListProduct)
+  .post([
+    protect,
+    restrictTo("admin"),
+    uploadTourImages,
+    resizeUploadImages,
+    createNewProduct,
+  ]);
 
 module.exports = router;

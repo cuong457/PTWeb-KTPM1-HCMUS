@@ -16,12 +16,12 @@
   background-color: #eee !important;
 }
 
-body p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 0;
-}
+// body p {
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   margin-bottom: 0;
+// }
 
 //Color config
 .text-green {
@@ -1646,4 +1646,10 @@ i.page-item:hover {
 .container-update-product {
   width: 1000px;
   margin: auto;
+}
+
+// comment, review
+.review-list {
+  max-height: 600px;
+  overflow-y: auto;
 }

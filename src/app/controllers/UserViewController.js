@@ -255,10 +255,15 @@ exports.renderHome = async function index(req, res, next) {
 };
 
 exports.renderItemDetail = async function (req, res, next) {
-  const product = await Product.findOne({ slug: req.params.slug });
+  const product = await Product.findOne({ slug: req.params.slug }).populate(
+    "reviews"
+  );
   const recommend = await Product.find({
     category: { $regex: product.category[0], $options: "i" },
-  });
+  }).limit(6);
+
+  console.log("product");
+  console.log(product);
   res.render("item", {
     recommend,
     food: mongooseToObject(product),

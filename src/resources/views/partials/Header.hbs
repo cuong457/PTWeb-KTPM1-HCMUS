@@ -79,12 +79,14 @@
                     &nbsp; Thông tin cá nhân
                   </a>
                 </div>
+                {{#if_cond user.role '===' 'user'}}
                 <div class='row p-2 simple-white-btn'>
                   <a href="/orders" class='erase-underline text-black'>
                     <i class="fa-solid fa-clock-rotate-left"></i>
                     &nbsp; Lịch sử mua hàng
                   </a>
                 </div>
+                {{/if_cond}}
                 {{#if_cond user.role "===" "admin"}}
                 <div class='row p-2 simple-white-btn'>
                   <a class='text-black emptyBtn text-align-left erase-underline' href="/admin/dashboard">
@@ -145,10 +147,17 @@
             </div>
           </div>
           <div class="col d-flex justify-content-end" id="cart">
-            <a class="cart-icon-wrapper" href="/user/{{user._id}}/cart">
+            {{#if_cond user.role '===' 'user'}}
+            <a class="cart-icon-wrapper" href="/user/{{../user._id}}/cart">
               <i class="bi bi-cart cart-icon"></i>
-              <div class="cart-icon__quantity">{{quantity}}</div>
+              <div class="cart-icon__quantity">{{../quantity}}</div>
             </a>
+            {{else}}
+            <a class="cart-icon-wrapper" href="/admin/sign-in">
+              <i class="bi bi-cart cart-icon"></i>
+              <div class="cart-icon__quantity">0</div>
+            </a>
+            {{/if_cond}}
           </div>
         </div>
       </div>

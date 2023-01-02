@@ -399,7 +399,7 @@ exports.updatePassword = catchAsync(async function (req, res, next) {
     user.password
   );
   if (!isCorrectPassword) {
-    return next(new AppError("current password is not correct"), 400);
+    return next(new AppError(400, "current password is not correct"));
   }
 
   // 3) update password (UserModel.findByIdAndUpdate se khong validate lai nen phai lam cach nay)
@@ -409,4 +409,33 @@ exports.updatePassword = catchAsync(async function (req, res, next) {
 
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
+});
+
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
+exports.checkEmailExist = catchAsync(async function (req, res, next) {
+  // 1) check valid email
+  if (validateEmail(req.body.email)) {
+    // 1) find user
+    const user = await UserModel.findOne({ email: req.body.email });
+
+    if (user) {
+      return next(new AppError(400, "email has already existed"));
+    }
+
+    return res.status(200).json({
+      status: "success",
+    });
+  }
+
+  res.status(400).json({
+    status: "fail",
+    message: "email không hợp lệ",
+  });
 });

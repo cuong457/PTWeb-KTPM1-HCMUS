@@ -3,6 +3,9 @@ const updateProductForm = document.querySelector(".form-update-product");
 const containerUpdateProduct = document.querySelector(
   ".container-update-product"
 );
+const errorMessageElement = document.querySelector(
+  ".create-product-error-message"
+);
 
 const productSettings = async function (data, type) {
   const url = type === "create" ? "/api/v1/products" : "/admin/api/v1/products";
@@ -172,7 +175,8 @@ if (createProductForm) {
       !manufacturerInput.value ||
       !descriptionInput.value
     ) {
-      alert("Missing input field(s)!");
+      // alert("Missing input field(s)!");
+      errorMessageElement.innerText = "Missing input field(s)!";
       return;
     }
 
@@ -192,7 +196,8 @@ if (createProductForm) {
       foodThumbnailInput.files.length === 0 ||
       photoInput.files.length === 0
     ) {
-      alert("Missing Image!");
+      // alert("Missing Image!");
+      errorMessageElement.innerText = "Missing Image!";
       return;
     }
 
@@ -205,6 +210,9 @@ if (createProductForm) {
   };
 
   createProductForm.addEventListener("submit", handleCreateProduct);
+  createProductForm.addEventListener("change", function (e) {
+    errorMessageElement.innerText = "";
+  });
 
   imagesThumbnailInput.addEventListener("change", (e) =>
     previewFoodThumnail(e, outputThumbnail)
@@ -306,6 +314,19 @@ if (containerUpdateProduct) {
       this.elements[(name = "food-photo-update-thumbnail")];
     const photoInput = this.elements[(name = "food-photo-update-detail")];
 
+    if (
+      nameInput.value.trim().length === 0 ||
+      priceInput.value.trim().length === 0 ||
+      categoryInpur.value.trim().length === 0 ||
+      manufacturerInput.value.trim().length === 0 ||
+      stockInput.value.trim().length === 0 ||
+      suspendedInput.value.trim().length === 0 ||
+      descriptionInput.value.trim().length === 0
+    ) {
+      errorMessageElement.innerText = "Missing input field(s)";
+      return;
+    }
+
     formData.append("_id", foodId);
     formData.append("name", nameInput.value);
     formData.append("price", priceInput.value);
@@ -315,6 +336,11 @@ if (containerUpdateProduct) {
     formData.append("suspended", suspendedInput.value);
     formData.append("description", descriptionInput.value);
 
+    const imageThumbnail = document.querySelector(
+      "#output-imgs-thumbnail-update .create-food-admin-img"
+    );
+    const isLoaded =
+      imageThumbnail.complete && imageThumbnail.naturalHeight !== 0;
     if (foodThumbnailInput.files.length !== 0) {
       const myDeleteImgData = new FormData();
       myDeleteImgData.append("paths", foodThumbnailPath);
@@ -322,8 +348,15 @@ if (containerUpdateProduct) {
       deleteProductsPhoto(myDeleteImgData);
 
       formData.append("foodThumbnail", foodThumbnailInput.files[0]);
+    } else {
+      if (!isLoaded) {
+        errorMessageElement.innerText = "Missing food image thumbnail";
+        return;
+      }
     }
 
+    const images = document.querySelector(".carousel-item img");
+    const isLoadedImages = images.complete && images.naturalHeight !== 0;
     if (photoInput.files.length !== 0) {
       const myDeleteImgData = new FormData();
       myDeleteImgData.append("paths", foodPhotoPaths);
@@ -333,10 +366,17 @@ if (containerUpdateProduct) {
       for (let i = 0; i < photoInput.files.length; i++) {
         formData.append("photo", photoInput.files[i]);
       }
+    } else {
+      if (!isLoadedImages) {
+        errorMessageElement.innerText = "Missing food images";
+        return;
+      }
     }
-
     productSettings(formData, "update");
   };
 
   updateProductForm.addEventListener("submit", handleUpdateProduct);
+  updateProductForm.addEventListener("change", function (e) {
+    errorMessageElement.innerText = "";
+  });
 }
