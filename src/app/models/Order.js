@@ -60,7 +60,7 @@ const OrderSchema = new Schema(
 
     status: {
       type: String,
-      default: "progress",
+      default: "Đang xử lí",
     },
 
     note: {

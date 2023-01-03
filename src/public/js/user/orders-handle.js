@@ -46,7 +46,7 @@ export async function updateOrderStatus(e) {
 
 export function renderOC(page = 1, sortQ = "none", status = "") {
   fetch(
-    "http://localhost:3000/admin/orders/get-orders-data?page=" +
+    "/admin/orders/get-orders-data?page=" +
       page +
       "&sort=" +
       sortQ +
