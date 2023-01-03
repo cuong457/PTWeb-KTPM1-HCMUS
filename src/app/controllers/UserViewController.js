@@ -262,8 +262,8 @@ exports.renderItemDetail = async function (req, res, next) {
     category: { $regex: product.category[0], $options: "i" },
   }).limit(6);
 
-  console.log("product");
-  console.log(product);
+  // console.log("product");
+  // console.log(product);
   res.render("item", {
     recommend,
     food: mongooseToObject(product),

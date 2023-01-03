@@ -108,14 +108,13 @@ export function handleFilterProducts(e) {
         }
         let filterBtnList = document.querySelectorAll('.products-filter-btn');
         if(filterBtnList) {
-            filterBtnList.forEach(btn => {
+            filterBtnList.forEach((btn) => {
                 if($('#' + btn.id).hasClass('filter-btn-active')) {
-                    option += ('-' + btn.id.split('-')[1]);
+                  option += ('-' + btn.id.split('-')[1]);
                 }
             })
         }
-      });
-    }
+
     $(cur_target).addClass("filter-btn-active");
     renderPC(1, option);
   } else {

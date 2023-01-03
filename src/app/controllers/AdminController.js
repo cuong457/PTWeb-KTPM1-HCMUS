@@ -411,7 +411,7 @@ function createMonthDetailList(arr) {
     sales += arr[i].total_spent;
   }
   result.push({ users, sales });
-  console.log(result);
+  // console.log(result);
   return result;
 }
 exports.getUserData = catchAsync(async (req, res, next) => {
