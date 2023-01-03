@@ -3,9 +3,26 @@
     {{! Item Detail }}
     <div class="row pt-4">
       <div class="col-3" id="itdetail-mainimg">
-        <a href={{food.foodThumbnail}}>
-          <img src="{{food.foodThumbnail}}" class="img-fluid itdetail-food-img" alt={{food.name}} />
-        </a>
+        <div id="item-slide-indicatior" class="carousel slide" data-bs-ride="true">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="{{food.foodThumbnail}}" class="img-fluid itdetail-food-img" alt={{food.name}} />
+            </div>
+            {{#each food.photo}}
+              <div class="carousel-item">
+                <img src={{this}} class="img-fluid itdetail-food-img" alt="img" />
+              </div>
+            {{/each}}
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#item-slide-indicatior" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#item-slide-indicatior" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
       </div>
       <div class="col-12 col-md-8 col-lg-6">
         <p class="itdetail-lger-title">{{food.name}}</p>
@@ -27,9 +44,31 @@
         {{! Alternative item image }}
         <div class="row pt-3" id="itdetail-alterimg">
           <div class="col-4">
-            <a href={{food.photo.[0]}}>
-              <img src="{{food.photo.[0]}}" class="img-fluid itdetail-food-img" alt={{food.name}} />
-            </a>
+            <div id="item-slide-indicatior" class="carousel slide" data-bs-ride="true">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#item-slide-indicatior" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#item-slide-indicatior" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#item-slide-indicatior" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              </div>
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="{{food.foodThumbnail}}" class="img-fluid itdetail-food-img" alt={{food.name}} />
+                </div>
+                {{#each food.photo}}
+                  <div class="carousel-item">
+                    <img src={{this}} class="img-fluid itdetail-food-img" alt="img" />
+                  </div>
+                {{/each}}
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#item-slide-indicatior" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#item-slide-indicatior" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
           </div>
           <div class="col-8">
             <p class="itdetail-me-title text-green">1 Order from &#160<span class="itdetail-lg-money">{{{toPrice
@@ -131,14 +170,45 @@
       </div>
     </div>
     <br /><br /><br /><br />
-    <hr /><br /><br />
-    {{!-- photo --}}
-    <div class="item-photo-section row d-flex justify-content-center mt-4 pb-4">
-      {{#each food.photo}}
-      <div class="item-photo-wrapper col-4">
-        <img style="width: 100%;" src="{{this}}" alt="img" />
+
+    {{! About Restaurant }}
+    <p class="itdetail-lg-title text-center opacity-50">ABOUT US</p>
+    <p class="itdetail-main-lg-title text-center">Về nhà hàng của chúng tôi</p>
+
+    <div class="itdetail-about">
+      <div class="row">
+        <div class="col-12 col-lg-6 col-xl-7 pe-0 pb-4">
+          <img src="/images/abouts/about-1.png" class="img-fluid itdetail-food-img" />
+        </div>
+        <div class="col-12 col-lg-6 col-xl-5 ps-5">
+          <p class="itdetail-lg-title text-center"><b>ĐƯỢC THÀNH LẬP VÀ PHÂN
+              PHỐI BỞI<br />SUNRISE COMPANY</b><br /><br /></p>
+          <p class="itdetail-me-title wrap-text text-justify light-text">
+            <i>Chuỗi nhà hàng Sunrise Foods được hình thành và phát triển hơn 69
+              năm. Với uy tín và chất lượng thuộc top đầu thế giới với vô số đầu
+              bếp sở hữu sao Michelin và muôn vẻ sáng tạo trong việc đưa những
+              món ăn độc lạ hay đặc sản đến mọi miền đất nước trên thế giới.
+              Chúng tôi luôn chú tâm vào những nhu cầu và cảm giác của khách
+              hàng, đặt ra những tiêu chí hàng đầu để có thể làm hài lòng dù là
+              những vị khách khó tính nhất.</i><br />
+            <span class="align-right">- Dương Minh -</span>
+          </p>
+          <div class="d-flex justify-content-center pt-4">
+            <span class="itdetail-achievement-icon text-center">
+              <img src="/images/icons/star.png" class="itdetail-icon" alt="star" />
+              <p class="p-3 itdetail-me-title">Ngon chuẩn 5 sao</p>
+            </span>
+            <span class="itdetail-achievement-icon text-center">
+              <img src="/images/icons/certificate.png" class="itdetail-icon" alt="star" />
+              <p class="p-3 itdetail-me-title">Chứng nhận quốc tế</p>
+            </span>
+            <span class="itdetail-achievement-icon text-center">
+              <img src="/images/icons/achievement.png" class="itdetail-icon" alt="star" />
+              <p class="p-3 itdetail-me-title">Top 1 thịnh hành</p>
+            </span>
+          </div>
+        </div>
       </div>
-      {{/each}}
     </div>
     <hr />
 
@@ -200,47 +270,6 @@
       </section>
       <hr />
     </div>
-
-    {{! About Restaurant }}
-    <p class="itdetail-lg-title text-center opacity-50">ABOUT US</p>
-    <p class="itdetail-main-lg-title text-center">Về nhà hàng của chúng tôi</p>
-
-    <div class="itdetail-about">
-      <div class="row">
-        <div class="col-12 col-lg-6 col-xl-7 pe-0 pb-4">
-          <img src="/images/abouts/about-1.png" class="img-fluid itdetail-food-img" />
-        </div>
-        <div class="col-12 col-lg-6 col-xl-5 ps-5">
-          <p class="itdetail-lg-title text-center"><b>ĐƯỢC THÀNH LẬP VÀ PHÂN
-              PHỐI BỞI<br />SUNRISE COMPANY</b><br /><br /></p>
-          <p class="itdetail-me-title wrap-text text-justify light-text">
-            <i>Chuỗi nhà hàng Sunrise Foods được hình thành và phát triển hơn 69
-              năm. Với uy tín và chất lượng thuộc top đầu thế giới với vô số đầu
-              bếp sở hữu sao Michelin và muôn vẻ sáng tạo trong việc đưa những
-              món ăn độc lạ hay đặc sản đến mọi miền đất nước trên thế giới.
-              Chúng tôi luôn chú tâm vào những nhu cầu và cảm giác của khách
-              hàng, đặt ra những tiêu chí hàng đầu để có thể làm hài lòng dù là
-              những vị khách khó tính nhất.</i><br />
-            <span class="align-right">- Dương Minh -</span>
-          </p>
-          <div class="d-flex justify-content-center pt-4">
-            <span class="itdetail-achievement-icon text-center">
-              <img src="/images/icons/star.png" class="itdetail-icon" alt="star" />
-              <p class="p-3 itdetail-me-title">Ngon chuẩn 5 sao</p>
-            </span>
-            <span class="itdetail-achievement-icon text-center">
-              <img src="/images/icons/certificate.png" class="itdetail-icon" alt="star" />
-              <p class="p-3 itdetail-me-title">Chứng nhận quốc tế</p>
-            </span>
-            <span class="itdetail-achievement-icon text-center">
-              <img src="/images/icons/achievement.png" class="itdetail-icon" alt="star" />
-              <p class="p-3 itdetail-me-title">Top 1 thịnh hành</p>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr />
     {{! Recommend }}
     <div class="pb-5">
       <p class="menu-large-font">Gợi ý hôm nay</p>

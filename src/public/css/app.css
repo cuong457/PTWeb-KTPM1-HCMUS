@@ -15,6 +15,12 @@
 .banner {
   background-color: #eee !important; }
 
+body p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0; }
+
 .text-green {
   color: green; }
 
@@ -942,8 +948,8 @@ i.page-item:hover {
 
 .percent-wrapper {
   background-color: #ebebec;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   padding-left: 6px;
   padding-right: 6px;
   border-radius: 0.5rem;
@@ -1488,6 +1494,31 @@ i.page-item:hover {
 .container-update-product {
   width: 1000px;
   margin: auto; }
+
+.admin-nav-icon-wrapper {
+  box-shadow: -2px 4px 8px #d1d1d1;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  margin-right: 0.5rem;
+  padding: 10px; }
+
+.admin-nav-icon-wrapper-active {
+  background-color: #CB0C9F; }
+
+.admin-nav-icon {
+  font-size: 14px; }
+
+.admin-nav-icon-active {
+  color: white; }
+
+.hover-scale-ani {
+  transition: transform 0.3s ease-in-out; }
+
+.hover-scale-ani:hover {
+  transform: scale(1.1) translate(0.5em, 0); }
 
 .review-list {
   max-height: 600px;

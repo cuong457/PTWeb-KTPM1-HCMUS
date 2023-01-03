@@ -166,6 +166,7 @@ if (createProductForm) {
     const formData = new FormData();
     const nameInput = this.elements[(name = "name")];
     const priceInput = this.elements[(name = "price")];
+    const categoryInput = this.elements[(name = "category")];
     const manufacturerInput = this.elements[(name = "manufacturer")];
     const descriptionInput = this.elements[(name = "description")];
 
@@ -173,6 +174,7 @@ if (createProductForm) {
       !nameInput.value ||
       !priceInput.value ||
       !manufacturerInput.value ||
+      !categoryInput ||
       !descriptionInput.value
     ) {
       // alert("Missing input field(s)!");
@@ -186,7 +188,7 @@ if (createProductForm) {
 
     formData.append("name", nameInput.value);
     formData.append("price", priceInput.value);
-    formData.append("category", ["general"]);
+    formData.append("category", categoryInput.value);
     formData.append("manufacturer", manufacturerInput.value);
     formData.append("stock", 100);
     formData.append("suspended", false);

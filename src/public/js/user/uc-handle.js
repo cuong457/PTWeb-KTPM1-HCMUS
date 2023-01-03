@@ -24,6 +24,14 @@ export function renderUC(page = 1, sortQ = 'none', searchK = '', typeS = 'none')
             const users = data.data.users;
             const pageList = data.data.pageList;
             const pageIndex = data.data.pageIndex;
+            const total = data.data.total;
+            const total_percent = data.data.total_percent;
+            const total_sales = data.data.total_sales;
+            const total_sales_percent = data.data.total_sales_percent;
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
     
             const source = $("#userlist-template").html();
             const template = Handlebars.compile(source);
@@ -34,6 +42,16 @@ export function renderUC(page = 1, sortQ = 'none', searchK = '', typeS = 'none')
             const ptemplate = Handlebars.compile(psource);
             const phtml = ptemplate({ pageList, pageIndex });
             $(".admin-pagination-wrapper").html(phtml);
+
+            const ucsource = $("#users-count-template").html();
+            const uctemplate = Handlebars.compile(ucsource);
+            const uchtml = uctemplate({ total, total_percent });
+            $(".user-count-number").html(uchtml);
+
+            const ussource = $("#users-sales-template").html();
+            const ustemplate = Handlebars.compile(ussource);
+            const ushtml = ustemplate({ sales: formatter.format(total_sales), total_sales_percent });
+            $(".user-sales-number").html(ushtml);
 
             const numpage_btn = document.querySelectorAll(".page-number-btn");
             if(numpage_btn) {
