@@ -84,30 +84,35 @@ export function handleSearchProducts(e) {
 }
 
 export function handleFilterProducts(e) {
-  option = ""; //refresh
-  let cur_target = e.target;
-  if (!$(cur_target).hasClass("filter-btn-active")) {
-    switch (cur_target.id) {
-      case "products-name-filter":
-        option += "name";
-        break;
-      case "products-time-filter":
-        option += "time";
-        break;
-      case "products-price-filter":
-        option += "price";
-        break;
-      case "products-desorder-filter":
-        option += "desorder";
-        break;
-      default:
-        break;
-    }
-    let filterBtnList = document.querySelectorAll(".products-filter-btn");
-    if (filterBtnList) {
-      filterBtnList.forEach((btn) => {
-        if ($("#" + btn.id).hasClass("filter-btn-active")) {
-          option += "-" + btn.id.split("-")[1];
+    option = ''; //refresh
+    let cur_target = e.target;
+    if(!$(cur_target).hasClass('filter-btn-active')) {
+        switch(cur_target.id) {
+            case 'products-name-filter': 
+                option += 'name';
+                break;
+            case 'products-time-filter': 
+                option += 'time';
+                break;
+            case 'products-price-filter': 
+                option += 'price';
+                break;
+            case 'products-desorder-filter': 
+                option += 'desorder';
+                break;
+            case 'products-tp-filter': 
+                option += 'tp';
+                break;
+            default: 
+                break;
+        }
+        let filterBtnList = document.querySelectorAll('.products-filter-btn');
+        if(filterBtnList) {
+            filterBtnList.forEach(btn => {
+                if($('#' + btn.id).hasClass('filter-btn-active')) {
+                    option += ('-' + btn.id.split('-')[1]);
+                }
+            })
         }
       });
     }
