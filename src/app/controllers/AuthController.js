@@ -59,7 +59,11 @@ setTimeout(() => {
           return done(null, user);
         }
 
-        return done(null, user);
+        if (user.active) {
+          return done(null, user);
+        } else {
+          return done(new AppError(403, "your account has been banned"), null);
+        }
       }
     )
   );
