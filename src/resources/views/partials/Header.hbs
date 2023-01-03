@@ -147,17 +147,26 @@
             </div>
           </div>
           <div class="col d-flex justify-content-end" id="cart">
+            {{#if user}}
             {{#if_cond user.role '===' 'user'}}
             <a class="cart-icon-wrapper" href="/user/{{../user._id}}/cart">
               <i class="bi bi-cart cart-icon"></i>
               <div class="cart-icon__quantity">{{../quantity}}</div>
             </a>
+            {{/if_cond}}
+            {{#if_cond user.role '===' 'admin'}}
+            <a class="cart-icon-wrapper" href="javascript:;">
+              <i class="bi bi-cart cart-icon"></i>
+              <div class="cart-icon__quantity">0</div>
+            </a>
+            {{/if_cond}}
             {{else}}
             <a class="cart-icon-wrapper" href="/admin/sign-in">
               <i class="bi bi-cart cart-icon"></i>
               <div class="cart-icon__quantity">0</div>
             </a>
-            {{/if_cond}}
+            {{/if}}
+
           </div>
         </div>
       </div>
