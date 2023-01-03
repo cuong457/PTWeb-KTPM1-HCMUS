@@ -48,6 +48,7 @@ setTimeout(() => {
             photo: profile.picture,
             active: profile.verified,
             name: profile.displayName,
+            type: "google",
           });
 
           const cart = await CartModel.create({
