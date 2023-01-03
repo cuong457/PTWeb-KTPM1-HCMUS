@@ -13,58 +13,65 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 
 // sign in with gg
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID:
-        "10404818075-aso4sluema08vhp7gj4ipgqcio1e9u67.apps.googleusercontent.com",
-      clientSecret: "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",
-      callbackURL: "http://localhost:3000/admin/google/callback",
-      passReqToCallback: true,
-    },
-    async function (request, accessToken, refreshToken, profile, done) {
-      const user = await UserModel.findOne({ email: profile.email });
+setTimeout(() => {
+  let callbackURL = "http://localhost:3000/admin/google/callback";
+  if (process.env.NODE_ENV === "production") {
+    callbackURL =
+      "https://shy-plum-panda-tutu.cyclic.app/admin/google/callback";
+  }
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID:
+          "10404818075-aso4sluema08vhp7gj4ipgqcio1e9u67.apps.googleusercontent.com",
+        clientSecret: "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",
+        callbackURL,
+        passReqToCallback: true,
+      },
+      async function (request, accessToken, refreshToken, profile, done) {
+        const user = await UserModel.findOne({ email: profile.email });
 
-      if (!user) {
-        // UserModel.create(
-        //   {
-        //     email: profile.email,
-        //     photo: profile.picture,
-        //     active: profile.verified,
-        //   },
-        //   function (err, user) {
-        //     return done(err, user);
-        //   }
-        // );
+        if (!user) {
+          // UserModel.create(
+          //   {
+          //     email: profile.email,
+          //     photo: profile.picture,
+          //     active: profile.verified,
+          //   },
+          //   function (err, user) {
+          //     return done(err, user);
+          //   }
+          // );
 
-        const user = await UserModel.create({
-          email: profile.email,
-          photo: profile.picture,
-          active: profile.verified,
-          name: profile.displayName,
-        });
+          const user = await UserModel.create({
+            email: profile.email,
+            photo: profile.picture,
+            active: profile.verified,
+            name: profile.displayName,
+          });
 
-        const cart = await CartModel.create({
-          userId: user._id,
-          products: [],
-        });
+          const cart = await CartModel.create({
+            userId: user._id,
+            products: [],
+          });
+
+          return done(null, user);
+        }
 
         return done(null, user);
       }
+    )
+  );
 
-      return done(null, user);
-    }
-  )
-);
+  passport.serializeUser(function (user, done) {
+    done(null, user);
+  });
 
-passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-  done(null, user);
-});
-// end sign in with gg
+  passport.deserializeUser(function (user, done) {
+    done(null, user);
+  });
+  // end sign in with gg
+}, 500);
 
 const signToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
