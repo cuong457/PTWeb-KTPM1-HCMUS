@@ -10,7 +10,7 @@ const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
-    cb(new AppError("only image files are supported"));
+    cb(new AppError(400, "only image files are supported"));
   }
 };
 

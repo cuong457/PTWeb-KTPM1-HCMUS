@@ -1255,18 +1255,25 @@ var clickOrderButton = /*#__PURE__*/function () {
             phoneInput = document.querySelector("input[name='phone']");
             addressInput = document.querySelector("input[name='address']");
             noteInput = document.querySelector("input[name='note']");
+            if (!(!phoneInput || phoneInput.value.trim().length === 0 || !addressInput || addressInput.value.trim().length === 0 || !noteInput || noteInput.value.trim().length === 0)) {
+              _context.next = 7;
+              break;
+            }
+            alert("vui lòng điền đầy đủ thông tin");
+            return _context.abrupt("return");
+          case 7:
             checkedPayment = payments.find(function (payment) {
               return payment.checked;
             });
             if (checkedPayment) {
-              _context.next = 8;
+              _context.next = 11;
               break;
             }
             alert("vui lòng chọn phương thức thanh toán");
             return _context.abrupt("return");
-          case 8:
-            _context.prev = 8;
-            _context.next = 11;
+          case 11:
+            _context.prev = 11;
+            _context.next = 14;
             return fetch("/api/v1/payment/checkout-session", {
               method: "POST",
               body: JSON.stringify({
@@ -1279,38 +1286,38 @@ var clickOrderButton = /*#__PURE__*/function () {
                 "Content-Type": "application/json"
               }
             });
-          case 11:
+          case 14:
             response = _context.sent;
             if (response.ok) {
-              _context.next = 18;
+              _context.next = 21;
               break;
             }
-            _context.next = 15;
+            _context.next = 18;
             return response.json();
-          case 15:
+          case 18:
             errRes = _context.sent;
             alert(errRes.message);
             return _context.abrupt("return");
-          case 18:
-            _context.next = 20;
+          case 21:
+            _context.next = 23;
             return response.json();
-          case 20:
+          case 23:
             data = _context.sent;
             if (data.status === "success") {
               location.assign(data.data.session.url);
             }
-            _context.next = 27;
+            _context.next = 30;
             break;
-          case 24:
-            _context.prev = 24;
-            _context.t0 = _context["catch"](8);
-            alert(_context.t0.message);
           case 27:
+            _context.prev = 27;
+            _context.t0 = _context["catch"](11);
+            alert(_context.t0.message);
+          case 30:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[8, 24]]);
+    }, _callee, null, [[11, 27]]);
   }));
   return function clickOrderButton(_x) {
     return _ref.apply(this, arguments);
@@ -1442,7 +1449,6 @@ if (productsTypeBtn) {
 // remove: handleClearSearchboxProducts, handleSearchProducts
 // Order handling
 var productsFilterOrderBtn = document.querySelectorAll(".orders-filter-btn");
-console.log(productsFilterOrderBtn);
 if (productsFilterOrderBtn.length > 0) {
   productsFilterOrderBtn.forEach(function (btn) {
     btn.addEventListener("click", _ordersHandle.handleFilterOrders);
@@ -1474,11 +1480,9 @@ var orderBtn = document.getElementById("buy-btn");
 var quantityCartBtn = _toConsumableArray(document.querySelectorAll("input[name='quantity']"));
 var deleteItemBtn = _toConsumableArray(document.querySelectorAll("button[name='delete-item-btn']"));
 if (signOutBtnAdmin) {
-  console.log("hello");
   signOutBtnAdmin.addEventListener("click", _signOut.signOut);
 }
 if (signOutBtnUser) {
-  console.log("hello");
   // alert("logout successfully");
   signOutBtnUser.addEventListener("click", _signOut.signOut);
 }
@@ -1660,7 +1664,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65271" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59954" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

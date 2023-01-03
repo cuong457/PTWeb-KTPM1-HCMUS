@@ -3,7 +3,7 @@ const AppError = require("../../utils/AppError");
 const CartModel = require("../models/Cart");
 const ProductModel = require("../models/Product");
 const Paginator = require("paginator");
-const fileSystem = require('fs');
+const fileSystem = require("fs");
 
 exports.getListProduct = catchAsync(async (req, res, next) => {
   const options = {};
@@ -87,7 +87,7 @@ exports.updateItemQuantity = catchAsync(async (req, res, next) => {
   let newCart = null;
 
   if (!cart) {
-    return next(new AppError("cannot find cart with that userId"));
+    return next(new AppError(400, "cannot find cart with that userId"));
   }
 
   if (quantity === "" || isNaN(quantity) || quantity <= 0) {
@@ -167,7 +167,7 @@ exports.getProductInfo = catchAsync(async (req, res, next) => {
   const product = await ProductModel.findById(req.params.id);
 
   if (!product) {
-    return next(new AppError (400, "Product's id not exists."));
+    return next(new AppError(400, "Product's id not exists."));
   }
 
   res.status(200).json({
@@ -178,7 +178,7 @@ exports.getProductInfo = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteProductsImg = catchAsync (async (req, res, next) => {
+exports.deleteProductsImg = catchAsync(async (req, res, next) => {
   const paths = `${req.body.paths}`.split(",");
 
   paths.forEach((path) => {

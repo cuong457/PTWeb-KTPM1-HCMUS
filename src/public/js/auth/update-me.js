@@ -11,29 +11,28 @@ const updateSettings = async function (data, type) {
       ? "/api/v1/auth/update-password"
       : "/api/v1/auth/update-me";
   try {
-    const name = data.get("name");
-    const email = data.get("email");
-    const photo = data.get("photo");
+    if (type !== "password") {
+      const name = data.get("name");
+      const email = data.get("email");
+      const photo = data.get("photo");
 
-    console.log(photo);
-    const userPhoto = document.querySelector(".form__user-photo");
-    const isLoaded = userPhoto.complete && userPhoto.naturalHeight !== 0;
-    console.log(isLoaded);
-    console.log(name, email);
-    if (
-      !name ||
-      name.trim().value === 0 ||
-      !email ||
-      email.trim().value === 0
-    ) {
-      errorMessageElement.innerText =
-        "vui lòng nhập tên, địa chỉ email và chọn ảnh đại diện";
-      return;
-    }
+      const userPhoto = document.querySelector(".form__user-photo");
+      const isLoaded = userPhoto.complete && userPhoto.naturalHeight !== 0;
+      if (
+        !name ||
+        name.trim().value === 0 ||
+        !email ||
+        email.trim().value === 0
+      ) {
+        errorMessageElement.innerText =
+          "vui lòng nhập tên, địa chỉ email và chọn ảnh đại diện";
+        return;
+      }
 
-    if (!photo && !isLoaded) {
-      errorMessageElement.innerText = "vui lòng chọn ảnh đại diện";
-      return;
+      if (!photo && !isLoaded) {
+        errorMessageElement.innerText = "vui lòng chọn ảnh đại diện";
+        return;
+      }
     }
 
     let fetchOptions = {
@@ -111,16 +110,14 @@ if (updatePasswordForm) {
       password: passwordInput.value,
       confirmPassword: confirmPasswordInput.value,
     };
-
     if ((await updateSettings(data, "password")) === true) {
       currentPasswordInput.value = "";
       passwordInput.value = "";
       confirmPasswordInput.value = "";
     }
   };
-
   updatePasswordForm.addEventListener("submit", updatePassword);
-  updatePasswordForm.addEventListener("change", function (e) {
-    errorMessageElement.innerText = "";
-  });
+  // updatePasswordForm.addEventListener("change", function (e) {
+  //   errorMessageElement.innerText = "";
+  // });
 }

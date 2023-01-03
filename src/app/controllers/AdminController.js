@@ -19,7 +19,7 @@ const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
-    cb(new AppError("only image files are supported"));
+    cb(new AppError(400, "only image files are supported"));
   }
 };
 
@@ -377,35 +377,42 @@ exports.renderProducts = (req, res, next) => {
   res.render("./admin/products", { layout: "adminMain.hbs" });
 };
 
-function percentCompareToLastMonth (type, list) {
+function percentCompareToLastMonth(type, list) {
   let length = list.length;
-  if(length <= 1) return 100;
-  if(type === 0) {
-      return (((list[length - 1].users - list[length - 2].users) / list[length - 1].users)  * 100).toFixed(2)
-  }
-  else if(type === 1) {
-      return (((list[length - 1].sales - list[length - 2].sales) / list[length - 1].sales)  * 100).toFixed(2)
+  if (length <= 1) return 100;
+  if (type === 0) {
+    return (
+      ((list[length - 1].users - list[length - 2].users) /
+        list[length - 1].users) *
+      100
+    ).toFixed(2);
+  } else if (type === 1) {
+    return (
+      ((list[length - 1].sales - list[length - 2].sales) /
+        list[length - 1].sales) *
+      100
+    ).toFixed(2);
   }
 }
-function createMonthDetailList (arr) {
-  let result = [{users: 0, sales: 0}];
+function createMonthDetailList(arr) {
+  let result = [{ users: 0, sales: 0 }];
   let users = 0;
   let sales = 0;
-  let this_month = (new Date(arr[0].createdAt)).getUTCMonth();
-  for(let i = 0; i < arr.length; i++) {
-    let cur_month = (new Date(arr[i].createdAt)).getUTCMonth();
-    if(this_month != cur_month) {
+  let this_month = new Date(arr[0].createdAt).getUTCMonth();
+  for (let i = 0; i < arr.length; i++) {
+    let cur_month = new Date(arr[i].createdAt).getUTCMonth();
+    if (this_month != cur_month) {
       this_month = cur_month;
-      result.push({users, sales});
+      result.push({ users, sales });
     }
     ++users;
     sales += arr[i].total_spent;
   }
-  result.push({users, sales});
+  result.push({ users, sales });
   console.log(result);
   return result;
-} 
-exports.getUserData = catchAsync( async (req, res, next) => {
+}
+exports.getUserData = catchAsync(async (req, res, next) => {
   // Get params
   let page = req.query.page;
   let sortQ = req.query.sort;
@@ -454,8 +461,10 @@ exports.getUserData = catchAsync( async (req, res, next) => {
   //Find all in database and get detail
   const total = await UserModel.find(search_option).count();
   let total_sales = 0;
-  const allData = await UserModel.find({}).sort({createdAt: 1});
-  allData.forEach(user => {total_sales += user.total_spent})
+  const allData = await UserModel.find({}).sort({ createdAt: 1 });
+  allData.forEach((user) => {
+    total_sales += user.total_spent;
+  });
   let month_list = createMonthDetailList(allData);
   const total_percent = percentCompareToLastMonth(0, month_list);
   const total_sales_percent = percentCompareToLastMonth(1, month_list);
@@ -509,7 +518,7 @@ exports.getUserData = catchAsync( async (req, res, next) => {
       total,
       total_percent,
       total_sales,
-      total_sales_percent
+      total_sales_percent,
     },
   });
 });

@@ -71,12 +71,12 @@ Handlebars.registerHelper("getNameFromEmail", (email) => {
 });
 Handlebars.registerHelper("countTotal", (arr) => {
   let result = 0;
-  for(let i in arr) ++result;
+  for (let i in arr) ++result;
   return result;
 });
 Handlebars.registerHelper("countTotal", (arr) => {
   let result = 0;
-  for(let i in arr) ++result;
+  for (let i in arr) ++result;
   return result;
 });
 
@@ -139,7 +139,6 @@ if (productsTypeBtn) {
 // remove: handleClearSearchboxProducts, handleSearchProducts
 // Order handling
 const productsFilterOrderBtn = document.querySelectorAll(".orders-filter-btn");
-console.log(productsFilterOrderBtn);
 if (productsFilterOrderBtn.length > 0) {
   productsFilterOrderBtn.forEach((btn) => {
     btn.addEventListener("click", handleFilterOrders);
@@ -180,12 +179,10 @@ const deleteItemBtn = [
 ];
 
 if (signOutBtnAdmin) {
-  console.log("hello");
   signOutBtnAdmin.addEventListener("click", signOut);
 }
 
 if (signOutBtnUser) {
-  console.log("hello");
   // alert("logout successfully");
   signOutBtnUser.addEventListener("click", signOut);
 }

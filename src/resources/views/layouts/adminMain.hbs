@@ -30,9 +30,9 @@
       let cur_link = window.location.href;
       let cur_page_key = cur_link.slice(cur_link.indexOf('/admin') + 7, cur_link.length).split('/')[0]
       const v_navlink = document.querySelectorAll('.vertical-nav-link');
-      if(v_navlink) {
-        v_navlink.forEach(nl => { 
-          if(nl.href.split('/')[nl.href.split('/').length - 1] === cur_page_key) {
+      if (v_navlink) {
+        v_navlink.forEach(nl => {
+          if (nl.href.split('/')[nl.href.split('/').length - 1] === cur_page_key) {
             nl.classList.add('active');
           }
           else {
@@ -44,87 +44,64 @@
   </script>
 </head>
 
-  {{#if user}}
-  <body class="g-sidenav-show bg-gray-100" onload="onLoadVNav();">
-    <aside
-      class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
-      id="sidenav-main"
-    >
-      <div class="sidenav-header">
-        <i
-          class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
-          aria-hidden="true"
-          id="iconSidenav"
-        ></i>
-        <a class="navbar-brand m-0" href="/">
-          <img
-            src="/images/logo/logo.png"
-            class="navbar-brand-img h-100"
-            alt="main_logo"
-          />
-          <span class="ms-1 font-weight-bold">SUNRISE FOODS</span>
-        </a>
-      </div>
-      <hr class="horizontal dark mt-0" />
-      <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link vertical-nav-link active" href="/admin/dashboard">
-              <div
-                class="admin-nav-icon-wrapper admin-nav-icon-wrapper-active"
-              >
-                <i class="fa-solid fa-house admin-nav-icon admin-nav-icon-active"></i>
-              </div>
-              <span class="nav-link-text ms-1">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item hover-scale-ani">
-            <a class="nav-link vertical-nav-link" href="/admin/usercenter">
-              <div
-                class="admin-nav-icon-wrapper"
-              >
+{{#if user}}
+
+<body class="g-sidenav-show bg-gray-100" onload="onLoadVNav();">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
+    id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+        aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href="/">
+        <img src="/images/logo/logo.png" class="navbar-brand-img h-100" alt="main_logo" />
+        <span class="ms-1 font-weight-bold">SUNRISE FOODS</span>
+      </a>
+    </div>
+    <hr class="horizontal dark mt-0" />
+    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link vertical-nav-link active" href="/admin/dashboard">
+            <div class="admin-nav-icon-wrapper admin-nav-icon-wrapper-active">
+              <i class="fa-solid fa-house admin-nav-icon admin-nav-icon-active"></i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item hover-scale-ani">
+          <a class="nav-link vertical-nav-link" href="/admin/usercenter">
+            <div class="admin-nav-icon-wrapper">
               <i class="fa-solid fa-users admin-nav-icon"></i>
-              </div>
-              <span class="nav-link-text ms-1">User Center</span>
-            </a>
-          </li>
-          <li class="nav-item mt-3">
-            <h6
-              class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6"
-            >
-              Management
-            </h6>
-          </li>
-          <li class="nav-item hover-scale-ani">
-            <a class="nav-link vertical-nav-link" href="/admin/products">
-              <div
-                class="admin-nav-icon-wrapper"
-              >
-                <i class="fa-brands fa-shopify admin-nav-icon"></i>
-              </div>
-              <span class="nav-link-text ms-1">Products</span>
-            </a>
-          </li>
-          <li class="nav-item hover-scale-ani">
-            <a class="nav-link vertical-nav-link" href="/admin/profile">
-              <div
-                class="admin-nav-icon-wrapper"
-              >
-                <i class="fa-solid fa-truck-fast admin-nav-icon"></i>
-              </div>
-              <span class="nav-link-text ms-1">Orders</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="sidenav-footer mx-3">
-        <div
-          class="card card-background shadow-none card-background-mask-secondary"
-          id="sidenavCard"
-        >
-          <div
-            class="full-background"
-            style="
+            </div>
+            <span class="nav-link-text ms-1">User Center</span>
+          </a>
+        </li>
+        <li class="nav-item mt-3">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
+            Management
+          </h6>
+        </li>
+        <li class="nav-item hover-scale-ani">
+          <a class="nav-link vertical-nav-link" href="/admin/products">
+            <div class="admin-nav-icon-wrapper">
+              <i class="fa-brands fa-shopify admin-nav-icon"></i>
+            </div>
+            <span class="nav-link-text ms-1">Products</span>
+          </a>
+        </li>
+        <li class="nav-item hover-scale-ani">
+          <a class="nav-link vertical-nav-link" href="/admin/orders">
+            <div class="admin-nav-icon-wrapper">
+              <i class="fa-solid fa-truck-fast admin-nav-icon"></i>
+            </div>
+            <span class="nav-link-text ms-1">Orders</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="sidenav-footer mx-3">
+      <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
+        <div class="full-background" style="
               background-image: url('/assets/img/curved-images/white-curved.jpg');
             "></div>
         <div class="card-body text-start p-3 w-100">

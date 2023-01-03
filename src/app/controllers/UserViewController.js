@@ -413,7 +413,7 @@ exports.renderOrderDetail = catchAsync(async (req, res, next) => {
 
   if (!order) {
     return next(
-      new AppError("Cannot find your order, may be order id is wrong")
+      new AppError(400, "Cannot find your order, may be order id is wrong")
     );
   }
   order = await order.getPopulatedOrder();

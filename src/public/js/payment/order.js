@@ -4,6 +4,18 @@ export const clickOrderButton = async function (e) {
   const addressInput = document.querySelector("input[name='address']");
   const noteInput = document.querySelector("input[name='note']");
 
+  if (
+    !phoneInput ||
+    phoneInput.value.trim().length === 0 ||
+    !addressInput ||
+    addressInput.value.trim().length === 0 ||
+    !noteInput ||
+    noteInput.value.trim().length === 0
+  ) {
+    alert("vui lòng điền đầy đủ thông tin");
+    return;
+  }
+
   const checkedPayment = payments.find((payment) => payment.checked);
   if (!checkedPayment) {
     alert("vui lòng chọn phương thức thanh toán");

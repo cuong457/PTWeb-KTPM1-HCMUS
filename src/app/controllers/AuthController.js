@@ -136,13 +136,19 @@ exports.signUp = catchAsync(async (req, res, next) => {
     password,
   });
 
+  // 3.1) create cart
+  const cart = await CartModel.create({
+    userId: storedUser._id,
+    products: [],
+  });
+
   // 4) send email
   try {
     const verifyToken = storedUser.createVerifyToken();
     await storedUser.save({ validateBeforeSave: false });
     const emailObj = new Email(
       storedUser,
-      `${req.protocol}://${req.get("host")}/auth/verify/${verifyToken}`
+      `${req.protocol}://${req.get("host")}/api/v1/auth/verify/${verifyToken}`
     );
     await emailObj.send("WELCOME AND PLEASE VERIFY YOUR EMAIL");
   } catch (err) {

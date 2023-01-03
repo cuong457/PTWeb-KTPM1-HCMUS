@@ -26,7 +26,7 @@ router
   .delete([protect, deleteItem]);
 router
   .route("/")
-  .patch([protect, restrictTo("admin"), updateSelectFieldToItem])
+  .patch([protect, updateSelectFieldToItem])
   .get(getListProduct)
   .post([
     protect,
