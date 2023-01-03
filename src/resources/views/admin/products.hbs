@@ -16,6 +16,9 @@
             <button type="button" id="products-price-filter" class="products-filter-btn">
               By price
             </button>
+            <button type="button" id="products-tp-filter" class="products-filter-btn">
+              By total purchase
+            </button>
             <button type="button" id="products-desorder-filter" class="products-filter-btn">
               Descending Order
             </button>
@@ -141,6 +144,7 @@
                     <p class="product-detail-text">\{{name}}</p>
                     <p class="product-detail-text">\{{#toPrice price}}\{{/toPrice}} VNĐ</p>
                     <p class="product-detail-text">Cooked by \{{manufacturer}}</p>
+                    <p class="product-detail-text">Total purchase \{{#toPrice total_purchase}}\{{/toPrice}} VNĐ</p>
                     \{{#if suspended}}
                       <p class="product-detail-text">It's out of stock</p>
                     \{{else}}

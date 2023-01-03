@@ -119,6 +119,8 @@ exports.getProductsData = catchAsync(async (req, res, next) => {
       sort_option["createdAt"] = 1;
     } else if (option_list[i] === "price") {
       sort_option["price"] = 1;
+    } else if (option_list[i] === "tp") {
+      sort_option["total_purchase"] = 1;
     } else if (option_list[i] === "desorder") {
       is_descending = true;
     }
@@ -409,7 +411,7 @@ function createMonthDetailList(arr) {
     sales += arr[i].total_spent;
   }
   result.push({ users, sales });
-  console.log(result);
+  // console.log(result);
   return result;
 }
 exports.getUserData = catchAsync(async (req, res, next) => {

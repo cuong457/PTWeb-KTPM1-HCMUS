@@ -159,7 +159,7 @@
     <i class="fa-solid fa-dollar-sign fa-lg"></i>
   </div>
   <p class='text-bold text-xlg formal-font pt-4 mt-2 ps-2'>
-    \{{sales}}
+    \{{#toPrice sales}}\{{/toPrice}} VNĐ
   </p>
   <p class='text-sm mt-2 ms-2'>
     <span class='percent-wrapper text-green'>
@@ -182,7 +182,7 @@
               <p class="me-title text-lightblue user-name">\{{name}}</p>
               {{!-- <p class="sm-title user-spent">Joined <span class="rtab-money">\{{createdAt}}</span></p> --}}
               <p class="sm-title user-spent">Joined at <span class="rtab-money">\{{#toStandardDate createdAt}}\{{/toStandardDate}}</span></p>
-              <p class="sm-title user-spent">Total spent <span class="rtab-money">$\{{total_spent}}</span></p>
+              <p class="sm-title user-spent">Total spent <span class="rtab-money">\{{#toPrice total_spent}}\{{/toPrice}} VNĐ</span></p>
               <div class="text-center">
                 <a 
                     href='#show-userdetail-\{{email}}'

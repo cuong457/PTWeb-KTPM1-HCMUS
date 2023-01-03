@@ -220,10 +220,6 @@ function renderUC() {
     var total_percent = data.data.total_percent;
     var total_sales = data.data.total_sales;
     var total_sales_percent = data.data.total_sales_percent;
-    var formatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    });
     var source = $("#userlist-template").html();
     var template = Handlebars.compile(source);
     var html = template({
@@ -248,7 +244,7 @@ function renderUC() {
     var ussource = $("#users-sales-template").html();
     var ustemplate = Handlebars.compile(ussource);
     var ushtml = ustemplate({
-      sales: formatter.format(total_sales),
+      sales: total_sales,
       total_sales_percent: total_sales_percent
     });
     $(".user-sales-number").html(ushtml);
@@ -456,6 +452,9 @@ function handleFilterProducts(e) {
         break;
       case 'products-desorder-filter':
         option += 'desorder';
+        break;
+      case 'products-tp-filter':
+        option += 'tp';
         break;
       default:
         break;
@@ -1664,7 +1663,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62204" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65271" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
