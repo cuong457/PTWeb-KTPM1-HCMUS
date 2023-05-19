@@ -369,6 +369,7 @@ exports.renderCart = catchAsync(async (req, res, next) => {
 });
 
 // [GET] /user/:id/order
+// trang điền thông tin để đặt hàng
 exports.renderPayment = catchAsync(async (req, res, next) => {
   let cart = await Cart.findOne({ userId: req.user._id });
   let totalPrice = 0;

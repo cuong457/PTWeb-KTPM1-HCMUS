@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 console.log("dotenv index loaded");
 
+
+
 const port = 3000;
 
 const db = require("./config/db");

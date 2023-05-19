@@ -506,13 +506,13 @@
   width: 100%;
 }
 
-.marker {
+/* .marker {
   background-image: url('../img/pin.png');
   background-size: cover;
   width: 32px;
   height: 40px;
   cursor: pointer;
-}
+} */
 
 .mapboxgl-popup {
   max-width: 25rem;

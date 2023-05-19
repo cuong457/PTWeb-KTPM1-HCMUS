@@ -15,7 +15,26 @@
   "description": "ngon",
   "slug": "bun-dau-mam-tom-chuan-ngon",
   "__v": 0
-},{
+},
+{
+  "_id" : "5c8a1f4e2f8fb814b56fa299", 
+  "name": "Đậu bắp chiên giòn",
+  "price": 82000,
+  "category": [
+    "cơm"
+  ],
+  "manufacturer": "Sunrise Foods",
+  "stock": 100,
+  "suspended": false,
+  "foodThumbnail": "/images/FoodThumnail/bun.png",
+  "photo": [
+    "/images/foods/food_1.png"
+  ],
+  "description": "ngon oi la ngon",
+  "slug": "bun-dau-mam-tom-chuan-ngon",
+  "__v": 0
+},
+{
   "_id" : "5c8a211f2f8fb814b56fa188"
   , 
   "name": "Nem Cuốn Hàn Xẻng",

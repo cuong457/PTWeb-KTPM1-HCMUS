@@ -19,7 +19,7 @@ const {
 const { createOrder } = require("../app/controllers/OrderController");
 
 router.get("/user/:id/cart", [protect, renderCart]);
-router.get("/user/:id/order", [protect, createOrder, renderPayment]);
+router.get("/user/:id/order", [protect, createOrder, renderPayment]); // route ghép (tạo đơn đặt hàng, in trang thanh toán)
 
 router.get("/products/:slug", [isLoggedIn, renderItemDetail]);
 
