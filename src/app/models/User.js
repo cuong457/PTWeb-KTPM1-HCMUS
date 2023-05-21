@@ -11,7 +11,10 @@ const UserSchema = new Schema(
     role: { type: String, default: "user" },
     type: { type: String, default: "local" },
     active: { type: Boolean, default: false },
-    photo: { type: String },
+    photo: {
+      type: String,
+      default: "/images/user/avt/assikoreanfood.png",
+    },
     address: { type: String },
     phone: { type: String },
     total_spent: { type: Number, default: 0 },

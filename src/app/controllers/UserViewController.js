@@ -255,9 +255,16 @@ exports.renderHome = async function index(req, res, next) {
 };
 
 exports.renderItemDetail = async function (req, res, next) {
+  console.log(req.params.slug);
+  console.log(req.params);
   const product = await Product.findOne({ slug: req.params.slug }).populate(
     "reviews"
   );
+
+  const testProduct = await Product.findOne({ slug: req.params.slug });
+  console.log("hello");
+  console.log(testProduct);
+
   const recommend = await Product.find({
     category: { $regex: product.category[0], $options: "i" },
   }).limit(6);
